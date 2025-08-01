@@ -57,77 +57,82 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         scrolled ? 'bg-neutral-50/95 backdrop-blur-lg border-b border-gray-200' : 'bg-neutral-50'
       }`}
     >
-      <div className="flex items-center justify-center p-4 pb-2">
-        {/* VA Logo */}
-        <div className="flex items-center justify-center">
+      <div className="flex items-center justify-between p-4 pb-2 max-w-7xl mx-auto">
+        {/* Left spacer for mobile menu */}
+        <div className="flex items-center">
+          {/* Mobile Menu Button */}
+          <motion.button
+            className="md:hidden p-2 text-[#141414] mr-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            whileTap={{ scale: 0.95 }}
+          >
+            <AnimatePresence mode="wait">
+              {isMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X className="h-6 w-6" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Menu className="h-6 w-6" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
+        </div>
+
+        {/* Centered VA Logo */}
+        <div className="flex flex-col items-center justify-center flex-1">
           <svg 
-            width="60" 
-            height="40" 
-            viewBox="0 0 200 120" 
+            width="80" 
+            height="60" 
+            viewBox="0 0 300 180" 
             className="text-[#141414]"
           >
-            {/* V Letter */}
+            {/* V Letter - More elegant and spaced */}
             <path 
-              d="M20 20 L60 100 L80 20 L100 20 L70 120 L50 120 L20 20 Z" 
+              d="M30 30 L90 140 L120 30 L150 30 L105 170 L75 170 L30 30 Z" 
               fill="currentColor"
             />
-            {/* A Letter */}
+            {/* A Letter - More refined */}
             <path 
-              d="M120 20 L140 120 L160 120 L180 20 L165 20 L160 40 L140 40 L135 20 L120 20 Z M145 55 L155 55 L150 35 L145 55 Z" 
+              d="M180 30 L210 170 L240 170 L270 30 L250 30 L240 60 L210 60 L200 30 L180 30 Z M220 85 L230 85 L225 55 L220 85 Z" 
               fill="currentColor"
             />
-            {/* Small decorative triangles */}
-            <path d="M90 25 L95 35 L85 35 Z" fill="currentColor" opacity="0.7" />
-            <path d="M110 85 L115 95 L105 95 Z" fill="currentColor" opacity="0.7" />
           </svg>
+          <div className="text-[#141414] text-xs font-light tracking-[0.2em] mt-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+            VILLA ALTONA
+          </div>
         </div>
         
-        {/* User Menu */}
+        {/* Right side - User Menu */}
         {userEmail && (
-          <div className="hidden md:flex items-center gap-2">
-            <span className="text-sm text-neutral-500" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+          <div className="flex items-center gap-3">
+            <span className="hidden md:block text-sm text-neutral-500" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
               {userEmail}
             </span>
             <button
               onClick={onLogout}
-              className="text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200"
+              className="text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-gray-100"
               style={{ fontFamily: '"Noto Sans", sans-serif' }}
             >
               Logout
             </button>
           </div>
+        ) : (
+          <div className="w-20"></div>
         )}
-
-        {/* Mobile Menu Button */}
-        <motion.button
-          className="md:hidden p-2 text-[#141414]"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          whileTap={{ scale: 0.95 }}
-        >
-          <AnimatePresence mode="wait">
-            {isMenuOpen ? (
-              <motion.div
-                key="close"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <X className="h-6 w-6" />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="menu"
-                initial={{ rotate: 90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Menu className="h-6 w-6" />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.button>
       </div>
 
       {/* Mobile Navigation */}
@@ -153,6 +158,20 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   {item.label}
                 </motion.button>
               ))}
+              {userEmail && (
+                <div className="px-4 py-3 border-t border-gray-200 mt-2">
+                  <p className="text-sm text-neutral-500 mb-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                    {userEmail}
+                  </p>
+                  <button
+                    onClick={onLogout}
+                    className="text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200"
+                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
