@@ -56,9 +56,9 @@ export default function Header() {
         <div className="text-[#141414] flex size-12 shrink-0 items-center">
           <ArrowLeft className="w-6 h-6" />
         </div>
-        <h1 className="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">
+        <h2 className="text-[#141414] text-lg font-bold leading-tight tracking-[-0.15em] flex-1 text-center pr-12">
           Villa Altona
-        </h1>
+        </h2>
         
         {/* Mobile Menu Button */}
         <motion.button
