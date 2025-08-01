@@ -211,9 +211,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
               >
                 <X className="h-6 w-6" />
               </button>
-              <h2 className="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12" style={{ fontFamily: '"Noto Serif", serif' }}>
-                {isLogin ? 'Welcome Back' : 'Create Account'}
-              </h2>
             </div>
 
             <div className="p-6">
