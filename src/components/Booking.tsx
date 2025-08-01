@@ -8,7 +8,7 @@ interface BookingProps {
   onShowAuth: () => void;
 }
 
-const Booking: React.FC<BookingProps> = ({ isAuthenticated, onShowAuth }) => {
+export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [adults, setAdults] = useState(2);
@@ -232,4 +232,3 @@ const Booking: React.FC<BookingProps> = ({ isAuthenticated, onShowAuth }) => {
       />
     </>
   );
-};
