@@ -17,7 +17,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-neutral-500 text-xs font-medium leading-normal tracking-[0.015em]"
+          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
           style={{ fontFamily: '"Noto Serif", serif' }}
         >
           About this place
