@@ -10,8 +10,8 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="bg-neutral-100 py-8">
-      <div className="px-4">
+    <section id="about" className="bg-neutral-50 py-8">
+      <div className="px-8">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
