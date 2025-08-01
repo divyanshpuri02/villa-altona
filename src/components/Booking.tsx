@@ -6,9 +6,24 @@ import BookingConfirmationModal from './BookingConfirmationModal';
 const Booking = () => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
-  const [guests, setGuests] = useState(2);
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
+  const [childrenAges, setChildrenAges] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+
+  // Update children ages array when children count changes
+  const handleChildrenChange = (count: number) => {
+    setChildren(count);
+    const newAges = Array(count).fill(0).map((_, i) => childrenAges[i] || 1);
+    setChildrenAges(newAges);
+  };
+
+  const updateChildAge = (index: number, age: number) => {
+    const newAges = [...childrenAges];
+    newAges[index] = age;
+    setChildrenAges(newAges);
+  };
 
   const handleCheckAvailability = async () => {
     setLoading(true);
@@ -79,21 +94,74 @@ const Booking = () => {
               viewport={{ once: true }}
               className="flex w-full flex-wrap items-end gap-4 px-0 py-3"
             >
-              <label className="flex flex-col min-w-40 flex-1">
+              <label className="flex flex-col min-w-40 flex-1 mr-2">
+                <span className="text-[#141414] text-sm font-medium mb-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  Adults
+                </span>
                 <select
-                  value={guests}
-                  onChange={(e) => setGuests(Number(e.target.value))}
+                  value={adults}
+                  onChange={(e) => setAdults(Number(e.target.value))}
                   className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal"
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
                 >
-                  {[1,2,3,4,5,6,7,8,9,10,11,12].map(num => (
+                  {[1,2,3,4,5,6,7,8].map(num => (
                     <option key={num} value={num}>
-                      {num} Guest{num > 1 ? 's' : ''}
+                      {num} Adult{num > 1 ? 's' : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              
+              <label className="flex flex-col min-w-40 flex-1">
+                <span className="text-[#141414] text-sm font-medium mb-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  Children
+                </span>
+                <select
+                  value={children}
+                  onChange={(e) => handleChildrenChange(Number(e.target.value))}
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal"
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                >
+                  {[0,1,2,3,4].map(num => (
+                    <option key={num} value={num}>
+                      {num} {num === 1 ? 'Child' : 'Children'}
                     </option>
                   ))}
                 </select>
               </label>
             </motion.div>
+
+            {/* Children Ages */}
+            {children > 0 && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                className="flex w-full flex-wrap gap-4 px-0 py-3"
+              >
+                <div className="w-full">
+                  <span className="text-[#141414] text-sm font-medium mb-2 block" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                    Children Ages
+                  </span>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {childrenAges.map((age, index) => (
+                      <select
+                        key={index}
+                        value={age}
+                        onChange={(e) => updateChildAge(index, Number(e.target.value))}
+                        className="form-input flex w-full resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-12 p-3 text-sm font-normal leading-normal"
+                        style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                      >
+                        {Array.from({length: 17}, (_, i) => i + 1).map(ageOption => (
+                          <option key={ageOption} value={ageOption}>
+                            {ageOption} year{ageOption > 1 ? 's' : ''}
+                          </option>
+                        ))}
+                      </select>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -131,7 +199,9 @@ const Booking = () => {
         bookingData={{
           checkIn: checkIn,
           checkOut: checkOut,
-          guests: guests
+          adults: adults,
+          children: children,
+          childrenAges: childrenAges
         }}
       />
     </>

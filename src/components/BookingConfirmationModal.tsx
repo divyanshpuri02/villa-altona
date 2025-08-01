@@ -8,17 +8,22 @@ interface BookingConfirmationModalProps {
   bookingData: {
     checkIn: string;
     checkOut: string;
-    guests: number;
+    adults: number;
+    children: number;
+    childrenAges: number[];
   };
 }
 
 const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isOpen, onClose, bookingData }) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
   const [reservationData, setReservationData] = useState({
     checkIn: { date: '', time: '4:00 PM' },
     checkOut: { date: '', time: '11:00 AM' },
-    guests: 0,
+    adults: 0,
+    children: 0,
+    totalGuests: 0,
     confirmationCode: '',
     totalCost: '',
     nights: 0,
@@ -56,7 +61,9 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
       setReservationData({
         checkIn: { date: checkInFormatted, time: '4:00 PM' },
         checkOut: { date: checkOutFormatted, time: '11:00 AM' },
-        guests: bookingData.guests,
+        adults: bookingData.adults,
+        children: bookingData.children,
+        totalGuests: bookingData.adults + bookingData.children,
         confirmationCode,
         totalCost: `₹${totalCost.toLocaleString()}`,
         nights,
@@ -66,17 +73,20 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
   }, [bookingData]);
 
   const handleConfirmBooking = async () => {
-    setProcessing(true);
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    setProcessing(false);
+    setShowPayment(true);
+  };
+
+  const handlePaymentSuccess = () => {
+    setShowPayment(false);
     setShowSuccess(true);
-    
-    // Auto close after success
     setTimeout(() => {
       setShowSuccess(false);
       onClose();
     }, 3000);
+  };
+
+  const handlePaymentFailure = () => {
+    setShowPayment(false);
   };
 
   if (showSuccess) {
@@ -114,6 +124,10 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
         </motion.div>
       </AnimatePresence>
     );
+  }
+
+  if (showPayment) {
+    return <PaymentModal onSuccess={handlePaymentSuccess} onFailure={handlePaymentFailure} onClose={() => setShowPayment(false)} />;
   }
 
   return (
@@ -256,24 +270,159 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
                   onClick={handleConfirmBooking}
                 >
                   {processing ? (
-                    <>
                       <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        className="h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"
-                      />
-                      Processing Payment...
-                    </>
-                  ) : (
-                    <span className="truncate">Confirm & Pay</span>
-                  )}
-                </motion.button>
-              </div>
-            </div>
+                  <span className="truncate">Confirm & Pay</span>
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
+  );
+};
+
+// Payment Modal Component
+const PaymentModal: React.FC<{
+  onSuccess: () => void;
+  onFailure: () => void;
+  onClose: () => void;
+}> = ({ onSuccess, onFailure, onClose }) => {
+  const [selectedPayment, setSelectedPayment] = useState('');
+  const [processing, setProcessing] = useState(false);
+  const [showFailure, setShowFailure] = useState(false);
+
+  const paymentMethods = [
+    { id: 'stripe', name: 'Credit/Debit Card', icon: '💳' },
+    { id: 'razorpay', name: 'Razorpay', icon: '💰' },
+    { id: 'paypal', name: 'PayPal', icon: '🅿️' },
+    { id: 'upi', name: 'UPI Payment', icon: '📱' },
+  ];
+
+  const handlePayment = async () => {
+    if (!selectedPayment) return;
+    
+    setProcessing(true);
+    // Simulate payment processing
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    // 80% success rate for demo
+    const success = Math.random() > 0.2;
+    setProcessing(false);
+    
+    if (success) {
+      onSuccess();
+    } else {
+      setShowFailure(true);
+      setTimeout(() => {
+        setShowFailure(false);
+        onFailure();
+      }, 3000);
+    }
+  };
+
+  if (showFailure) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      >
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-neutral-50 rounded-xl p-8 max-w-md w-full text-center"
+        >
+          <div className="h-16 w-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="text-white text-2xl">✕</span>
+          </div>
+          <h3 className="text-[#141414] text-2xl font-bold mb-2" style={{ fontFamily: '"Noto Serif", serif' }}>
+            Payment Failed
+          </h3>
+          <p className="text-neutral-500 mb-4" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+            Your payment could not be processed. Please try again with a different payment method.
+          </p>
+        </motion.div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+    >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        className="bg-neutral-50 rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div className="flex items-center bg-neutral-50 p-4 pb-2 justify-between border-b border-[#ededed]">
+          <button
+            onClick={onClose}
+            className="text-[#141414] flex size-12 shrink-0 items-center justify-center hover:bg-[#ededed] rounded-lg transition-colors duration-200"
+          >
+            <X className="h-6 w-6" />
+          </button>
+          <h2 className="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12" style={{ fontFamily: '"Noto Serif", serif' }}>
+            Payment Options
+          </h2>
+        </div>
+
+        <div className="p-4">
+          <h3 className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-2" style={{ fontFamily: '"Noto Serif", serif' }}>
+            Choose Payment Method
+          </h3>
+
+          <div className="space-y-3 mb-6">
+            {paymentMethods.map((method) => (
+              <motion.button
+                key={method.id}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setSelectedPayment(method.id)}
+                className={`w-full p-4 rounded-xl border-2 transition-all duration-200 flex items-center gap-4 ${
+                  selectedPayment === method.id 
+                    ? 'border-[#141414] bg-gray-100' 
+                    : 'border-[#dbdbdb] bg-neutral-50 hover:bg-gray-50'
+                }`}
+              >
+                <span className="text-2xl">{method.icon}</span>
+                <span className="text-[#141414] font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  {method.name}
+                </span>
+                {selectedPayment === method.id && (
+                  <div className="ml-auto w-5 h-5 bg-[#141414] rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                )}
+              </motion.button>
+            ))}
+          </div>
+
+          <motion.button
+            type="button"
+            disabled={!selectedPayment || processing}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handlePayment}
+            className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-[#141414] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-800 transition-all duration-300 disabled:opacity-50"
+            style={{ fontFamily: '"Noto Sans", sans-serif' }}
+          >
+            {processing ? (
+              <>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  className="h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"
+                />
+                Processing Payment...
+              </>
+            ) : (
+              <span className="truncate">Pay Now</span>
+            )}
+          </motion.button>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

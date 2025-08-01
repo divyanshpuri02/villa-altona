@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowLeft } from 'lucide-react';
 
-export default function Header() {
+interface HeaderProps {
+  userEmail?: string;
+  onLogout?: () => void;
+}
+
+export default function Header({ userEmail, onLogout }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -60,6 +65,22 @@ export default function Header() {
           Villa Altona
         </h2>
         
+        {/* User Menu */}
+        {userEmail && (
+          <div className="hidden md:flex items-center gap-2">
+            <span className="text-sm text-neutral-500" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+              {userEmail}
+            </span>
+            <button
+              onClick={onLogout}
+              className="text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200"
+              style={{ fontFamily: '"Noto Sans", sans-serif' }}
+            >
+              Logout
+            </button>
+          </div>
+        )}
+
         {/* Mobile Menu Button */}
         <motion.button
           className="md:hidden p-2 text-[#141414]"

@@ -51,73 +51,7 @@ const Contact: React.FC = () => {
     <section id="contact" className="bg-neutral-50 py-8">
       <div className="px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Contact Information Section */}
-          <div>
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-[#141414] text-[28px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
-              style={{ fontFamily: '"Noto Serif", serif' }}
-            >
-              Contact Us
-            </motion.h2>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="text-[#141414] text-base font-normal leading-normal pb-3 pt-1"
-              style={{ fontFamily: '"Noto Sans", sans-serif' }}
-            >
-              We're here to assist. Reach out with any questions or concerns, and we'll respond promptly.
-            </motion.p>
-
-            {/* Contact Info Cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-4 bg-neutral-50 px-0 min-h-[72px] py-2"
-            >
-              <div className="text-[#141414] flex items-center justify-center rounded-lg bg-[#ededed] shrink-0 size-12">
-                <Phone className="h-6 w-6" />
-              </div>
-              <div className="flex flex-col justify-center">
-                <p className="text-[#141414] text-base font-medium leading-normal line-clamp-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                  Phone
-                </p>
-                <p className="text-neutral-500 text-sm font-normal leading-normal line-clamp-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                  Available 24/7
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-4 bg-neutral-50 px-0 min-h-[72px] py-2"
-            >
-              <div className="text-[#141414] flex items-center justify-center rounded-lg bg-[#ededed] shrink-0 size-12">
-                <Mail className="h-6 w-6" />
-              </div>
-              <div className="flex flex-col justify-center">
-                <p className="text-[#141414] text-base font-medium leading-normal line-clamp-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                  Email
-                </p>
-                <p className="text-neutral-500 text-sm font-normal leading-normal line-clamp-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                  Response within 24 hours
-                </p>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Contact Form Section */}
+          {/* Contact Form Section - Now on Left */}
           <div>
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
@@ -265,6 +199,72 @@ const Contact: React.FC = () => {
                 {error && <p className="text-red-600 text-sm font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>{error}</p>}
               </form>
             )}
+          </div>
+
+          {/* Contact Information Section - Now on Right */}
+          <div>
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-[#141414] text-[28px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+              style={{ fontFamily: '"Noto Serif", serif' }}
+            >
+              Contact Us
+            </motion.h2>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="text-[#141414] text-base font-normal leading-normal pb-3 pt-1"
+              style={{ fontFamily: '"Noto Sans", sans-serif' }}
+            >
+              We're here to assist. Reach out with any questions or concerns, and we'll respond promptly.
+            </motion.p>
+
+            {/* Contact Info Cards */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4 bg-neutral-50 px-0 min-h-[72px] py-2"
+            >
+              <div className="text-[#141414] flex items-center justify-center rounded-lg bg-[#ededed] shrink-0 size-12">
+                <Phone className="h-6 w-6" />
+              </div>
+              <div className="flex flex-col justify-center">
+                <p className="text-[#141414] text-base font-medium leading-normal line-clamp-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  Phone
+                </p>
+                <p className="text-neutral-500 text-sm font-normal leading-normal line-clamp-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  Available 24/7
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4 bg-neutral-50 px-0 min-h-[72px] py-2"
+            >
+              <div className="text-[#141414] flex items-center justify-center rounded-lg bg-[#ededed] shrink-0 size-12">
+                <Mail className="h-6 w-6" />
+              </div>
+              <div className="flex flex-col justify-center">
+                <p className="text-[#141414] text-base font-medium leading-normal line-clamp-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  Email
+                </p>
+                <p className="text-neutral-500 text-sm font-normal leading-normal line-clamp-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  Response within 24 hours
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
 
