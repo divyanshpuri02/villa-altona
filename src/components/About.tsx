@@ -10,7 +10,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="bg-neutral-10 py-8">
+    <section id="about" className="bg-neutral-100 py-8">
       <div className="px-4">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
