@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { Star, MapPin, Calendar, ChevronDown } from 'lucide-react';
 
 export default function Hero() {
   const scrollToBooking = () => {
@@ -7,148 +6,76 @@ export default function Hero() {
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToNext = () => {
-    const element = document.getElementById('about');
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden bg-white">
-      {/* Background Image with Overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url("https://images.pexels.com/photos/1001965/pexels-photo-1001965.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1280&fit=crop")'
-        }}
-      >
-        <div className="absolute inset-0 bg-white/70"></div>
-        <div className="absolute inset-0 luxury-gradient opacity-50"></div>
+    <section className="bg-neutral-50 pt-20">
+      <div className="@container">
+        <div className="@[480px]:px-4 @[480px]:py-3">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            className="bg-cover bg-center flex flex-col justify-end overflow-hidden bg-neutral-50 @[480px]:rounded-xl min-h-80"
+            style={{
+              backgroundImage: 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 25%), url("https://images.pexels.com/photos/1001965/pexels-photo-1001965.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1280&fit=crop")'
+            }}
+          >
+            <div className="flex justify-center gap-2 p-5">
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: i === 0 ? 1 : 0.5, scale: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="size-1.5 rounded-full bg-neutral-50"
+                />
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Floating Elements */}
-      <motion.div
-        className="absolute top-20 left-10 w-2 h-2 bg-blue-500 rounded-full animate-float"
-        animate={{ 
-          y: [0, -20, 0],
-          opacity: [0.5, 1, 0.5]
-        }}
-        transition={{ 
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      <motion.div
-        className="absolute top-40 right-20 w-3 h-3 bg-black rounded-full animate-float"
-        animate={{ 
-          y: [0, -30, 0],
-          opacity: [0.3, 0.8, 0.3]
-        }}
-        transition={{ 
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 2
-        }}
-      />
-
-      {/* Content */}
-      <div className="relative z-10 text-center text-black px-4 max-w-5xl mx-auto">
-        <motion.div 
-          className="flex justify-center items-center space-x-1 mb-6"
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, rotate: -180 }}
-              animate={{ opacity: 1, rotate: 0 }}
-              transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
-            >
-              <Star className="h-8 w-8 fill-blue-500 text-blue-500" />
-            </motion.div>
-          ))}
-        </motion.div>
-        
-        <motion.h1 
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight font-serif text-black"
-          initial={{ opacity: 0, y: 50 }}
+      <div className="px-4 py-6">
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-[#141414] text-[28px] font-bold leading-tight tracking-[-0.015em] mb-4"
         >
-         Villa Altona 
-          <motion.span 
-            className="block text-3xl md:text-4xl lg:text-5xl font-light text-gray-600 mt-4"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-          >
-            Ultra Luxury Redefined
-          </motion.span>
+          Villa Altona - Luxury Retreat
         </motion.h1>
         
-        <motion.p 
-          className="text-xl md:text-2xl mb-10 text-gray-700 max-w-3xl mx-auto leading-relaxed"
-          initial={{ opacity: 0, y: 30 }}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="text-[#141414] text-base font-normal leading-normal mb-6"
         >
-          Experience the pinnacle of luxury in our exclusive 5-star villa. Where every moment 
-          is crafted to perfection and every detail speaks of unparalleled elegance.
+          Experience unparalleled luxury in our exclusive villa nestled in the heart of Goa. 
+          This spacious retreat features six bedrooms, each with an en-suite bathroom, a fully 
+          equipped gourmet kitchen, a private infinity pool, and sprawling tropical gardens. 
+          Perfect for families or groups seeking an extraordinary escape.
         </motion.p>
 
-        <motion.div 
-          className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 mb-12"
-          initial={{ opacity: 0, y: 30 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.2 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="flex gap-3"
         >
-          <div className="flex items-center space-x-3 text-lg">
-            <MapPin className="h-6 w-6 text-blue-500" />
-            <span>Goa, India</span>
-          </div>
-          <div className="flex items-center space-x-3 text-lg">
-            <Calendar className="h-6 w-6 text-blue-500" />
-            <span>Available Year Round</span>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 justify-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.4 }}
-        >
-          <motion.button 
+          <button
             onClick={scrollToBooking}
-            className="blue-gradient text-white px-10 py-4 text-lg font-bold rounded-lg transition-all duration-300 luxury-shadow animate-glow"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.98 }}
+            className="flex-1 bg-[#141414] text-white rounded-full h-12 px-5 font-bold text-base tracking-[0.015em] hover:bg-gray-800 transition-colors duration-300"
           >
-            Reserve Your Experience
-          </motion.button>
-          <motion.button 
-            onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-            className="border-2 border-black hover:bg-black hover:text-white text-black px-10 py-4 text-lg font-semibold rounded-lg transition-all duration-300"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.98 }}
+            Book Now
+          </button>
+          <button
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="flex-1 bg-[#ededed] text-[#141414] rounded-full h-12 px-5 font-bold text-base tracking-[0.015em] hover:bg-gray-300 transition-colors duration-300"
           >
-            Explore Gallery
-          </motion.button>
+            Contact Host
+          </button>
         </motion.div>
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
-        onClick={scrollToNext}
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <ChevronDown className="w-8 h-8 text-black/70 hover:text-blue-500 transition-colors duration-300" />
-      </motion.div>
     </section>
   );
 }

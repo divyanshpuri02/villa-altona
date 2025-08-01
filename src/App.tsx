@@ -1,4 +1,5 @@
 import React from 'react'
+import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
 import Amenities from './components/Amenities'
@@ -10,7 +11,8 @@ import Footer from './components/Footer'
 
 function App() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-neutral-50" style={{ fontFamily: '"Noto Serif", "Noto Sans", sans-serif' }}>
+      <Header />
       <Hero />
       <About />
       <Amenities />
