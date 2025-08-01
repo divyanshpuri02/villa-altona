@@ -215,7 +215,7 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
                 </div>
                 <div className="shrink-0">
                   <p className="text-[#141414] text-base font-normal leading-normal" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                    {reservationData.guests} guests
+                    {reservationData.totalGuests} guests
                   </p>
                 </div>
               </div>
@@ -271,7 +271,16 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
                 >
                   {processing ? (
                       <motion.div
-                  <span className="truncate">Confirm & Pay</span>
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"
+                      />
+                  ) : (
+                    <span className="truncate">Confirm & Pay</span>
+                  )}
+                </motion.button>
+              </div>
+            </div>
           </motion.div>
         </motion.div>
       )}
