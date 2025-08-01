@@ -42,7 +42,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
-          className="text-neutral-500 text-xs font-medium leading-normal tracking-[0.015em]"
+          className="text-neutral-500 text-x font-medium leading-normal tracking-[0.015em]"
         >
           Experience unparalleled luxury with world-class amenities including a private spa, 
           state-of-the-art fitness center, and dedicated concierge service. Every detail has 
