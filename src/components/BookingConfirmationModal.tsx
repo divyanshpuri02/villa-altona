@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Users, CreditCard, FileText, Download, Shield, Clock, CheckCircle } from 'lucide-react';
 
@@ -15,15 +15,55 @@ interface BookingConfirmationModalProps {
 const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isOpen, onClose, bookingData }) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [reservationData, setReservationData] = useState({
+    checkIn: { date: '', time: '4:00 PM' },
+    checkOut: { date: '', time: '11:00 AM' },
+    guests: 0,
+    confirmationCode: '',
+    totalCost: '',
+    nights: 0,
+    costPerNight: 100000 // ₹100,000 per night
+  });
 
-  const reservationData = {
-    checkIn: { date: 'Sat, Jul 20', time: '4:00 PM' },
-    checkOut: { date: 'Tue, Jul 23', time: '11:00 AM' },
-    guests: bookingData.guests,
-    confirmationCode: 'VA2024-AB12CD34EF',
-    totalCost: '₹3,00,000',
-    nights: 3
-  };
+  // Calculate dynamic reservation data
+  useEffect(() => {
+    if (bookingData.checkIn && bookingData.checkOut) {
+      const checkInDate = new Date(bookingData.checkIn);
+      const checkOutDate = new Date(bookingData.checkOut);
+      
+      // Calculate number of nights
+      const timeDiff = checkOutDate.getTime() - checkInDate.getTime();
+      const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      
+      // Calculate total cost
+      const totalCost = nights * reservationData.costPerNight;
+      
+      // Format dates
+      const checkInFormatted = checkInDate.toLocaleDateString('en-US', { 
+        weekday: 'short', 
+        month: 'short', 
+        day: 'numeric' 
+      });
+      const checkOutFormatted = checkOutDate.toLocaleDateString('en-US', { 
+        weekday: 'short', 
+        month: 'short', 
+        day: 'numeric' 
+      });
+      
+      // Generate confirmation code
+      const confirmationCode = `VA2024-${Math.random().toString(36).substr(2, 10).toUpperCase()}`;
+      
+      setReservationData({
+        checkIn: { date: checkInFormatted, time: '4:00 PM' },
+        checkOut: { date: checkOutFormatted, time: '11:00 AM' },
+        guests: bookingData.guests,
+        confirmationCode,
+        totalCost: `₹${totalCost.toLocaleString()}`,
+        nights,
+        costPerNight: reservationData.costPerNight
+      });
+    }
+  }, [bookingData]);
 
   const handleConfirmBooking = async () => {
     setProcessing(true);
@@ -198,7 +238,7 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
                       Cancellation policy
                     </p>
                     <p className="text-neutral-500 text-sm font-normal leading-normal line-clamp-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                      Free cancellation before 4:00 PM on Jul 19. Cancel before check-in at 4:00 PM.
+                      Free cancellation before 4:00 PM on {reservationData.checkIn.date}. Cancel before check-in at 4:00 PM.
                     </p>
                   </div>
                 </div>
@@ -225,7 +265,7 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
                       Processing Payment...
                     </>
                   ) : (
-                    <span className="truncate">Confirm & Pay {reservationData.totalCost}</span>
+                    <span className="truncate">Confirm & Pay</span>
                   )}
                 </motion.button>
               </div>

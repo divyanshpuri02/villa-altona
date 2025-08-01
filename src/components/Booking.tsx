@@ -21,7 +21,7 @@ const Booking = () => {
   return (
     <>
       <section id="booking" className="bg-neutral-50 py-8">
-        <div className="px-4">
+        <div className="w-full max-w-none px-4">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -33,13 +33,13 @@ const Booking = () => {
             Reserve Your Stay
           </motion.h2>
 
-          <div className="space-y-3">
+          <div className="w-full space-y-3">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="flex max-w-[480px] flex-wrap items-end gap-4 px-0 py-3"
+              className="flex w-full flex-wrap items-end gap-4 px-0 py-3"
             >
               <label className="flex flex-col min-w-40 flex-1">
                 <input
@@ -58,7 +58,7 @@ const Booking = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
-              className="flex max-w-[480px] flex-wrap items-end gap-4 px-0 py-3"
+              className="flex w-full flex-wrap items-end gap-4 px-0 py-3"
             >
               <label className="flex flex-col min-w-40 flex-1">
                 <input
@@ -77,7 +77,7 @@ const Booking = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               viewport={{ once: true }}
-              className="flex max-w-[480px] flex-wrap items-end gap-4 px-0 py-3"
+              className="flex w-full flex-wrap items-end gap-4 px-0 py-3"
             >
               <label className="flex flex-col min-w-40 flex-1">
                 <select
@@ -100,14 +100,14 @@ const Booking = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
               viewport={{ once: true }}
-              className="flex px-0 py-3"
+              className="flex w-full px-0 py-3"
             >
               <motion.button
                 type="button"
                 disabled={loading}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 flex-1 bg-[#141414] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-800 transition-all duration-300 disabled:opacity-50"
+                className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-[#141414] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-800 transition-all duration-300 disabled:opacity-50"
                 style={{ fontFamily: '"Noto Sans", sans-serif' }}
                 onClick={handleCheckAvailability}
               >

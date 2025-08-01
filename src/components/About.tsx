@@ -23,32 +23,6 @@ export default function About() {
           About this place
         </motion.h2>
         
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="text-[#141414] text-x font-normal leading-normal pb-3 pt-1"
-          style={{ fontFamily: '"Noto Sans", sans-serif' }}
-        >
-          Villa Altona is a luxurious retreat nestled in the heart of Goa, offering breathtaking 
-          views of the Arabian Sea and lush tropical landscapes. This spacious villa features six 
-          bedrooms, each with an en-suite bathroom, a fully equipped kitchen, a private infinity pool, 
-          and sprawling gardens. Perfect for families or groups seeking a tranquil escape.
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-[#141414] text-base font-normal leading-normal pb-3 pt-1"
-        >
-          Experience unparalleled luxury with world-class amenities including a private spa, 
-          state-of-the-art fitness center, and dedicated concierge service. Every detail has 
-          been crafted to ensure your stay transcends all expectations.
-        </motion.p>
-
         <div className="grid grid-cols-2 gap-4">
           {features.map((feature, index) => (
             <motion.div
