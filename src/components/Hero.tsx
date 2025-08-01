@@ -39,7 +39,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-[#141414] text-lg font-bold leading-tight tracking-[-0.15em] flex-1 text-center pr-12"
+          className="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12"
           style={{ fontFamily: '"Noto Serif", serif' }}
         >
         Villa Altona - Luxury Retreat
