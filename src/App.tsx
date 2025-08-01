@@ -16,6 +16,8 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [modalTimer, setModalTimer] = useState<NodeJS.Timeout | null>(null);
+  const [hasShownInitialModal, setHasShownInitialModal] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -24,41 +26,78 @@ function App() {
       const authData = JSON.parse(savedAuth);
       setIsAuthenticated(true);
       setUserEmail(authData.email);
+      setHasShownInitialModal(true); // Don't show modal if already authenticated
     } else {
-      setShowAuthModal(true);
+      // Start timer to show modal after 10 seconds
+      const timer = setTimeout(() => {
+        setShowAuthModal(true);
+        setHasShownInitialModal(true);
+      }, 10000);
+      setModalTimer(timer);
     }
+
+    // Cleanup timer on unmount
+    return () => {
+      if (modalTimer) {
+        clearTimeout(modalTimer);
+      }
+    };
   }, []);
+
+  // Handle modal close - restart timer if user is not authenticated
+  const handleModalClose = () => {
+    setShowAuthModal(false);
+    
+    if (!isAuthenticated) {
+      // Start new timer to show modal again after 10 seconds
+      const timer = setTimeout(() => {
+        setShowAuthModal(true);
+      }, 10000);
+      setModalTimer(timer);
+    }
+  };
 
   const handleLogin = (email: string) => {
     setIsAuthenticated(true);
     setUserEmail(email);
     localStorage.setItem('villa_auth', JSON.stringify({ email, loginTime: Date.now() }));
     setShowAuthModal(false);
+    // Clear any existing timer since user is now authenticated
+    if (modalTimer) {
+      clearTimeout(modalTimer);
+      setModalTimer(null);
+    }
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
     setUserEmail('');
     localStorage.removeItem('villa_auth');
-    setShowAuthModal(true);
+    setHasShownInitialModal(false);
+    // Start timer to show modal after 10 seconds
+    const timer = setTimeout(() => {
+      setShowAuthModal(true);
+      setHasShownInitialModal(true);
+    }, 10000);
+    setModalTimer(timer);
   };
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !hasShownInitialModal) {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
-        <AuthModal 
-          isOpen={showAuthModal}
-          onClose={() => {}}
-          onLogin={handleLogin}
-        />
         <div className="text-center">
           <h1 className="text-4xl font-bold text-[#141414] mb-4" style={{ fontFamily: '"Noto Serif", serif' }}>
             Villa Altona
           </h1>
           <p className="text-neutral-500" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-            Please sign in to continue
+            Welcome to Villa Altona
           </p>
         </div>
+        <AuthModal 
+          isOpen={showAuthModal}
+          onClose={handleModalClose}
+          onLogin={handleLogin}
+        />
       </div>
     );
   }
@@ -79,7 +118,7 @@ function App() {
       
       <AuthModal 
         isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
+        onClose={handleModalClose}
         onLogin={handleLogin}
       />
     </div>
