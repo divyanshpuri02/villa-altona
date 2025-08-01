@@ -9,6 +9,9 @@ import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import WhatsAppFloat from './components/WhatsAppFloat'
+import MapLocation from './components/MapLocation'
+import PropertyGallery from './components/PropertyGallery'
+import ReservationDetails from './components/ReservationDetails'
 
 function App() {
   return (
@@ -18,8 +21,11 @@ function App() {
       <About />
       <Amenities />
       <Gallery />
+      <PropertyGallery />
       <Booking />
+      <ReservationDetails />
       <Testimonials />
+      <MapLocation />
       <Contact />
       <Footer />
       <WhatsAppFloat />
