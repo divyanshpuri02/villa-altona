@@ -10,7 +10,6 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import WhatsAppFloat from './components/WhatsAppFloat'
 import MapLocation from './components/MapLocation'
-import PropertyGallery from './components/PropertyGallery'
 import ReservationDetails from './components/ReservationDetails'
 
 function App() {
@@ -21,7 +20,6 @@ function App() {
       <About />
       <Amenities />
       <Gallery />
-      <PropertyGallery />
       <Booking />
       <ReservationDetails />
       <Testimonials />

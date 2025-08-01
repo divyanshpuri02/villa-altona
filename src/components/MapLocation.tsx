@@ -17,7 +17,7 @@ const MapLocation: React.FC = () => {
           Getting there
         </motion.h2>
 
-        {/* Map Image */}
+        {/* Real Google Maps Embed */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -25,13 +25,18 @@ const MapLocation: React.FC = () => {
           viewport={{ once: true }}
           className="flex px-0 py-3"
         >
-          <div
-            className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
-            style={{
-              backgroundImage: 'url("https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop")'
-            }}
-            onClick={() => window.open('https://maps.google.com/?q=Candolim+Beach+Goa', '_blank')}
-          />
+          <div className="w-full aspect-video rounded-xl overflow-hidden">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3846.1234567890123!2d73.7519139!3d15.5166667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfba106336b741%3A0x3c12f7681185f869!2sCandolim%20Beach%2C%20Goa!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="rounded-xl"
+            />
+          </div>
         </motion.div>
 
         {/* Address Information */}

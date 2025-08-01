@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle, ChevronDown } from 'lucide-react';
 import { sendContactEmail, ContactFormData } from '../services/emailService';
 
 const Contact: React.FC = () => {
@@ -13,6 +13,22 @@ const Contact: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      question: "How do I book a villa?",
+      answer: "You can book directly through our website by selecting your dates and completing the booking form. We'll confirm your reservation within 24 hours."
+    },
+    {
+      question: "What is included in the rental?",
+      answer: "The rental includes all amenities listed, housekeeping service, concierge support, and access to all villa facilities including the pool and gardens."
+    },
+    {
+      question: "What is the cancellation policy?",
+      answer: "Free cancellation up to 48 hours before check-in. Cancellations within 48 hours are subject to a 50% charge. No-shows are non-refundable."
+    }
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,189 +58,263 @@ const Contact: React.FC = () => {
           className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
           style={{ fontFamily: '"Noto Serif", serif' }}
         >
-          Contact Information
+          Contact Us
+        </motion.h2>
+        
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          viewport={{ once: true }}
+          className="text-[#141414] text-base font-normal leading-normal pb-3 pt-1"
+          style={{ fontFamily: '"Noto Sans", sans-serif' }}
+        >
+          We're here to assist. Reach out with any questions or concerns, and we'll respond promptly.
+        </motion.p>
+
+        {/* Contact Info Cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex items-center gap-4 bg-neutral-50 px-0 min-h-[72px] py-2"
+        >
+          <div className="text-[#141414] flex items-center justify-center rounded-lg bg-[#ededed] shrink-0 size-12">
+            <Phone className="h-6 w-6" />
+          </div>
+          <div className="flex flex-col justify-center">
+            <p className="text-[#141414] text-base font-medium leading-normal line-clamp-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+              Phone
+            </p>
+            <p className="text-neutral-500 text-sm font-normal leading-normal line-clamp-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+              Available 24/7
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="flex items-center gap-4 bg-neutral-50 px-0 min-h-[72px] py-2"
+        >
+          <div className="text-[#141414] flex items-center justify-center rounded-lg bg-[#ededed] shrink-0 size-12">
+            <Mail className="h-6 w-6" />
+          </div>
+          <div className="flex flex-col justify-center">
+            <p className="text-[#141414] text-base font-medium leading-normal line-clamp-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+              Email
+            </p>
+            <p className="text-neutral-500 text-sm font-normal leading-normal line-clamp-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+              Response within 24 hours
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Contact Form */}
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          style={{ fontFamily: '"Noto Serif", serif' }}
+        >
+          Contact Form
         </motion.h2>
 
-        <div className="space-y-6">
-          {/* Contact Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="flex gap-4 rounded-lg border border-[#dbdbdb] bg-gradient-to-br from-neutral-50 to-neutral-100 p-5 items-center hover:shadow-lg transition-all duration-300"
-            >
-              <Phone className="h-7 w-7 text-[#141414]" />
-              <div>
-                <h3 className="text-[#141414] text-base font-bold leading-tight" style={{ fontFamily: '"Noto Sans", sans-serif' }}>24/7 Concierge</h3>
-                <p className="text-neutral-500 text-sm font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>+91 361 123 4567</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="flex gap-4 rounded-lg border border-[#dbdbdb] bg-gradient-to-br from-neutral-50 to-neutral-100 p-5 items-center hover:shadow-lg transition-all duration-300"
-            >
-              <Mail className="h-7 w-7 text-[#141414]" />
-              <div>
-                <h3 className="luxury-text text-[#141414] text-base font-bold leading-tight">Email</h3>
-                <p className="luxury-text text-neutral-500 text-sm font-medium">reservations@villaaltona.com</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="flex gap-4 rounded-lg border border-[#dbdbdb] bg-gradient-to-br from-neutral-50 to-neutral-100 p-5 items-center hover:shadow-lg transition-all duration-300"
-            >
-              <MapPin className="h-7 w-7 text-[#141414]" />
-              <div>
-                <h3 className="luxury-text text-[#141414] text-base font-bold leading-tight">Address</h3>
-                <p className="luxury-text text-neutral-500 text-sm font-medium">Candolim Beach, Goa 403515</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="flex gap-4 rounded-lg border border-[#dbdbdb] bg-gradient-to-br from-neutral-50 to-neutral-100 p-5 items-center hover:shadow-lg transition-all duration-300"
-            >
-              <Clock className="h-7 w-7 text-[#141414]" />
-              <div>
-                <h3 className="luxury-text text-[#141414] text-base font-bold leading-tight">Service Hours</h3>
-                <p className="luxury-text text-neutral-500 text-sm font-medium">24/7 Guest Services</p>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Contact Form */}
+        {success ? (
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-lg border border-[#dbdbdb] p-8 luxury-shadow"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-8"
           >
-            <h3 className="luxury-heading text-[#141414] text-2xl font-bold leading-tight mb-8">Send us a Message</h3>
-            
-            {success ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-8"
+            <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
+            <h4 className="text-xl font-bold text-[#141414] mb-2" style={{ fontFamily: '"Noto Serif", serif' }}>Message Sent!</h4>
+            <p className="text-neutral-500" style={{ fontFamily: '"Noto Sans", sans-serif' }}>We'll get back to you within 24 hours.</p>
+            <button
+              type="button"
+              onClick={() => setSuccess(false)}
+              className="mt-4 text-[#141414] hover:text-neutral-600 transition-colors duration-200"
+              style={{ fontFamily: '"Noto Sans", sans-serif' }}
+            >
+              Send another message
+            </button>
+          </motion.div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+              className="flex max-w-[480px] flex-wrap items-end gap-4 px-0 py-3"
+            >
+              <label className="flex flex-col min-w-40 flex-1">
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  required
+                  placeholder="Your Name"
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal"
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                />
+              </label>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
+              className="flex max-w-[480px] flex-wrap items-end gap-4 px-0 py-3"
+            >
+              <label className="flex flex-col min-w-40 flex-1">
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  required
+                  placeholder="Your Email"
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal"
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                />
+              </label>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              viewport={{ once: true }}
+              className="flex max-w-[480px] flex-wrap items-end gap-4 px-0 py-3"
+            >
+              <label className="flex flex-col min-w-40 flex-1">
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  placeholder="Subject"
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal"
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                />
+              </label>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              viewport={{ once: true }}
+              className="flex max-w-[480px] flex-wrap items-end gap-4 px-0 py-3"
+            >
+              <label className="flex flex-col min-w-40 flex-1">
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  required
+                  placeholder="Your Message"
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none min-h-36 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal"
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                />
+              </label>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+              viewport={{ once: true }}
+              className="flex px-0 py-3"
+            >
+              <motion.button
+                type="submit"
+                disabled={loading}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 flex-1 bg-white text-[#141414] text-sm font-bold leading-normal tracking-[0.015em] border border-[#dbdbdb] hover:bg-gray-50 transition-all duration-300 disabled:opacity-50"
+                style={{ fontFamily: '"Noto Sans", sans-serif' }}
               >
-                <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-                <h4 className="luxury-heading text-xl font-bold text-[#141414] mb-2">Message Sent!</h4>
-                <p className="luxury-text text-neutral-500">We'll get back to you within 24 hours.</p>
-                <button
-                  type="button"
-                  onClick={() => setSuccess(false)}
-                  className="luxury-text mt-4 text-[#141414] hover:text-neutral-600 transition-colors duration-200"
-                >
-                  Send another message
-                </button>
-              </motion.div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="luxury-text block text-[#141414] text-sm font-semibold mb-3">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      required
-                      className="luxury-text w-full p-4 border border-[#dbdbdb] rounded-lg text-[#141414] bg-white focus:ring-2 focus:ring-[#141414] focus:border-transparent transition-all duration-300"
-                      placeholder="Your full name"
-                    />
-                  </div>
-                  <div>
-                    <label className="luxury-text block text-[#141414] text-sm font-semibold mb-3">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      required
-                      className="luxury-text w-full p-4 border border-[#dbdbdb] rounded-lg text-[#141414] bg-white focus:ring-2 focus:ring-[#141414] focus:border-transparent transition-all duration-300"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="luxury-text block text-[#141414] text-sm font-semibold mb-3">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className="luxury-text w-full p-4 border border-[#dbdbdb] rounded-lg text-[#141414] bg-white focus:ring-2 focus:ring-[#141414] focus:border-transparent transition-all duration-300"
-                    placeholder="+91 98765 43210"
-                  />
-                </div>
-
-                <div>
-                  <label className="luxury-text block text-[#141414] text-sm font-semibold mb-3">
-                    Message
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
-                    required
-                    rows={4}
-                    className="luxury-text w-full p-4 border border-[#dbdbdb] rounded-lg text-[#141414] bg-white focus:ring-2 focus:ring-[#141414] focus:border-transparent resize-none transition-all duration-300"
-                    placeholder="Tell us about your ideal stay at Villa Altona..."
-                  />
-                </div>
-
-                <motion.button
-                  type="submit"
-                  disabled={loading}
-                  className="luxury-text w-full bg-[#141414] text-white font-bold py-5 px-6 rounded-lg transition-all duration-300 text-base flex items-center justify-center disabled:opacity-50 hover:bg-gray-800 luxury-shadow"
-                  whileHover={{ scale: 1.02, boxShadow: "0 10px 25px rgba(0,0,0,0.15)" }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  {loading ? (
+                {loading ? (
+                  <>
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                      className="h-4 w-4 border-2 border-[#141414] border-t-transparent rounded-full mr-2"
                     />
-                  ) : (
-                    <Send className="h-5 w-5 mr-2" />
-                  )}
-                  {loading ? 'Sending...' : 'Send Message'}
-                </motion.button>
+                    Sending...
+                  </>
+                ) : (
+                  <span className="truncate">Send Message</span>
+                )}
+              </motion.button>
+            </motion.div>
 
-                {error && <p className="luxury-text text-red-600 text-sm font-medium">{error}</p>}
-              </form>
-            )}
-          </motion.div>
+            {error && <p className="text-red-600 text-sm font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>{error}</p>}
+          </form>
+        )}
+
+        {/* FAQ Section */}
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.0 }}
+          viewport={{ once: true }}
+          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          style={{ fontFamily: '"Noto Serif", serif' }}
+        >
+          Frequently Asked Questions
+        </motion.h2>
+
+        <div className="flex flex-col gap-3">
+          {faqs.map((faq, index) => (
+            <motion.details
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.1 + index * 0.1 }}
+              viewport={{ once: true }}
+              className="flex flex-col rounded-xl border border-[#dbdbdb] bg-neutral-50 px-[15px] py-[7px] group"
+              open={openFaq === index}
+              onToggle={(e) => setOpenFaq((e.target as HTMLDetailsElement).open ? index : null)}
+            >
+              <summary className="flex cursor-pointer items-center justify-between gap-6 py-2 list-none">
+                <p className="text-[#141414] text-sm font-medium leading-normal" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  {faq.question}
+                </p>
+                <motion.div
+                  animate={{ rotate: openFaq === index ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-[#141414]"
+                >
+                  <ChevronDown className="h-5 w-5" />
+                </motion.div>
+              </summary>
+              {openFaq === index && (
+                <motion.p
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="text-neutral-500 text-sm font-normal leading-normal pb-2"
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                >
+                  {faq.answer}
+                </motion.p>
+              )}
+            </motion.details>
+          ))}
         </div>
       </div>
     </section>
   );
 };
+          </div>
 
 export default Contact;
