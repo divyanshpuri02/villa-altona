@@ -1,31 +1,57 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertCircle } from 'lucide-react';
 import BookingConfirmationModal from './BookingConfirmationModal';
 
-const Booking = () => {
+interface BookingProps {
+  isAuthenticated: boolean;
+  onShowAuth: () => void;
+}
+
+const Booking: React.FC<BookingProps> = ({ isAuthenticated, onShowAuth }) => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
-  const [childrenAges, setChildrenAges] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [errors, setErrors] = useState({
+    checkIn: false,
+    checkOut: false,
+    dateOrder: false
+  });
 
-  // Update children ages array when children count changes
-  const handleChildrenChange = (count: number) => {
-    setChildren(count);
-    const newAges = Array(count).fill(0).map((_, i) => childrenAges[i] || 1);
-    setChildrenAges(newAges);
+  const validateForm = () => {
+    const newErrors = {
+      checkIn: !checkIn,
+      checkOut: !checkOut,
+      dateOrder: false
+    };
+
+    if (checkIn && checkOut) {
+      const checkInDate = new Date(checkIn);
+      const checkOutDate = new Date(checkOut);
+      newErrors.dateOrder = checkOutDate <= checkInDate;
+    }
+
+    setErrors(newErrors);
+    return !Object.values(newErrors).some(error => error);
   };
 
-  const updateChildAge = (index: number, age: number) => {
-    const newAges = [...childrenAges];
-    newAges[index] = age;
-    setChildrenAges(newAges);
+  const isFormValid = () => {
+    return checkIn && checkOut && new Date(checkOut) > new Date(checkIn);
   };
 
   const handleCheckAvailability = async () => {
+    if (!isAuthenticated) {
+      onShowAuth();
+      return;
+    }
+
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -104,7 +130,7 @@ const Booking = () => {
                   className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal"
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
                 >
-                  {[1,2,3,4,5,6,7,8].map(num => (
+                  {Array.from({length: 12}, (_, i) => i + 1).map(num => (
                     <option key={num} value={num}>
                       {num} Adult{num > 1 ? 's' : ''}
                     </option>
@@ -118,11 +144,11 @@ const Booking = () => {
                 </span>
                 <select
                   value={children}
-                  onChange={(e) => handleChildrenChange(Number(e.target.value))}
+                  onChange={(e) => setChildren(Number(e.target.value))}
                   className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal"
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
                 >
-                  {[0,1,2,3,4].map(num => (
+                  {Array.from({length: 7}, (_, i) => i).map(num => (
                     <option key={num} value={num}>
                       {num} {num === 1 ? 'Child' : 'Children'}
                     </option>
@@ -131,34 +157,31 @@ const Booking = () => {
               </label>
             </motion.div>
 
-            {/* Children Ages */}
-            {children > 0 && (
+            {/* Error Messages */}
+            {(errors.checkIn || errors.checkOut || errors.dateOrder) && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                className="flex w-full flex-wrap gap-4 px-0 py-3"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex w-full px-0 py-2"
               >
-                <div className="w-full">
-                  <span className="text-[#141414] text-sm font-medium mb-2 block" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                    Children Ages
-                  </span>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {childrenAges.map((age, index) => (
-                      <select
-                        key={index}
-                        value={age}
-                        onChange={(e) => updateChildAge(index, Number(e.target.value))}
-                        className="form-input flex w-full resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-12 p-3 text-sm font-normal leading-normal"
-                        style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                      >
-                        {Array.from({length: 17}, (_, i) => i + 1).map(ageOption => (
-                          <option key={ageOption} value={ageOption}>
-                            {ageOption} year{ageOption > 1 ? 's' : ''}
-                          </option>
-                        ))}
-                      </select>
-                    ))}
+                <div className="w-full bg-red-50 border border-red-200 rounded-xl p-3">
+                  <div className="flex items-center gap-2 text-red-600">
+                    <AlertCircle className="h-4 w-4" />
+                    <span className="text-sm font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                      Please fix the following errors:
+                    </span>
                   </div>
+                  <ul className="mt-2 text-sm text-red-600 space-y-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                    {errors.checkIn && (
+                      <li>• Please select a check-in date</li>
+                    )}
+                    {errors.checkOut && (
+                      <li>• Please select a check-out date</li>
+                    )}
+                    {errors.dateOrder && (
+                      <li>• Check-out date must be after check-in date</li>
+                    )}
+                  </ul>
                 </div>
               </motion.div>
             )}
@@ -172,10 +195,14 @@ const Booking = () => {
             >
               <motion.button
                 type="button"
-                disabled={loading}
+                disabled={loading || !isFormValid()}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-[#141414] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-800 transition-all duration-300 disabled:opacity-50"
+                className={`flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 text-base font-bold leading-normal tracking-[0.015em] transition-all duration-300 ${
+                  isFormValid() 
+                    ? 'bg-[#141414] text-white hover:bg-gray-800' 
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                } disabled:opacity-50`}
                 style={{ fontFamily: '"Noto Sans", sans-serif' }}
                 onClick={handleCheckAvailability}
               >
@@ -201,11 +228,8 @@ const Booking = () => {
           checkOut: checkOut,
           adults: adults,
           children: children,
-          childrenAges: childrenAges
         }}
       />
     </>
   );
 };
-
-export default Booking;

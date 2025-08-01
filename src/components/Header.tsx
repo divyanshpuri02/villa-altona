@@ -57,13 +57,30 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         scrolled ? 'bg-neutral-50/95 backdrop-blur-lg border-b border-gray-200' : 'bg-neutral-50'
       }`}
     >
-      <div className="flex items-center justify-between p-4 pb-2">
-        <div className="text-[#141414] flex size-12 shrink-0 items-center">
-          <ArrowLeft className="w-6 h-6" />
+      <div className="flex items-center justify-center p-4 pb-2">
+        {/* VA Logo */}
+        <div className="flex items-center justify-center">
+          <svg 
+            width="60" 
+            height="40" 
+            viewBox="0 0 200 120" 
+            className="text-[#141414]"
+          >
+            {/* V Letter */}
+            <path 
+              d="M20 20 L60 100 L80 20 L100 20 L70 120 L50 120 L20 20 Z" 
+              fill="currentColor"
+            />
+            {/* A Letter */}
+            <path 
+              d="M120 20 L140 120 L160 120 L180 20 L165 20 L160 40 L140 40 L135 20 L120 20 Z M145 55 L155 55 L150 35 L145 55 Z" 
+              fill="currentColor"
+            />
+            {/* Small decorative triangles */}
+            <path d="M90 25 L95 35 L85 35 Z" fill="currentColor" opacity="0.7" />
+            <path d="M110 85 L115 95 L105 95 Z" fill="currentColor" opacity="0.7" />
+          </svg>
         </div>
-        <h2 className="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">
-          Villa Altona
-        </h2>
         
         {/* User Menu */}
         {userEmail && (

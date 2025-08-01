@@ -70,7 +70,7 @@ function App() {
       <About />
       <Amenities />
       <Gallery />
-      <Booking />
+      <Booking isAuthenticated={isAuthenticated} onShowAuth={() => setShowAuthModal(true)} />
       <Testimonials />
       <MapLocation />
       <Contact />

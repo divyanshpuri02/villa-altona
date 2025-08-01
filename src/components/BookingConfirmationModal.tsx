@@ -10,7 +10,6 @@ interface BookingConfirmationModalProps {
     checkOut: string;
     adults: number;
     children: number;
-    childrenAges: number[];
   };
 }
 
