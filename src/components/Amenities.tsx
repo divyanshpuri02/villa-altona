@@ -1,17 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Wifi, 
-  Car, 
-  Waves, 
-  Tv, 
-  ChefHat, 
-  Wind,
-  CallBell,
-  Crown,
-  House,
-  Dumbbell
-} from 'lucide-react';
+import { Wifi, Car, Waves, Tv, ChefHat, Wind, Bell as CallBell, Crown, Mouse as House, Dumbbell } from 'lucide-react';
 
 export default function Amenities() {
   const amenities = [
