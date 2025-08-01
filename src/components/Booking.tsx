@@ -36,6 +36,7 @@ const Booking = () => {
                   type="date"
                   value={checkIn}
                   onChange={(e) => setCheckIn(e.target.value)}
+                  placeholder="Select check-in date"
                   className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white"
                 />
               </div>
@@ -45,14 +46,16 @@ const Booking = () => {
                   type="date"
                   value={checkOut}
                   onChange={(e) => setCheckOut(e.target.value)}
+                  placeholder="Select check-out date"
                   className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white"
                 />
               </div>
             </div>
             
             <div>
-              <label className="block text-sm font-semibold mb-2">Number of Guests</label>
+              <label htmlFor="guests-select" className="block text-sm font-semibold mb-2">Number of Guests</label>
               <select
+                id="guests-select"
                 value={guests}
                 onChange={(e) => setGuests(Number(e.target.value))}
                 className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white"
