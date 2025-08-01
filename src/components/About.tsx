@@ -11,13 +11,13 @@ export default function About() {
 
   return (
     <section id="about" className="bg-neutral-50 py-8">
-      <div className="px-8">
+      <div className="px-4">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          className="[#141414] text-base font-normal leading-normal pb-3 pt-1"
           style={{ fontFamily: '"Noto Serif", serif' }}
         >
           About this place
