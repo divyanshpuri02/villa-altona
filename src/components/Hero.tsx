@@ -96,6 +96,16 @@ export default function Hero() {
 
       {/* Villa Information */}
       <div className="px-4 py-6">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-[#141414] text-[28px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          style={{ fontFamily: '"Noto Serif", serif' }}
+        >
+          About this place
+        </motion.h2>
+        
         <motion.h1 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -129,7 +139,7 @@ export default function Hero() {
             whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(0,0,0,0.15)" }}
             whileTap={{ scale: 0.95 }}
             onClick={scrollToBooking}
-            className="flex-1 bg-white text-[#141414] rounded-lg h-14 px-6 font-bold text-base tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 border border-[#dbdbdb]"
+            className="flex-1 bg-[#141414] text-white rounded-lg h-14 px-6 font-bold text-base tracking-[0.015em] hover:bg-gray-800 transition-all duration-300"
             style={{ fontFamily: '"Noto Sans", sans-serif' }}
           >
             Book Now

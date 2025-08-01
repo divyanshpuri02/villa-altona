@@ -11,7 +11,7 @@ const MapLocation: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          className="text-[#141414] text-[28px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
           style={{ fontFamily: '"Noto Serif", serif' }}
         >
           Getting there
@@ -27,7 +27,7 @@ const MapLocation: React.FC = () => {
         >
           <div className="w-full aspect-video rounded-xl overflow-hidden">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3846.1234567890123!2d73.7519139!3d15.5166667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfba106336b741%3A0x3c12f7681185f869!2sCandolim%20Beach%2C%20Goa!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3846.123456789012!2d73.7519139!3d15.5166667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfba106336b741%3A0x3c12f7681185f869!2sCandolim%20Beach%2C%20Goa!5e0!3m2!1sen!2sin!4v1640995200000!5m2!1sen!2sin"
               width="100%"
               height="100%"
               style={{ border: 0 }}
