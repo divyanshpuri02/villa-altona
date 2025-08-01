@@ -28,7 +28,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-[#141414] text-base font-normal leading-normal pb-3 pt-1"
+          className="text-[#141414] text-x font-normal leading-normal pb-3 pt-1"
           style={{ fontFamily: '"Noto Sans", sans-serif' }}
         >
           Villa Altona is a luxurious retreat nestled in the heart of Goa, offering breathtaking 
@@ -42,7 +42,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
-          className="text-[#141414] text-xs font-normal leading-normal pb-3 pt-1"
+          className="text-[#141414] text-base font-normal leading-normal pb-3 pt-1"
         >
           Experience unparalleled luxury with world-class amenities including a private spa, 
           state-of-the-art fitness center, and dedicated concierge service. Every detail has 
