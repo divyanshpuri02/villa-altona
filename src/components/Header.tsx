@@ -117,7 +117,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         </div>
         
         {/* Right side - User Menu */}
-        {userEmail && (
+        {userEmail ? (
           <div className="flex items-center gap-3">
             <span className="hidden md:block text-sm text-neutral-500" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
               {userEmail}
