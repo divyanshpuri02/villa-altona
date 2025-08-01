@@ -20,3 +20,13 @@ build/
 # OS files
 .DS_Store
 Thumbs.db
+node_modules/
+dist/
+build/
+*.log
+.env*
+dataconnect/
+emulator-data/
+*.dmg
+*.zip
+*.tar.gz
