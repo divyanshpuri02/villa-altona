@@ -17,7 +17,8 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="luxury-heading text-[#141414] text-[32px] md:text-[38px] font-bold leading-tight tracking-[-0.02em] pb-4 pt-6"
+          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          style={{ fontFamily: '"Noto Serif", serif' }}
         >
           About this place
         </motion.h2>
@@ -27,7 +28,8 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
-          className="luxury-text text-[#141414] text-lg font-normal leading-relaxed pb-4 pt-1"
+          className="text-[#141414] text-base font-normal leading-normal pb-3 pt-1"
+          style={{ fontFamily: '"Noto Sans", sans-serif' }}
         >
           Villa Altona is a luxurious retreat nestled in the heart of Goa, offering breathtaking 
           views of the Arabian Sea and lush tropical landscapes. This spacious villa features six 

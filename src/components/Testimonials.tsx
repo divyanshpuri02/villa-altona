@@ -42,7 +42,8 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="luxury-heading text-[#141414] text-[32px] md:text-[38px] font-bold leading-tight tracking-[-0.02em] pb-4 pt-6"
+          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          style={{ fontFamily: '"Noto Serif", serif' }}
         >
           Guest Reviews
         </motion.h2>
@@ -56,20 +57,20 @@ export default function Testimonials() {
           className="flex flex-wrap gap-x-8 gap-y-6 mb-8"
         >
           <div className="flex flex-col gap-2">
-            <p className="luxury-heading text-[#141414] text-5xl font-black leading-tight tracking-[-0.033em]">4.8</p>
+            <p className="text-[#141414] text-4xl font-black leading-tight tracking-[-0.033em]" style={{ fontFamily: '"Noto Serif", serif' }}>4.8</p>
             <div className="flex gap-0.5">
               {[...Array(4)].map((_, i) => (
                 <Star key={i} className="w-[18px] h-[18px] fill-[#141414] text-[#141414]" />
               ))}
               <Star className="w-[18px] h-[18px] text-[#c2c2c2]" />
             </div>
-            <p className="luxury-text text-[#141414] text-base font-medium leading-normal">125 reviews</p>
+            <p className="text-[#141414] text-base font-normal leading-normal" style={{ fontFamily: '"Noto Sans", sans-serif' }}>125 reviews</p>
           </div>
           
           <div className="grid min-w-[200px] max-w-[400px] flex-1 grid-cols-[20px_1fr_40px] items-center gap-y-3">
             {ratingData.map((rating) => (
               <React.Fragment key={rating.stars}>
-                <p className="luxury-text text-[#141414] text-sm font-medium leading-normal">{rating.stars}</p>
+                <p className="text-[#141414] text-sm font-normal leading-normal" style={{ fontFamily: '"Noto Sans", sans-serif' }}>{rating.stars}</p>
                 <div className="flex h-2 flex-1 overflow-hidden rounded-full bg-[#dbdbdb]">
                   <motion.div
                     initial={{ width: 0 }}
@@ -79,7 +80,7 @@ export default function Testimonials() {
                     className="rounded-full bg-[#141414]"
                   />
                 </div>
-                <p className="luxury-text text-neutral-500 text-sm font-medium leading-normal text-right">{rating.percentage}%</p>
+                <p className="text-neutral-500 text-sm font-normal leading-normal text-right" style={{ fontFamily: '"Noto Sans", sans-serif' }}>{rating.percentage}%</p>
               </React.Fragment>
             ))}
           </div>
@@ -103,8 +104,8 @@ export default function Testimonials() {
                   style={{ backgroundImage: `url("${testimonial.image}")` }}
                 />
                 <div className="flex-1">
-                  <p className="luxury-text text-[#141414] text-base font-semibold leading-normal">{testimonial.name}</p>
-                  <p className="luxury-text text-neutral-500 text-sm font-medium leading-normal">{testimonial.time}</p>
+                  <p className="text-[#141414] text-base font-medium leading-normal" style={{ fontFamily: '"Noto Sans", sans-serif' }}>{testimonial.name}</p>
+                  <p className="text-neutral-500 text-sm font-normal leading-normal" style={{ fontFamily: '"Noto Sans", sans-serif' }}>{testimonial.time}</p>
                 </div>
               </div>
               
@@ -121,7 +122,7 @@ export default function Testimonials() {
                 ))}
               </div>
               
-              <p className="luxury-text text-[#141414] text-base font-normal leading-relaxed">
+              <p className="text-[#141414] text-base font-normal leading-normal" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
                 {testimonial.text}
               </p>
               
@@ -132,7 +133,7 @@ export default function Testimonials() {
                   className="flex items-center gap-2 hover:text-[#141414] transition-colors duration-200"
                 >
                   <ThumbsUp className="w-5 h-5" />
-                  <p className="luxury-text font-medium">{testimonial.likes}</p>
+                  <p className="font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>{testimonial.likes}</p>
                 </motion.button>
                 <motion.button 
                   whileHover={{ scale: 1.1 }}
@@ -140,7 +141,7 @@ export default function Testimonials() {
                   className="flex items-center gap-2 hover:text-[#141414] transition-colors duration-200"
                 >
                   <ThumbsDown className="w-5 h-5" />
-                  <p className="luxury-text font-medium">{testimonial.dislikes}</p>
+                  <p className="font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>{testimonial.dislikes}</p>
                 </motion.button>
               </div>
             </motion.div>

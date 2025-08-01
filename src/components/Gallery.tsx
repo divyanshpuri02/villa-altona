@@ -54,7 +54,8 @@ export default function Gallery() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="luxury-heading text-[#141414] text-[32px] md:text-[38px] font-bold leading-tight tracking-[-0.02em] pb-4 pt-6"
+          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          style={{ fontFamily: '"Noto Serif", serif' }}
         >
           Local Attractions
         </motion.h2>
@@ -77,8 +78,8 @@ export default function Gallery() {
                   style={{ backgroundImage: `url("${attraction.url}")` }}
                 />
                 <div>
-                  <p className="luxury-text text-[#141414] text-lg font-semibold leading-normal mb-1">{attraction.title}</p>
-                  <p className="luxury-text text-neutral-500 text-sm font-normal leading-normal">{attraction.description}</p>
+                  <p className="text-[#141414] text-base font-medium leading-normal" style={{ fontFamily: '"Noto Sans", sans-serif' }}>{attraction.title}</p>
+                  <p className="text-neutral-500 text-sm font-normal leading-normal" style={{ fontFamily: '"Noto Sans", sans-serif' }}>{attraction.description}</p>
                 </div>
               </motion.div>
             ))}

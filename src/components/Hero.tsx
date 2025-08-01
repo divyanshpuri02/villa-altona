@@ -39,7 +39,8 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="luxury-heading text-[#141414] text-[42px] md:text-[52px] font-bold leading-tight tracking-[-0.02em] mb-6"
+          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-6"
+          style={{ fontFamily: '"Noto Serif", serif' }}
         >
           Villa Altona - Luxury Retreat
         </motion.h1>
@@ -48,7 +49,8 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="luxury-text text-[#141414] text-lg font-normal leading-relaxed mb-8"
+          className="text-[#141414] text-base font-normal leading-normal mb-8"
+          style={{ fontFamily: '"Noto Sans", sans-serif' }}
         >
           Experience unparalleled luxury in our exclusive villa nestled in the heart of Goa. 
           This spacious retreat features six bedrooms, each with an en-suite bathroom, a fully 

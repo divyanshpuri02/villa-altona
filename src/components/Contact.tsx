@@ -39,7 +39,8 @@ const Contact: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="luxury-heading text-[#141414] text-[32px] md:text-[38px] font-bold leading-tight tracking-[-0.02em] pb-4 pt-6"
+          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          style={{ fontFamily: '"Noto Serif", serif' }}
         >
           Contact Information
         </motion.h2>
@@ -57,8 +58,8 @@ const Contact: React.FC = () => {
             >
               <Phone className="h-7 w-7 text-[#141414]" />
               <div>
-                <h3 className="luxury-text text-[#141414] text-base font-bold leading-tight">24/7 Concierge</h3>
-                <p className="luxury-text text-neutral-500 text-sm font-medium">+91 361 123 4567</p>
+                <h3 className="text-[#141414] text-base font-bold leading-tight" style={{ fontFamily: '"Noto Sans", sans-serif' }}>24/7 Concierge</h3>
+                <p className="text-neutral-500 text-sm font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>+91 361 123 4567</p>
               </div>
             </motion.div>
 
