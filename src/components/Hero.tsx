@@ -42,8 +42,8 @@ export default function Hero() {
           className=
           className=
           style={{ fontFamily: '"Noto Serif", serif' }}
-        >"text-[#141414] text-lg font-bold leading-tight tracking-[-0.15em] flex-1 text-center pr-12"
-          Villa Altona - Luxury Retreat
+        >
+      
         </motion.h1>
         
         <motion.p
