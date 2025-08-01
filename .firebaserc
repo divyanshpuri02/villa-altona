@@ -1,0 +1,11 @@
+{
+  "projects": {
+    "default": "villa-altona-goa"
+  },
+  "targets": {},
+  "etags": {
+    "villa-altona-goa": {
+      "extensionInstances": {}
+    }
+  }
+}

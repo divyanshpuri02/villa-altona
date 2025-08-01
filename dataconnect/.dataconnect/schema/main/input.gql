@@ -1,0 +1,1496 @@
+"""
+✨ `Booking_KeyOutput` returns the primary key fields of table type `Booking`.
+
+It has the same format as `Booking_Key`, but is only used as mutation return value.
+"""
+scalar Booking_KeyOutput
+"""
+✨ `Review_KeyOutput` returns the primary key fields of table type `Review`.
+
+It has the same format as `Review_Key`, but is only used as mutation return value.
+"""
+scalar Review_KeyOutput
+"""
+✨ `User_KeyOutput` returns the primary key fields of table type `User`.
+
+It has the same format as `User_Key`, but is only used as mutation return value.
+"""
+scalar User_KeyOutput
+"""
+✨ `Villa_KeyOutput` returns the primary key fields of table type `Villa`.
+
+It has the same format as `Villa_Key`, but is only used as mutation return value.
+"""
+scalar Villa_KeyOutput
+"""
+✨ Generated data input type for table 'Booking'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Booking_Data {
+  """
+  ✨ Generated from Field `Booking`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Booking`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Booking`.`renterId` of type `UUID!`
+  """
+  renterId: UUID
+  """
+  ✨ `_expr` server value variant of `renterId` (✨ Generated from Field `Booking`.`renterId` of type `UUID!`)
+  """
+  renterId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Booking`.`villaId` of type `UUID!`
+  """
+  villaId: UUID
+  """
+  ✨ `_expr` server value variant of `villaId` (✨ Generated from Field `Booking`.`villaId` of type `UUID!`)
+  """
+  villaId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Booking`.`renter` of type `User!`
+  """
+  renter: User_Key
+  """
+  ✨ Generated from Field `Booking`.`villa` of type `Villa!`
+  """
+  villa: Villa_Key
+  """
+  ✨ Generated from Field `Booking`.`checkInDate` of type `Date!`
+  """
+  checkInDate: Date
+  """
+  ✨ `_date` server value variant of `checkInDate` (✨ Generated from Field `Booking`.`checkInDate` of type `Date!`)
+  """
+  checkInDate_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `checkInDate` (✨ Generated from Field `Booking`.`checkInDate` of type `Date!`)
+  """
+  checkInDate_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `checkInDate` (✨ Generated from Field `Booking`.`checkInDate` of type `Date!`)
+  """
+  checkInDate_update: [Date_Update!]
+  """
+  ✨ Generated from Field `Booking`.`checkOutDate` of type `Date!`
+  """
+  checkOutDate: Date
+  """
+  ✨ `_date` server value variant of `checkOutDate` (✨ Generated from Field `Booking`.`checkOutDate` of type `Date!`)
+  """
+  checkOutDate_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `checkOutDate` (✨ Generated from Field `Booking`.`checkOutDate` of type `Date!`)
+  """
+  checkOutDate_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `checkOutDate` (✨ Generated from Field `Booking`.`checkOutDate` of type `Date!`)
+  """
+  checkOutDate_update: [Date_Update!]
+  """
+  ✨ Generated from Field `Booking`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Booking`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `Booking`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Booking`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!]
+  """
+  ✨ Generated from Field `Booking`.`numberOfGuests` of type `Int`
+  """
+  numberOfGuests: Int
+  """
+  ✨ `_expr` server value variant of `numberOfGuests` (✨ Generated from Field `Booking`.`numberOfGuests` of type `Int`)
+  """
+  numberOfGuests_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `numberOfGuests` (✨ Generated from Field `Booking`.`numberOfGuests` of type `Int`)
+  """
+  numberOfGuests_update: [Int_Update!]
+  """
+  ✨ Generated from Field `Booking`.`status` of type `String!`
+  """
+  status: String
+  """
+  ✨ `_expr` server value variant of `status` (✨ Generated from Field `Booking`.`status` of type `String!`)
+  """
+  status_expr: String_Expr
+  """
+  ✨ Generated from Field `Booking`.`totalPrice` of type `Float!`
+  """
+  totalPrice: Float
+  """
+  ✨ `_expr` server value variant of `totalPrice` (✨ Generated from Field `Booking`.`totalPrice` of type `Float!`)
+  """
+  totalPrice_expr: Float_Expr
+  """
+  ✨ `_update` server value variant of `totalPrice` (✨ Generated from Field `Booking`.`totalPrice` of type `Float!`)
+  """
+  totalPrice_update: [Float_Update!]
+  """
+  ✨ Generated from Field `Booking`.`updatedAt` of type `Timestamp`
+  """
+  updatedAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `Booking`.`updatedAt` of type `Timestamp`)
+  """
+  updatedAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `updatedAt` (✨ Generated from Field `Booking`.`updatedAt` of type `Timestamp`)
+  """
+  updatedAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `Booking`.`updatedAt` of type `Timestamp`)
+  """
+  updatedAt_update: [Timestamp_Update!]
+}
+"""
+✨ Generated filter input type for table 'Booking'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Booking_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Booking_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Booking_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Booking_Filter!]
+  """
+  ✨ Generated from Field `Booking`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Booking`.`renterId` of type `UUID!`
+  """
+  renterId: UUID_Filter
+  """
+  ✨ Generated from Field `Booking`.`villaId` of type `UUID!`
+  """
+  villaId: UUID_Filter
+  """
+  ✨ Generated from Field `Booking`.`renter` of type `User!`
+  """
+  renter: User_Filter
+  """
+  ✨ Generated from Field `Booking`.`villa` of type `Villa!`
+  """
+  villa: Villa_Filter
+  """
+  ✨ Generated from Field `Booking`.`checkInDate` of type `Date!`
+  """
+  checkInDate: Date_Filter
+  """
+  ✨ Generated from Field `Booking`.`checkOutDate` of type `Date!`
+  """
+  checkOutDate: Date_Filter
+  """
+  ✨ Generated from Field `Booking`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Booking`.`numberOfGuests` of type `Int`
+  """
+  numberOfGuests: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`status` of type `String!`
+  """
+  status: String_Filter
+  """
+  ✨ Generated from Field `Booking`.`totalPrice` of type `Float!`
+  """
+  totalPrice: Float_Filter
+  """
+  ✨ Generated from Field `Booking`.`updatedAt` of type `Timestamp`
+  """
+  updatedAt: Timestamp_Filter
+}
+"""
+✨ Generated first-row input type for table 'Booking'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Booking_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Booking_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Booking_Filter
+}
+"""
+✨ Generated having input type for table 'Booking'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Booking_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Booking_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Booking_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Booking_Having!]
+  """
+  ✨ Generated from Field `Booking`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`checkInDate_count` of type `Int!`
+  """
+  checkInDate_count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`checkOutDate_count` of type `Int!`
+  """
+  checkOutDate_count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`numberOfGuests_count` of type `Int!`
+  """
+  numberOfGuests_count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`renterId_count` of type `Int!`
+  """
+  renterId_count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`status_count` of type `Int!`
+  """
+  status_count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`totalPrice_count` of type `Int!`
+  """
+  totalPrice_count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`villaId_count` of type `Int!`
+  """
+  villaId_count: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`numberOfGuests_sum` of type `Int`
+  """
+  numberOfGuests_sum: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`totalPrice_sum` of type `Float`
+  """
+  totalPrice_sum: Float_Filter
+  """
+  ✨ Generated from Field `Booking`.`numberOfGuests_avg` of type `Float`
+  """
+  numberOfGuests_avg: Float_Filter
+  """
+  ✨ Generated from Field `Booking`.`totalPrice_avg` of type `Float`
+  """
+  totalPrice_avg: Float_Filter
+  """
+  ✨ Generated from Field `Booking`.`checkInDate_min` of type `Date`
+  """
+  checkInDate_min: Date_Filter
+  """
+  ✨ Generated from Field `Booking`.`checkOutDate_min` of type `Date`
+  """
+  checkOutDate_min: Date_Filter
+  """
+  ✨ Generated from Field `Booking`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Booking`.`numberOfGuests_min` of type `Int`
+  """
+  numberOfGuests_min: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`totalPrice_min` of type `Float`
+  """
+  totalPrice_min: Float_Filter
+  """
+  ✨ Generated from Field `Booking`.`updatedAt_min` of type `Timestamp`
+  """
+  updatedAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Booking`.`checkInDate_max` of type `Date`
+  """
+  checkInDate_max: Date_Filter
+  """
+  ✨ Generated from Field `Booking`.`checkOutDate_max` of type `Date`
+  """
+  checkOutDate_max: Date_Filter
+  """
+  ✨ Generated from Field `Booking`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+  """
+  ✨ Generated from Field `Booking`.`numberOfGuests_max` of type `Int`
+  """
+  numberOfGuests_max: Int_Filter
+  """
+  ✨ Generated from Field `Booking`.`totalPrice_max` of type `Float`
+  """
+  totalPrice_max: Float_Filter
+  """
+  ✨ Generated from Field `Booking`.`updatedAt_max` of type `Timestamp`
+  """
+  updatedAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Booking'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Booking_Key {
+  """
+  ✨ Generated from Field `Booking`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Booking`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'Booking'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Booking_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Booking_Filter
+}
+"""
+✨ Generated order input type for table 'Booking'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Booking_Order {
+  """
+  ✨ Generated from Field `Booking`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Booking`.`renterId` of type `UUID!`
+  """
+  renterId: OrderDirection
+  """
+  ✨ Generated from Field `Booking`.`villaId` of type `UUID!`
+  """
+  villaId: OrderDirection
+  """
+  ✨ Generated from Field `Booking`.`renter` of type `User!`
+  """
+  renter: User_Order
+  """
+  ✨ Generated from Field `Booking`.`villa` of type `Villa!`
+  """
+  villa: Villa_Order
+  """
+  ✨ Generated from Field `Booking`.`checkInDate` of type `Date!`
+  """
+  checkInDate: OrderDirection
+  """
+  ✨ Generated from Field `Booking`.`checkOutDate` of type `Date!`
+  """
+  checkOutDate: OrderDirection
+  """
+  ✨ Generated from Field `Booking`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Booking`.`numberOfGuests` of type `Int`
+  """
+  numberOfGuests: OrderDirection
+  """
+  ✨ Generated from Field `Booking`.`status` of type `String!`
+  """
+  status: OrderDirection
+  """
+  ✨ Generated from Field `Booking`.`totalPrice` of type `Float!`
+  """
+  totalPrice: OrderDirection
+  """
+  ✨ Generated from Field `Booking`.`updatedAt` of type `Timestamp`
+  """
+  updatedAt: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Review'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Review_Data {
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Review`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Review`.`reviewerId` of type `UUID!`
+  """
+  reviewerId: UUID
+  """
+  ✨ `_expr` server value variant of `reviewerId` (✨ Generated from Field `Review`.`reviewerId` of type `UUID!`)
+  """
+  reviewerId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Review`.`villaId` of type `UUID!`
+  """
+  villaId: UUID
+  """
+  ✨ `_expr` server value variant of `villaId` (✨ Generated from Field `Review`.`villaId` of type `UUID!`)
+  """
+  villaId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Review`.`reviewer` of type `User!`
+  """
+  reviewer: User_Key
+  """
+  ✨ Generated from Field `Review`.`villa` of type `Villa!`
+  """
+  villa: Villa_Key
+  """
+  ✨ Generated from Field `Review`.`comment` of type `String!`
+  """
+  comment: String
+  """
+  ✨ `_expr` server value variant of `comment` (✨ Generated from Field `Review`.`comment` of type `String!`)
+  """
+  comment_expr: String_Expr
+  """
+  ✨ Generated from Field `Review`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Review`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `Review`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Review`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!]
+  """
+  ✨ Generated from Field `Review`.`rating` of type `Int!`
+  """
+  rating: Int
+  """
+  ✨ `_expr` server value variant of `rating` (✨ Generated from Field `Review`.`rating` of type `Int!`)
+  """
+  rating_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `rating` (✨ Generated from Field `Review`.`rating` of type `Int!`)
+  """
+  rating_update: [Int_Update!]
+  """
+  ✨ Generated from Field `Review`.`updatedAt` of type `Timestamp`
+  """
+  updatedAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `Review`.`updatedAt` of type `Timestamp`)
+  """
+  updatedAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `updatedAt` (✨ Generated from Field `Review`.`updatedAt` of type `Timestamp`)
+  """
+  updatedAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `Review`.`updatedAt` of type `Timestamp`)
+  """
+  updatedAt_update: [Timestamp_Update!]
+}
+"""
+✨ Generated filter input type for table 'Review'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Review_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Review_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Review_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Review_Filter!]
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Review`.`reviewerId` of type `UUID!`
+  """
+  reviewerId: UUID_Filter
+  """
+  ✨ Generated from Field `Review`.`villaId` of type `UUID!`
+  """
+  villaId: UUID_Filter
+  """
+  ✨ Generated from Field `Review`.`reviewer` of type `User!`
+  """
+  reviewer: User_Filter
+  """
+  ✨ Generated from Field `Review`.`villa` of type `Villa!`
+  """
+  villa: Villa_Filter
+  """
+  ✨ Generated from Field `Review`.`comment` of type `String!`
+  """
+  comment: String_Filter
+  """
+  ✨ Generated from Field `Review`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Review`.`rating` of type `Int!`
+  """
+  rating: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`updatedAt` of type `Timestamp`
+  """
+  updatedAt: Timestamp_Filter
+}
+"""
+✨ Generated first-row input type for table 'Review'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Review_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Review_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Review_Filter
+}
+"""
+✨ Generated having input type for table 'Review'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Review_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Review_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Review_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Review_Having!]
+  """
+  ✨ Generated from Field `Review`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`comment_count` of type `Int!`
+  """
+  comment_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_count` of type `Int!`
+  """
+  rating_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`reviewerId_count` of type `Int!`
+  """
+  reviewerId_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`villaId_count` of type `Int!`
+  """
+  villaId_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_sum` of type `Int`
+  """
+  rating_sum: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_avg` of type `Float`
+  """
+  rating_avg: Float_Filter
+  """
+  ✨ Generated from Field `Review`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_min` of type `Int`
+  """
+  rating_min: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`updatedAt_min` of type `Timestamp`
+  """
+  updatedAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Review`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_max` of type `Int`
+  """
+  rating_max: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`updatedAt_max` of type `Timestamp`
+  """
+  updatedAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Review'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Review_Key {
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Review`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'Review'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Review_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Review_Filter
+}
+"""
+✨ Generated order input type for table 'Review'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Review_Order {
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`reviewerId` of type `UUID!`
+  """
+  reviewerId: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`villaId` of type `UUID!`
+  """
+  villaId: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`reviewer` of type `User!`
+  """
+  reviewer: User_Order
+  """
+  ✨ Generated from Field `Review`.`villa` of type `Villa!`
+  """
+  villa: Villa_Order
+  """
+  ✨ Generated from Field `Review`.`comment` of type `String!`
+  """
+  comment: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating` of type `Int!`
+  """
+  rating: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`updatedAt` of type `Timestamp`
+  """
+  updatedAt: OrderDirection
+}
+"""
+✨ Generated data input type for table 'User'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input User_Data {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!]
+  """
+  ✨ Generated from Field `User`.`displayName` of type `String!`
+  """
+  displayName: String
+  """
+  ✨ `_expr` server value variant of `displayName` (✨ Generated from Field `User`.`displayName` of type `String!`)
+  """
+  displayName_expr: String_Expr
+  """
+  ✨ Generated from Field `User`.`email` of type `String!`
+  """
+  email: String
+  """
+  ✨ `_expr` server value variant of `email` (✨ Generated from Field `User`.`email` of type `String!`)
+  """
+  email_expr: String_Expr
+  """
+  ✨ Generated from Field `User`.`photoUrl` of type `String`
+  """
+  photoUrl: String
+  """
+  ✨ `_expr` server value variant of `photoUrl` (✨ Generated from Field `User`.`photoUrl` of type `String`)
+  """
+  photoUrl_expr: String_Expr
+  """
+  ✨ Generated from Field `User`.`role` of type `String`
+  """
+  role: String
+  """
+  ✨ `_expr` server value variant of `role` (✨ Generated from Field `User`.`role` of type `String`)
+  """
+  role_expr: String_Expr
+}
+"""
+✨ Generated filter input type for table 'User'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input User_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [User_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: User_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [User_Filter!]
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `User`.`displayName` of type `String!`
+  """
+  displayName: String_Filter
+  """
+  ✨ Generated from Field `User`.`email` of type `String!`
+  """
+  email: String_Filter
+  """
+  ✨ Generated from Field `User`.`photoUrl` of type `String`
+  """
+  photoUrl: String_Filter
+  """
+  ✨ Generated from Field `User`.`role` of type `String`
+  """
+  role: String_Filter
+  """
+  ✨ Generated from Field `User`.`bookings_on_renter` of type `[Booking!]!`
+  """
+  bookings_on_renter: Booking_ListFilter
+  """
+  ✨ Generated from Field `User`.`reviews_on_reviewer` of type `[Review!]!`
+  """
+  reviews_on_reviewer: Review_ListFilter
+  """
+  ✨ Generated from Field `User`.`villas_on_owner` of type `[Villa!]!`
+  """
+  villas_on_owner: Villa_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'User'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input User_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [User_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: User_Filter
+}
+"""
+✨ Generated having input type for table 'User'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input User_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [User_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: User_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [User_Having!]
+  """
+  ✨ Generated from Field `User`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`displayName_count` of type `Int!`
+  """
+  displayName_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`email_count` of type `Int!`
+  """
+  email_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`photoUrl_count` of type `Int!`
+  """
+  photoUrl_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`role_count` of type `Int!`
+  """
+  role_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'User'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input User_Key {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'User'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input User_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: User_Filter
+}
+"""
+✨ Generated order input type for table 'User'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input User_Order {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `User`.`displayName` of type `String!`
+  """
+  displayName: OrderDirection
+  """
+  ✨ Generated from Field `User`.`email` of type `String!`
+  """
+  email: OrderDirection
+  """
+  ✨ Generated from Field `User`.`photoUrl` of type `String`
+  """
+  photoUrl: OrderDirection
+  """
+  ✨ Generated from Field `User`.`role` of type `String`
+  """
+  role: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Villa'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Villa_Data {
+  """
+  ✨ Generated from Field `Villa`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Villa`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Villa`.`ownerId` of type `UUID!`
+  """
+  ownerId: UUID
+  """
+  ✨ `_expr` server value variant of `ownerId` (✨ Generated from Field `Villa`.`ownerId` of type `UUID!`)
+  """
+  ownerId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Villa`.`owner` of type `User!`
+  """
+  owner: User_Key
+  """
+  ✨ Generated from Field `Villa`.`amenities` of type `[String]`
+  """
+  amenities: [String!]
+  """
+  ✨ `_update` server value variant of `amenities` (✨ Generated from Field `Villa`.`amenities` of type `[String]`)
+  """
+  amenities_update: [String_ListUpdate!]
+  """
+  ✨ Generated from Field `Villa`.`bathrooms` of type `Int!`
+  """
+  bathrooms: Int
+  """
+  ✨ `_expr` server value variant of `bathrooms` (✨ Generated from Field `Villa`.`bathrooms` of type `Int!`)
+  """
+  bathrooms_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `bathrooms` (✨ Generated from Field `Villa`.`bathrooms` of type `Int!`)
+  """
+  bathrooms_update: [Int_Update!]
+  """
+  ✨ Generated from Field `Villa`.`bedrooms` of type `Int!`
+  """
+  bedrooms: Int
+  """
+  ✨ `_expr` server value variant of `bedrooms` (✨ Generated from Field `Villa`.`bedrooms` of type `Int!`)
+  """
+  bedrooms_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `bedrooms` (✨ Generated from Field `Villa`.`bedrooms` of type `Int!`)
+  """
+  bedrooms_update: [Int_Update!]
+  """
+  ✨ Generated from Field `Villa`.`capacity` of type `Int!`
+  """
+  capacity: Int
+  """
+  ✨ `_expr` server value variant of `capacity` (✨ Generated from Field `Villa`.`capacity` of type `Int!`)
+  """
+  capacity_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `capacity` (✨ Generated from Field `Villa`.`capacity` of type `Int!`)
+  """
+  capacity_update: [Int_Update!]
+  """
+  ✨ Generated from Field `Villa`.`createdAt` of type `Timestamp`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Villa`.`createdAt` of type `Timestamp`)
+  """
+  createdAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `Villa`.`createdAt` of type `Timestamp`)
+  """
+  createdAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Villa`.`createdAt` of type `Timestamp`)
+  """
+  createdAt_update: [Timestamp_Update!]
+  """
+  ✨ Generated from Field `Villa`.`description` of type `String!`
+  """
+  description: String
+  """
+  ✨ `_expr` server value variant of `description` (✨ Generated from Field `Villa`.`description` of type `String!`)
+  """
+  description_expr: String_Expr
+  """
+  ✨ Generated from Field `Villa`.`isPublished` of type `Boolean`
+  """
+  isPublished: Boolean
+  """
+  ✨ `_expr` server value variant of `isPublished` (✨ Generated from Field `Villa`.`isPublished` of type `Boolean`)
+  """
+  isPublished_expr: Boolean_Expr
+  """
+  ✨ Generated from Field `Villa`.`locationCity` of type `String!`
+  """
+  locationCity: String
+  """
+  ✨ `_expr` server value variant of `locationCity` (✨ Generated from Field `Villa`.`locationCity` of type `String!`)
+  """
+  locationCity_expr: String_Expr
+  """
+  ✨ Generated from Field `Villa`.`locationCountry` of type `String!`
+  """
+  locationCountry: String
+  """
+  ✨ `_expr` server value variant of `locationCountry` (✨ Generated from Field `Villa`.`locationCountry` of type `String!`)
+  """
+  locationCountry_expr: String_Expr
+  """
+  ✨ Generated from Field `Villa`.`name` of type `String!`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `Villa`.`name` of type `String!`)
+  """
+  name_expr: String_Expr
+  """
+  ✨ Generated from Field `Villa`.`photos` of type `[String]`
+  """
+  photos: [String!]
+  """
+  ✨ `_update` server value variant of `photos` (✨ Generated from Field `Villa`.`photos` of type `[String]`)
+  """
+  photos_update: [String_ListUpdate!]
+  """
+  ✨ Generated from Field `Villa`.`pricePerNight` of type `Float!`
+  """
+  pricePerNight: Float
+  """
+  ✨ `_expr` server value variant of `pricePerNight` (✨ Generated from Field `Villa`.`pricePerNight` of type `Float!`)
+  """
+  pricePerNight_expr: Float_Expr
+  """
+  ✨ `_update` server value variant of `pricePerNight` (✨ Generated from Field `Villa`.`pricePerNight` of type `Float!`)
+  """
+  pricePerNight_update: [Float_Update!]
+  """
+  ✨ Generated from Field `Villa`.`updatedAt` of type `Timestamp`
+  """
+  updatedAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `Villa`.`updatedAt` of type `Timestamp`)
+  """
+  updatedAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `updatedAt` (✨ Generated from Field `Villa`.`updatedAt` of type `Timestamp`)
+  """
+  updatedAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `Villa`.`updatedAt` of type `Timestamp`)
+  """
+  updatedAt_update: [Timestamp_Update!]
+}
+"""
+✨ Generated filter input type for table 'Villa'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Villa_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Villa_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Villa_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Villa_Filter!]
+  """
+  ✨ Generated from Field `Villa`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Villa`.`ownerId` of type `UUID!`
+  """
+  ownerId: UUID_Filter
+  """
+  ✨ Generated from Field `Villa`.`owner` of type `User!`
+  """
+  owner: User_Filter
+  """
+  ✨ Generated from Field `Villa`.`amenities` of type `[String]`
+  """
+  amenities: String_ListFilter
+  """
+  ✨ Generated from Field `Villa`.`bathrooms` of type `Int!`
+  """
+  bathrooms: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`bedrooms` of type `Int!`
+  """
+  bedrooms: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`capacity` of type `Int!`
+  """
+  capacity: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`createdAt` of type `Timestamp`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Villa`.`description` of type `String!`
+  """
+  description: String_Filter
+  """
+  ✨ Generated from Field `Villa`.`isPublished` of type `Boolean`
+  """
+  isPublished: Boolean_Filter
+  """
+  ✨ Generated from Field `Villa`.`locationCity` of type `String!`
+  """
+  locationCity: String_Filter
+  """
+  ✨ Generated from Field `Villa`.`locationCountry` of type `String!`
+  """
+  locationCountry: String_Filter
+  """
+  ✨ Generated from Field `Villa`.`name` of type `String!`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `Villa`.`photos` of type `[String]`
+  """
+  photos: String_ListFilter
+  """
+  ✨ Generated from Field `Villa`.`pricePerNight` of type `Float!`
+  """
+  pricePerNight: Float_Filter
+  """
+  ✨ Generated from Field `Villa`.`updatedAt` of type `Timestamp`
+  """
+  updatedAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Villa`.`bookings_on_villa` of type `[Booking!]!`
+  """
+  bookings_on_villa: Booking_ListFilter
+  """
+  ✨ Generated from Field `Villa`.`reviews_on_villa` of type `[Review!]!`
+  """
+  reviews_on_villa: Review_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'Villa'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Villa_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Villa_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Villa_Filter
+}
+"""
+✨ Generated having input type for table 'Villa'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Villa_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Villa_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Villa_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Villa_Having!]
+  """
+  ✨ Generated from Field `Villa`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`bathrooms_count` of type `Int!`
+  """
+  bathrooms_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`bedrooms_count` of type `Int!`
+  """
+  bedrooms_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`capacity_count` of type `Int!`
+  """
+  capacity_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`description_count` of type `Int!`
+  """
+  description_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`isPublished_count` of type `Int!`
+  """
+  isPublished_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`locationCity_count` of type `Int!`
+  """
+  locationCity_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`locationCountry_count` of type `Int!`
+  """
+  locationCountry_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`ownerId_count` of type `Int!`
+  """
+  ownerId_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`pricePerNight_count` of type `Int!`
+  """
+  pricePerNight_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`bathrooms_sum` of type `Int`
+  """
+  bathrooms_sum: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`bedrooms_sum` of type `Int`
+  """
+  bedrooms_sum: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`capacity_sum` of type `Int`
+  """
+  capacity_sum: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`pricePerNight_sum` of type `Float`
+  """
+  pricePerNight_sum: Float_Filter
+  """
+  ✨ Generated from Field `Villa`.`bathrooms_avg` of type `Float`
+  """
+  bathrooms_avg: Float_Filter
+  """
+  ✨ Generated from Field `Villa`.`bedrooms_avg` of type `Float`
+  """
+  bedrooms_avg: Float_Filter
+  """
+  ✨ Generated from Field `Villa`.`capacity_avg` of type `Float`
+  """
+  capacity_avg: Float_Filter
+  """
+  ✨ Generated from Field `Villa`.`pricePerNight_avg` of type `Float`
+  """
+  pricePerNight_avg: Float_Filter
+  """
+  ✨ Generated from Field `Villa`.`bathrooms_min` of type `Int`
+  """
+  bathrooms_min: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`bedrooms_min` of type `Int`
+  """
+  bedrooms_min: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`capacity_min` of type `Int`
+  """
+  capacity_min: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Villa`.`pricePerNight_min` of type `Float`
+  """
+  pricePerNight_min: Float_Filter
+  """
+  ✨ Generated from Field `Villa`.`updatedAt_min` of type `Timestamp`
+  """
+  updatedAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Villa`.`bathrooms_max` of type `Int`
+  """
+  bathrooms_max: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`bedrooms_max` of type `Int`
+  """
+  bedrooms_max: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`capacity_max` of type `Int`
+  """
+  capacity_max: Int_Filter
+  """
+  ✨ Generated from Field `Villa`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+  """
+  ✨ Generated from Field `Villa`.`pricePerNight_max` of type `Float`
+  """
+  pricePerNight_max: Float_Filter
+  """
+  ✨ Generated from Field `Villa`.`updatedAt_max` of type `Timestamp`
+  """
+  updatedAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Villa'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Villa_Key {
+  """
+  ✨ Generated from Field `Villa`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Villa`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'Villa'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Villa_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Villa_Filter
+}
+"""
+✨ Generated order input type for table 'Villa'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Villa_Order {
+  """
+  ✨ Generated from Field `Villa`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`ownerId` of type `UUID!`
+  """
+  ownerId: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`owner` of type `User!`
+  """
+  owner: User_Order
+  """
+  ✨ Generated from Field `Villa`.`bathrooms` of type `Int!`
+  """
+  bathrooms: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`bedrooms` of type `Int!`
+  """
+  bedrooms: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`capacity` of type `Int!`
+  """
+  capacity: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`createdAt` of type `Timestamp`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`description` of type `String!`
+  """
+  description: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`isPublished` of type `Boolean`
+  """
+  isPublished: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`locationCity` of type `String!`
+  """
+  locationCity: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`locationCountry` of type `String!`
+  """
+  locationCountry: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`name` of type `String!`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`pricePerNight` of type `Float!`
+  """
+  pricePerNight: OrderDirection
+  """
+  ✨ Generated from Field `Villa`.`updatedAt` of type `Timestamp`
+  """
+  updatedAt: OrderDirection
+}
