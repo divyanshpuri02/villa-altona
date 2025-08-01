@@ -29,7 +29,7 @@ export default function Amenities() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          className="luxury-heading text-[#141414] text-[32px] md:text-[38px] font-bold leading-tight tracking-[-0.02em] pb-4 pt-6"
         >
           Amenities
         </motion.h2>
@@ -40,12 +40,13 @@ export default function Amenities() {
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.05, y: -5 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="flex flex-1 gap-3 rounded-lg border border-[#dbdbdb] bg-neutral-50 p-4 items-center hover:bg-gray-100 transition-colors duration-300"
+              className="flex flex-1 gap-4 rounded-lg border border-[#dbdbdb] bg-neutral-50 p-5 items-center hover:bg-gray-100 hover:shadow-lg transition-all duration-300"
             >
-              <amenity.icon className="h-6 w-6 text-[#141414]" />
-              <h3 className="text-[#141414] text-base font-bold leading-tight">{amenity.title}</h3>
+              <amenity.icon className="h-7 w-7 text-[#141414]" />
+              <h3 className="luxury-text text-[#141414] text-base font-bold leading-tight">{amenity.title}</h3>
             </motion.div>
           ))}
         </div>
@@ -55,7 +56,7 @@ export default function Amenities() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          className="luxury-heading text-[#141414] text-[32px] md:text-[38px] font-bold leading-tight tracking-[-0.02em] pb-4 pt-6"
         >
           Services
         </motion.h2>
@@ -66,12 +67,13 @@ export default function Amenities() {
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.05, y: -5 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="flex flex-1 gap-3 rounded-lg border border-[#dbdbdb] bg-neutral-50 p-4 items-center hover:bg-gray-100 transition-colors duration-300"
+              className="flex flex-1 gap-4 rounded-lg border border-[#dbdbdb] bg-neutral-50 p-5 items-center hover:bg-gray-100 hover:shadow-lg transition-all duration-300"
             >
-              <service.icon className="h-6 w-6 text-[#141414]" />
-              <h3 className="text-[#141414] text-base font-bold leading-tight">{service.title}</h3>
+              <service.icon className="h-7 w-7 text-[#141414]" />
+              <h3 className="luxury-text text-[#141414] text-base font-bold leading-tight">{service.title}</h3>
             </motion.div>
           ))}
         </div>

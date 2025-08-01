@@ -17,7 +17,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          className="luxury-heading text-[#141414] text-[32px] md:text-[38px] font-bold leading-tight tracking-[-0.02em] pb-4 pt-6"
         >
           About this place
         </motion.h2>
@@ -27,7 +27,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-[#141414] text-base font-normal leading-normal pb-3 pt-1"
+          className="luxury-text text-[#141414] text-lg font-normal leading-relaxed pb-4 pt-1"
         >
           Villa Altona is a luxurious retreat nestled in the heart of Goa, offering breathtaking 
           views of the Arabian Sea and lush tropical landscapes. This spacious villa features six 
@@ -40,7 +40,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
-          className="text-[#141414] text-base font-normal leading-normal pb-6"
+          className="luxury-text text-[#141414] text-lg font-normal leading-relaxed pb-8"
         >
           Experience unparalleled luxury with world-class amenities including a private spa, 
           state-of-the-art fitness center, and dedicated concierge service. Every detail has 
@@ -53,13 +53,14 @@ export default function About() {
               key={index}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.05, y: -5 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="flex flex-col items-center p-4 rounded-lg border border-[#dbdbdb] bg-neutral-50"
+              className="flex flex-col items-center p-6 rounded-lg border border-[#dbdbdb] bg-neutral-50 hover:shadow-lg transition-all duration-300"
             >
-              <feature.icon className="h-8 w-8 text-[#141414] mb-2" />
-              <div className="text-2xl font-bold text-[#141414] mb-1">{feature.value}</div>
-              <div className="text-sm text-neutral-500 text-center">{feature.label}</div>
+              <feature.icon className="h-10 w-10 text-[#141414] mb-3" />
+              <div className="luxury-heading text-3xl font-bold text-[#141414] mb-2">{feature.value}</div>
+              <div className="luxury-text text-sm text-neutral-500 text-center font-medium">{feature.label}</div>
             </motion.div>
           ))}
         </div>
@@ -67,13 +68,14 @@ export default function About() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.8, delay: 0.6 }}
           viewport={{ once: true }}
-          className="mt-6 p-4 rounded-lg border border-[#dbdbdb] bg-neutral-50"
+          className="mt-8 p-6 rounded-lg border border-[#dbdbdb] bg-gradient-to-br from-neutral-50 to-neutral-100 hover:shadow-lg transition-all duration-300"
         >
-          <div className="text-sm text-neutral-500 mb-1">Starting from</div>
-          <div className="text-3xl font-bold text-[#141414]">₹100,000</div>
-          <div className="text-sm text-neutral-500">per night</div>
+          <div className="luxury-text text-sm text-neutral-500 mb-2 font-medium">Starting from</div>
+          <div className="luxury-heading text-4xl font-bold text-[#141414] mb-1">₹100,000</div>
+          <div className="luxury-text text-sm text-neutral-500 font-medium">per night</div>
         </motion.div>
       </div>
     </section>

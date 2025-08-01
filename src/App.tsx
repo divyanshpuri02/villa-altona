@@ -8,10 +8,11 @@ import Booking from './components/Booking'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import WhatsAppFloat from './components/WhatsAppFloat'
 
 function App() {
   return (
-    <div className="min-h-screen bg-neutral-50" style={{ fontFamily: '"Noto Serif", "Noto Sans", sans-serif' }}>
+    <div className="min-h-screen bg-neutral-50" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
       <Header />
       <Hero />
       <About />
@@ -21,6 +22,7 @@ function App() {
       <Testimonials />
       <Contact />
       <Footer />
+      <WhatsAppFloat />
     </div>
   )
 }

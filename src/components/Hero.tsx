@@ -39,7 +39,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-[#141414] text-[28px] font-bold leading-tight tracking-[-0.015em] mb-4"
+          className="luxury-heading text-[#141414] text-[42px] md:text-[52px] font-bold leading-tight tracking-[-0.02em] mb-6"
         >
           Villa Altona - Luxury Retreat
         </motion.h1>
@@ -48,7 +48,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-[#141414] text-base font-normal leading-normal mb-6"
+          className="luxury-text text-[#141414] text-lg font-normal leading-relaxed mb-8"
         >
           Experience unparalleled luxury in our exclusive villa nestled in the heart of Goa. 
           This spacious retreat features six bedrooms, each with an en-suite bathroom, a fully 
@@ -62,18 +62,22 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="flex gap-3"
         >
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(0,0,0,0.15)" }}
+            whileTap={{ scale: 0.95 }}
             onClick={scrollToBooking}
-            className="flex-1 bg-[#141414] text-white rounded-full h-12 px-5 font-bold text-base tracking-[0.015em] hover:bg-gray-800 transition-colors duration-300"
+            className="flex-1 bg-[#141414] text-white rounded-lg h-14 px-6 font-bold text-base tracking-[0.015em] hover:bg-gray-800 transition-all duration-300 luxury-shadow"
           >
             Book Now
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex-1 bg-[#ededed] text-[#141414] rounded-full h-12 px-5 font-bold text-base tracking-[0.015em] hover:bg-gray-300 transition-colors duration-300"
+            className="flex-1 bg-[#ededed] text-[#141414] rounded-lg h-14 px-6 font-bold text-base tracking-[0.015em] hover:bg-gray-300 transition-all duration-300 luxury-shadow"
           >
             Contact Host
-          </button>
+          </motion.button>
         </motion.div>
       </div>
     </section>

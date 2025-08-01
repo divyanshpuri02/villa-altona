@@ -54,7 +54,7 @@ export default function Gallery() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5"
+          className="luxury-heading text-[#141414] text-[32px] md:text-[38px] font-bold leading-tight tracking-[-0.02em] pb-4 pt-6"
         >
           Local Attractions
         </motion.h2>
@@ -66,18 +66,19 @@ export default function Gallery() {
                 key={index}
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                whileHover={{ scale: 1.05, y: -10 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60 cursor-pointer"
+                className="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60 cursor-pointer hover:shadow-xl transition-all duration-300"
                 onClick={() => openLightbox(index)}
               >
                 <div
-                  className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col hover:scale-105 transition-transform duration-300"
+                  className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col transition-transform duration-300"
                   style={{ backgroundImage: `url("${attraction.url}")` }}
                 />
                 <div>
-                  <p className="text-[#141414] text-base font-medium leading-normal">{attraction.title}</p>
-                  <p className="text-neutral-500 text-sm font-normal leading-normal">{attraction.description}</p>
+                  <p className="luxury-text text-[#141414] text-lg font-semibold leading-normal mb-1">{attraction.title}</p>
+                  <p className="luxury-text text-neutral-500 text-sm font-normal leading-normal">{attraction.description}</p>
                 </div>
               </motion.div>
             ))}
