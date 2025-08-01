@@ -31,7 +31,7 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="py-20 bg-black">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
           className="text-center mb-16"
@@ -40,10 +40,10 @@ export default function Testimonials() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-5xl lg:text-6xl font-bold text-white mb-6 font-serif">
-            Distinguished <span className="text-yellow-400">Testimonials</span>
+          <h2 className="text-5xl lg:text-6xl font-bold text-black mb-6 font-serif">
+            Distinguished <span className="text-gray-600">Testimonials</span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
             Discover what makes Villa Royale extraordinary through the experiences 
             of our most discerning guests.
           </p>
@@ -53,27 +53,27 @@ export default function Testimonials() {
           {testimonials.map((testimonial, index) => (
             <motion.div 
               key={index}
-              className="glass-effect rounded-2xl p-8 relative hover:bg-white/10 transition-all duration-500 border border-white/10 group"
+              className="glass-effect rounded-2xl p-8 relative hover:bg-black/10 transition-all duration-500 border border-gray-200 group"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}
               whileHover={{ scale: 1.02, y: -5 }}
             >
-              <Quote className="h-12 w-12 text-yellow-400 opacity-30 absolute top-6 right-6" />
+              <Quote className="h-12 w-12 text-blue-500 opacity-30 absolute top-6 right-6" />
               
               <div className="flex items-center mb-6">
                 <motion.img
                   src={testimonial.image}
                   alt={testimonial.name}
-                  className="w-16 h-16 rounded-full object-cover mr-4 border-2 border-yellow-400/30"
+                  className="w-16 h-16 rounded-full object-cover mr-4 border-2 border-blue-500/30"
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.3 }}
                 />
                 <div>
-                  <h4 className="text-lg font-semibold text-white font-serif">{testimonial.name}</h4>
-                  <p className="text-yellow-400 text-sm font-medium">{testimonial.title}</p>
-                  <p className="text-gray-400 text-sm">{testimonial.location}</p>
+                  <h4 className="text-lg font-semibold text-black font-serif">{testimonial.name}</h4>
+                  <p className="text-blue-500 text-sm font-medium">{testimonial.title}</p>
+                  <p className="text-gray-600 text-sm">{testimonial.location}</p>
                 </div>
               </div>
 
@@ -86,12 +86,12 @@ export default function Testimonials() {
                     transition={{ delay: index * 0.2 + i * 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                    <Star className="h-5 w-5 fill-blue-500 text-blue-500" />
                   </motion.div>
                 ))}
               </div>
 
-              <p className="text-gray-300 leading-relaxed italic">
+              <p className="text-gray-700 leading-relaxed italic">
                 "{testimonial.text}"
               </p>
             </motion.div>

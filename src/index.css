@@ -8,10 +8,10 @@ body {
 }
 
 .glass-effect {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
 }
 
-.gold-gradient {
-  background: linear-gradient(135deg, #ffd700, #ffed4e);
+.blue-gradient {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
 }
