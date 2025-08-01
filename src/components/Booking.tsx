@@ -232,3 +232,4 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
       />
     </>
   );
+}
