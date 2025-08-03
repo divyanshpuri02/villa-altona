@@ -14,12 +14,12 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
   const [activeSection, setActiveSection] = useState('');
 
   const menuItems = [
-    { label: 'OFFERS', sectionId: 'hero' },
-    { label: 'STAYS', sectionId: 'about' },
-    { label: 'DINING', sectionId: 'amenities' },
-    { label: 'ENTERTAINMENT', sectionId: 'gallery' },
-    { label: 'AQUAVENTURE', sectionId: 'testimonials' },
-    { label: 'EXPERIENCES', sectionId: 'contact' },
+    { label: 'Home', sectionId: 'hero' },
+    { label: 'About', sectionId: 'about' },
+    { label: 'Amenities', sectionId: 'amenities' },
+    { label: 'Gallery', sectionId: 'gallery' },
+    { label: 'Testimonials', sectionId: 'testimonials' },
+    { label: 'Contact', sectionId: 'contact' },
   ];
 
   useEffect(() => {
@@ -86,40 +86,26 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             
-            {/* Mobile Menu Button */}
-            <motion.button
-              className="lg:hidden p-2 text-[#141414] hover:bg-gray-100 rounded-lg transition-colors duration-200"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              whileTap={{ scale: 0.95 }}
+            {/* Logo */}
+            <motion.div 
+              className="cursor-pointer group"
+              onClick={() => scrollToSection('hero')}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              <AnimatePresence mode="wait">
-                {isMenuOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <X className="h-6 w-6" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Menu className="h-6 w-6" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
+              <div className="text-center">
+                <h1 className="text-2xl lg:text-3xl font-bold text-[#141414] tracking-wide group-hover:text-gray-700 transition-colors duration-300" style={{ fontFamily: '"Noto Serif", serif' }}>
+                  Villa Altona
+                </h1>
+                <p className="text-xs text-gray-500 tracking-widest uppercase" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  Luxury Villa, Goa
+                </p>
+              </div>
+            </motion.div>
 
-            {/* Left Navigation - Desktop */}
+            {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-8">
-              {menuItems.slice(0, 3).map((item, index) => (
+              {menuItems.map((item, index) => (
                 <motion.button
                   key={item.sectionId}
                   onClick={() => scrollToSection(item.sectionId)}
@@ -148,55 +134,6 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 </motion.button>
               ))}
             </nav>
-
-            {/* Centered Logo */}
-            <motion.div 
-              className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer group"
-              onClick={() => scrollToSection('hero')}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-            >
-              <div className="text-center">
-                <h1 className="text-2xl lg:text-3xl font-bold text-[#141414] tracking-wide group-hover:text-gray-700 transition-colors duration-300" style={{ fontFamily: '"Noto Serif", serif' }}>
-                  VILLA ALTONA
-                </h1>
-                <p className="text-xs text-gray-500 tracking-widest uppercase" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                  THE PALM, GOA
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Right Navigation - Desktop */}
-            <nav className="hidden lg:flex items-center space-x-8">
-              {menuItems.slice(3).map((item, index) => (
-                <motion.button
-                  key={item.sectionId}
-                  onClick={() => scrollToSection(item.sectionId)}
-                  className={`relative px-2 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
-                    activeSection === item.sectionId 
-                      ? 'text-[#141414]' 
-                      : 'text-gray-600 hover:text-[#141414]'
-                  }`}
-                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                  whileHover={{ y: -1 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                >
-                  {item.label}
-                  {activeSection === item.sectionId && (
-                    <motion.div
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
-                      layoutId="activeSection"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  )}
-                </motion.button>
-              ))}
-            </nav>
             
             {/* Right side - Book Now Button & User Menu */}
             <div className="flex items-center gap-4">
@@ -211,7 +148,38 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 }}
               >
-                BOOK NOW
+                Book Now
+              </motion.button>
+
+              {/* Mobile Menu Button */}
+              <motion.button
+                className="lg:hidden p-2 text-[#141414] hover:bg-gray-100 rounded-lg transition-colors duration-200"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                whileTap={{ scale: 0.95 }}
+              >
+                <AnimatePresence mode="wait">
+                  {isMenuOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <X className="h-6 w-6" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Menu className="h-6 w-6" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.button>
 
               {/* User Menu */}
