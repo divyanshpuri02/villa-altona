@@ -28,11 +28,11 @@ function App() {
       setUserEmail(authData.email);
       setHasShownInitialModal(true); // Don't show modal if already authenticated
     } else {
-      // Start timer to show modal after 10 seconds
+      // Start timer to show modal after 4 seconds
       const timer = setTimeout(() => {
         setShowAuthModal(true);
         setHasShownInitialModal(true);
-      }, 10000);
+      }, 4000);
       setModalTimer(timer);
     }
 
@@ -49,10 +49,10 @@ function App() {
     setShowAuthModal(false);
     
     if (!isAuthenticated) {
-      // Start new timer to show modal again after 10 seconds
+      // Start new timer to show modal again after 4 seconds
       const timer = setTimeout(() => {
         setShowAuthModal(true);
-      }, 10000);
+      }, 4000);
       setModalTimer(timer);
     }
   };
@@ -74,11 +74,11 @@ function App() {
     setUserEmail('');
     localStorage.removeItem('villa_auth');
     setHasShownInitialModal(false);
-    // Start timer to show modal after 10 seconds
+    // Start timer to show modal after 4 seconds
     const timer = setTimeout(() => {
       setShowAuthModal(true);
       setHasShownInitialModal(true);
-    }, 10000);
+    }, 4000);
     setModalTimer(timer);
   };
 
