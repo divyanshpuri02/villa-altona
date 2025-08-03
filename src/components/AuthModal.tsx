@@ -452,7 +452,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                       Forgot your password? Reset it here
                     </motion.button>
                   )}
-                    {isLogin && !showForgotPasswordOption && (
+                </motion.div>
               )}
 
               {/* Success Message */}
