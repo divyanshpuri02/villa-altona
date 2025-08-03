@@ -10,10 +10,16 @@ interface AuthModalProps {
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [isOtpVerification, setIsOtpVerification] = useState(false);
+  const [isResetPassword, setIsResetPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [otpTimer, setOtpTimer] = useState(0);
+  const [generatedOtp, setGeneratedOtp] = useState('');
   const [passwordStrength, setPasswordStrength] = useState({
     hasSpecial: false,
     hasCapital: false,
@@ -24,7 +30,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    otp: ''
   });
 
   // Simple user database simulation
@@ -173,25 +180,181 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setGoogleLoading(false);
   };
 
+  // Forgot Password Functions
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    
+    // Check if user exists
+    const user = findUserByEmail(formData.email);
+    if (!user) {
+      setError('No account found with this email address');
+      return;
+    }
+    
+    setLoading(true);
+    
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(otp);
+    
+    // Simulate sending email
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    setLoading(false);
+    setSuccess(`OTP sent to ${formData.email}. Check your email.`);
+    
+    // For demo purposes, show OTP in console
+    console.log('Demo OTP:', otp);
+    
+    // Start OTP timer
+    setOtpTimer(300); // 5 minutes
+    const timer = setInterval(() => {
+      setOtpTimer(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    
+    setIsForgotPassword(false);
+    setIsOtpVerification(true);
+  };
+  
+  const handleOtpVerification = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    
+    if (formData.otp !== generatedOtp) {
+      setError('Invalid OTP. Please check and try again.');
+      return;
+    }
+    
+    if (otpTimer <= 0) {
+      setError('OTP has expired. Please request a new one.');
+      return;
+    }
+    
+    setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setLoading(false);
+    
+    setSuccess('OTP verified successfully!');
+    setIsOtpVerification(false);
+    setIsResetPassword(true);
+  };
+  
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    
+    if (!passwordStrength.isValid) {
+      setError('Password does not meet requirements');
+      return;
+    }
+    
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    
+    setLoading(true);
+    
+    // Update user password in database
+    const users = getUserDatabase();
+    const userIndex = users.findIndex((user: any) => user.email === formData.email);
+    if (userIndex !== -1) {
+      users[userIndex].password = formData.password;
+      localStorage.setItem('villa_users', JSON.stringify(users));
+    }
+    
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setLoading(false);
+    
+    setSuccess('Password reset successfully! You can now sign in with your new password.');
+    
+    // Reset to login form after 2 seconds
+    setTimeout(() => {
+      setIsResetPassword(false);
+      setIsLogin(true);
+      setFormData({ name: '', email: formData.email, password: '', confirmPassword: '', otp: '' });
+      setSuccess(null);
+    }, 2000);
+  };
+  
+  const handleResendOtp = async () => {
+    setError(null);
+    setLoading(true);
+    
+    // Generate new OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(otp);
+    
+    // Simulate sending email
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    setLoading(false);
+    setSuccess('New OTP sent to your email!');
+    
+    // For demo purposes, show OTP in console
+    console.log('Demo OTP (Resent):', otp);
+    
+    // Reset timer
+    setOtpTimer(300);
+    const timer = setInterval(() => {
+      setOtpTimer(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+  
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   const switchMode = () => {
     setIsLogin(!isLogin);
     setError(null);
-    setFormData({ name: '', email: '', password: '', confirmPassword: '' });
+    setSuccess(null);
+    setIsForgotPassword(false);
+    setIsOtpVerification(false);
+    setIsResetPassword(false);
+    setFormData({ name: '', email: '', password: '', confirmPassword: '', otp: '' });
     setPasswordStrength({ hasSpecial: false, hasCapital: false, hasMinLength: false, isValid: false });
   };
 
   const handleInputChange = (field: string, value: string) => {
     setError(null); // Clear error when user starts typing
+    setSuccess(null); // Clear success when user starts typing
     setFormData({...formData, [field]: value});
   };
 
   const handlePasswordInputChange = (password: string) => {
     setError(null); // Clear error when user starts typing
+    setSuccess(null); // Clear success when user starts typing
     setFormData({...formData, password});
     if (!isLogin) validatePassword(password);
   };
 
   const isFormValid = () => {
+    if (isForgotPassword) {
+      return formData.email;
+    }
+    if (isOtpVerification) {
+      return formData.otp && formData.otp.length === 6;
+    }
+    if (isResetPassword) {
+      return formData.password && formData.confirmPassword && passwordStrength.isValid && formData.password === formData.confirmPassword;
+    }
     if (isLogin) {
       return formData.email && formData.password;
     } else {
@@ -230,7 +393,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                   Villa Altona
                 </h3>
                 <p className="text-neutral-500 text-sm" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                  {isLogin ? 'Sign in to your account' : 'Create your account to continue'}
+                  {isForgotPassword ? 'Reset your password' : 
+                   isOtpVerification ? 'Enter verification code' :
+                   isResetPassword ? 'Create new password' :
+                   isLogin ? 'Sign in to your account' : 'Create your account to continue'}
                 </p>
               </div>
 
@@ -247,8 +413,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                 </motion.div>
               )}
 
+              {/* Success Message */}
+              {success && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg"
+                >
+                  <p className="text-green-600 text-sm font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                    {success}
+                  </p>
+                </motion.div>
+              )}
+
               {/* Google Login Button */}
-              <motion.button
+              {!isForgotPassword && !isOtpVerification && !isResetPassword && (
+                <motion.button
                 type="button"
                 onClick={handleGoogleLogin}
                 disabled={loading || googleLoading}
@@ -278,8 +458,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                   </>
                 )}
               </motion.button>
+              )}
 
-              <div className="relative mb-4">
+              {!isForgotPassword && !isOtpVerification && !isResetPassword && (
+                <div className="relative mb-4">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-[#dbdbdb]"></div>
                 </div>
@@ -289,6 +471,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                   </span>
                 </div>
               </div>
+              )}
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
