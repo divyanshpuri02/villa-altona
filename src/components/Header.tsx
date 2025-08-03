@@ -260,10 +260,3 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
     </>
   );
 }
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
-  );
-}
