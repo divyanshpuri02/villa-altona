@@ -170,9 +170,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                     className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
                   >
                     <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="text-xs text-neutral-500 uppercase tracking-wide" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                        Signed in as
-                      </p>
+                    
                       <p className="text-sm font-medium text-[#141414] truncate" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
                         {userEmail}
                       </p>
