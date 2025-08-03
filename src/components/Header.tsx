@@ -117,7 +117,25 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </AnimatePresence>
             </motion.button>
 
-
+            {/* Centered Logo */}
+            <motion.button
+              type="button"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer group focus:outline-none focus:ring-0 border-none bg-transparent p-0 m-0"
+              onClick={() => scrollToSection('hero')}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              style={{ 
+                WebkitTapHighlightColor: 'transparent',
+                outline: 'none',
+                border: 'none',
+                background: 'none',
+                padding: 0,
+                margin: 0
+              }}
+            >
+            
+            </motion.button>
+          </div>
 
           {/* Desktop Navigation - Centered Below Logo */}
           <div className="hidden lg:block border-t border-gray-200/50">
