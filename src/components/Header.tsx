@@ -136,15 +136,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   filter: 'contrast(1.05) brightness(1.02)'
                 }}
               />
-              <div className="text-center mt-1">
-                <h1 
-                  className="text-[#141414] text-[9px] font-medium tracking-[0.15em] uppercase opacity-100 mt-0.5"
-                  style={{ fontFamily: '"Noto Serif", serif' }}
-                >
-                  Villa Altona
-                </h1>
-            
-              </div>
+            s */}
             </div>
           </motion.div>
           
