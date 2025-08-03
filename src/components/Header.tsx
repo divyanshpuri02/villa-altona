@@ -246,30 +246,6 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                     {item.label}
                   </motion.button>
                 ))}
-                
-                {userEmail && (
-                  <div className="border-t border-gray-200 mt-4 pt-4">
-                    <div className="px-4 py-2">
-                      <p className="text-xs text-gray-500 uppercase tracking-wide mb-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                        Signed in as
-                      </p>
-                      <p className="text-sm font-medium text-[#141414] mb-3" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                        {userEmail}
-                      </p>
-                    </div>
-                    <motion.button
-                      onClick={() => {
-                        onLogout?.();
-                        setIsMenuOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200 rounded-lg"
-                      style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                      whileHover={{ x: 4 }}
-                    >
-                      Sign out
-                    </motion.button>
-                  </div>
-                )}
               </div>
             </motion.div>
           )}
