@@ -82,6 +82,9 @@ function App() {
     setModalTimer(timer);
   };
 
+  // Only show auth modal if user is not authenticated
+  const shouldShowAuthModal = showAuthModal && !isAuthenticated;
+
   if (!isAuthenticated && !hasShownInitialModal) {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
@@ -94,7 +97,7 @@ function App() {
           </p>
         </div>
         <AuthModal 
-          isOpen={showAuthModal}
+          isOpen={shouldShowAuthModal}
           onClose={handleModalClose}
           onLogin={handleLogin}
         />
@@ -117,7 +120,7 @@ function App() {
       <WhatsAppFloat />
       
       <AuthModal 
-        isOpen={showAuthModal}
+        isOpen={shouldShowAuthModal}
         onClose={handleModalClose}
         onLogin={handleLogin}
       />
