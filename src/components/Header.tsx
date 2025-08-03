@@ -132,9 +132,6 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               className="text-[#141414] bg-transparent"
               style={{ backgroundColor: 'transparent' }}
             />
-            <div className="text-[#141414] text-xs font-light tracking-[0.2em] mt-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-              VILLA ALTONA
-            </div>
           </motion.div>
           
           {/* Right side - User Dropdown Menu */}
