@@ -141,11 +141,6 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 }}
               />
             </div>
-            <motion.div
-              
-              className="mt-1 text-[#141414] text-xs font-medium tracking-[0.2em] uppercase opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-           
-            </motion.div>
           </motion.div>
           
           {/* Right side - User Dropdown Menu */}
