@@ -58,7 +58,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
       setTimeout(() => {
         const element = document.getElementById(sectionId);
         if (element) {
-          const yOffset = -80;
+          const yOffset = -100;
           const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
           window.scrollTo({ top: y, behavior: 'smooth' });
         }
@@ -66,7 +66,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
     } else {
       const element = document.getElementById(sectionId);
       if (element) {
-        const yOffset = -80;
+        const yOffset = -100;
         const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
@@ -84,8 +84,8 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4">
-          {/* Top row with mobile menu button and user menu */}
-          <div className="flex items-center justify-between h-16 lg:h-20">
+          {/* Main Header Row */}
+          <div className="flex items-center justify-between h-20">
             {/* Mobile Menu Button */}
             <motion.button
               className="lg:hidden p-2 text-[#141414] hover:bg-gray-100 rounded-lg transition-colors duration-200"
@@ -119,7 +119,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
 
             {/* Centered Logo */}
             <motion.div 
-              className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer group lg:relative lg:left-auto lg:transform-none"
+              className="flex-1 flex justify-center lg:flex-none lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2 cursor-pointer group"
               onClick={() => scrollToSection('hero')}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
@@ -127,11 +127,11 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               <img 
                 src="/file1.svg" 
                 alt="Villa Altona Logo" 
-                className="h-10 lg:h-12 w-auto group-hover:opacity-80 transition-opacity duration-300"
+                className="h-12 w-auto group-hover:opacity-80 transition-opacity duration-300"
               />
             </motion.div>
 
-            {/* Right side - User Menu */}
+            {/* User Menu */}
             <div className="flex items-center">
               {userEmail && (
                 <div className="relative">
@@ -181,37 +181,39 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             </div>
           </div>
 
-          {/* Desktop Navigation - Below Logo */}
-          <div className="hidden lg:block">
-            <nav className="flex items-center justify-center space-x-12 pb-4">
-              {menuItems.map((item, index) => (
-                <motion.button
-                  key={item.sectionId}
-                  onClick={() => scrollToSection(item.sectionId)}
-                  className={`relative px-2 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
-                    activeSection === item.sectionId 
-                      ? 'text-[#141414]' 
-                      : 'text-gray-600 hover:text-[#141414]'
-                  }`}
-                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                  whileHover={{ y: -1 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + index * 0.1 }}
-                >
-                  {item.label}
-                  {activeSection === item.sectionId && (
-                    <motion.div
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
-                      layoutId="activeSection"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  )}
-                </motion.button>
-              ))}
+          {/* Desktop Navigation - Centered Below Logo */}
+          <div className="hidden lg:block border-t border-gray-200/50">
+            <nav className="flex items-center justify-center py-4">
+              <div className="flex items-center space-x-8">
+                {menuItems.map((item, index) => (
+                  <motion.button
+                    key={item.sectionId}
+                    onClick={() => scrollToSection(item.sectionId)}
+                    className={`relative px-4 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
+                      activeSection === item.sectionId 
+                        ? 'text-[#141414]' 
+                        : 'text-gray-600 hover:text-[#141414]'
+                    }`}
+                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                    whileHover={{ y: -1 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + index * 0.1 }}
+                  >
+                    {item.label}
+                    {activeSection === item.sectionId && (
+                      <motion.div
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
+                        layoutId="activeSection"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </motion.button>
+                ))}
+              </div>
             </nav>
           </div>
         </div>
