@@ -125,7 +125,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             whileTap={{ scale: 0.95 }}
           >
             <img 
-              src="/file11.svg" 
+              src="/file1.svg" 
               alt="Villa Altona Logo"
               width="80" 
               height="60" 
