@@ -121,7 +121,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
           <motion.div 
             className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center cursor-pointer group"
             onClick={() => scrollToSection('hero')}
-            whileHover={{ scale: 1.08, y: -2 }}
+            whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
