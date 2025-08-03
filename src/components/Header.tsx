@@ -121,7 +121,6 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
           <motion.div 
             className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center cursor-pointer group"
             onClick={() => scrollToSection('hero')}
-            whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
@@ -135,7 +134,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 alt="Villa Altona Logo"
                 width="90" 
                 height="70" 
-                className="relative z-10 filter drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"
+                className="relative z-10 filter drop-shadow-sm group-hover:drop-shadow-md group-hover:scale-105 transition-all duration-300"
                 style={{ 
                   backgroundColor: 'transparent',
                   filter: 'contrast(1.1) brightness(1.05)'
