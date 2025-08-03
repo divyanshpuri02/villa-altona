@@ -83,8 +83,8 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
           scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white/90 backdrop-blur-sm'
         }`}
       >
+        {/* Main Container Div - Contains Logo and User Menu */}
         <div className="max-w-7xl mx-auto px-4">
-          {/* Main Header Row */}
           <div className="flex items-center justify-between h-20">
             {/* Mobile Menu Button - Left */}
             <motion.button
@@ -117,7 +117,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </AnimatePresence>
             </motion.button>
 
-            {/* Centered Logo */}
+            {/* Centered Logo - Now in main div */}
             <motion.div
               className="flex-1 flex justify-center lg:flex-none lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -140,7 +140,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </motion.button>
             </motion.div>
 
-            {/* User Menu - Right */}
+            {/* User Menu - Right - Now in main div */}
             {userEmail && (
               <div className="relative">
                 <motion.button
@@ -188,7 +188,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             )}
           </div>
 
-          {/* Desktop Navigation - Below Logo */}
+          {/* Desktop Navigation - Separate nav section below main div */}
           <div className="hidden lg:block border-t border-gray-200/50">
             <nav className="flex items-center justify-center py-4">
               <div className="flex items-center space-x-8">
@@ -223,7 +223,6 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </div>
             </nav>
           </div>
-        </div>
 
         {/* Mobile Navigation */}
         <AnimatePresence>
