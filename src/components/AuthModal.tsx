@@ -149,7 +149,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
       window.open('https://accounts.google.com/oauth/authorize?client_id=demo&redirect_uri=demo&scope=email%20profile', '_blank', 'width=500,height=600');
       
       // Simulate successful OAuth return
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Simulate getting user data from Google
       const googleUser = {
