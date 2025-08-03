@@ -130,55 +130,6 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 className="h-12 w-auto group-hover:opacity-80 transition-opacity duration-300"
               />
             </motion.div>
-
-            {/* User Menu */}
-            <div className="flex items-center">
-              {userEmail && (
-                <div className="relative">
-                  <motion.button
-                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center gap-2 text-sm text-[#141414] hover:text-gray-600 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100"
-                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <User className="h-4 w-4" />
-                    <span className="max-w-[120px] truncate hidden sm:block">{userEmail}</span>
-                    <motion.div
-                      animate={{ rotate: isUserMenuOpen ? 180 : 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <ChevronDown className="h-4 w-4" />
-                    </motion.div>
-                  </motion.button>
-                  
-                  {/* User Dropdown Menu */}
-                  <AnimatePresence>
-                    {isUserMenuOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
-                      >
-                        <motion.button
-                          onClick={() => {
-                            onLogout?.();
-                            setIsUserMenuOpen(false);
-                          }}
-                          className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
-                          style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                          whileHover={{ x: 4 }}
-                        >
-                          Sign out
-                        </motion.button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Desktop Navigation - Centered Below Logo */}
@@ -216,6 +167,55 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </div>
             </nav>
           </div>
+
+          {/* User Menu - Right Side */}
+          {userEmail && (
+            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+              <div className="relative">
+                <motion.button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center gap-2 text-sm text-[#141414] hover:text-gray-600 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100"
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <User className="h-4 w-4" />
+                  <span className="max-w-[120px] truncate hidden sm:block">{userEmail}</span>
+                  <motion.div
+                    animate={{ rotate: isUserMenuOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronDown className="h-4 w-4" />
+                  </motion.div>
+                </motion.button>
+                
+                {/* User Dropdown Menu */}
+                <AnimatePresence>
+                  {isUserMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                    >
+                      <motion.button
+                        onClick={() => {
+                          onLogout?.();
+                          setIsUserMenuOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
+                        style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                        whileHover={{ x: 4 }}
+                      >
+                        Sign out
+                      </motion.button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Mobile Navigation */}
