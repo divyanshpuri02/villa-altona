@@ -198,23 +198,8 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               ))}
             </nav>
             
-            {/* Right side - Book Now Button & User Menu */}
-            <div className="flex items-center gap-4">
-              {/* Book Now Button */}
-              <motion.button
-                onClick={() => scrollToSection('booking')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 text-sm font-bold tracking-wide rounded transition-all duration-300 shadow-md hover:shadow-lg"
-                style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                whileHover={{ scale: 1.05, y: -1 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 }}
-              >
-                BOOK NOW
-              </motion.button>
-
-              {/* User Menu */}
+            {/* Right side - User Menu */}
+            <div className="flex items-center">
               {userEmail && (
                 <div className="relative">
                   <motion.button
