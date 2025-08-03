@@ -119,33 +119,43 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
 
           {/* Centered Logo */}
           <motion.div 
-            className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center cursor-pointer group"
+            className="flex-1 flex justify-center items-center cursor-pointer group"
             onClick={() => scrollToSection('hero')}
-            whileTap={{ scale: 0.92 }}
+            whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
-            <div className="relative">
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-[#141414]/5 to-[#141414]/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ transform: 'scale(1.5)' }}
-              />
+            <div className="relative flex flex-col items-center">
               <img 
                 src="/file1.svg" 
                 alt="Villa Altona Logo"
-                width="90" 
-                height="70" 
-                className="relative z-10 filter drop-shadow-sm group-hover:drop-shadow-md group-hover:scale-105 transition-all duration-300"
+                width="80" 
+                height="60" 
+                className="filter drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"
                 style={{ 
                   backgroundColor: 'transparent',
-                  filter: 'contrast(1.1) brightness(1.05)'
+                  filter: 'contrast(1.05) brightness(1.02)'
                 }}
               />
+              <div className="text-center mt-1">
+                <h1 
+                  className="text-[#141414] text-lg font-bold tracking-tight"
+                  style={{ fontFamily: '"Noto Serif", serif' }}
+                >
+                  Villa Altona
+                </h1>
+                <p 
+                  className="text-[#141414] text-[9px] font-medium tracking-[0.15em] uppercase opacity-50 mt-0.5"
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                >
+                  Luxury Villa
+                </p>
+              </div>
             </div>
           </motion.div>
           
           {/* Right side - User Dropdown Menu */}
           {userEmail ? (
-            <div className="relative ml-auto">
+            <div className="relative">
               <motion.button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 className="flex items-center gap-2 text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100"
@@ -197,7 +207,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </AnimatePresence>
             </div>
           ) : (
-            <div className="w-24 ml-auto"></div>
+            <div className="w-24"></div>
           )}
         </div>
 
