@@ -84,7 +84,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
           scrolled 
             ? 'bg-white/95 backdrop-blur-xl shadow-2xl border-b border-white/20' 
-            : 'bg-gradient-to-b from-black/40 via-black/20 to-transparent backdrop-blur-sm'
+            : 'bg-gradient-to-b from-black/40 via-black/20'
         }`}
       >
         {/* Main Navigation Container - Atlantis Style */}
