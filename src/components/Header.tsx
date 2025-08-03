@@ -119,19 +119,38 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
 
           {/* Centered Logo */}
           <motion.div 
-            className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center justify-center cursor-pointer"
+            className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center cursor-pointer group"
             onClick={() => scrollToSection('hero')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.08, y: -2 }}
+            whileTap={{ scale: 0.92 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           >
-            <img 
-              src="/file1.svg" 
-              alt="Villa Altona Logo"
-              width="80" 
-              height="60" 
-              className="text-[#141414] bg-transparent"
-              style={{ backgroundColor: 'transparent' }}
-            />
+            <div className="relative">
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-[#141414]/5 to-[#141414]/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ transform: 'scale(1.5)' }}
+              />
+              <img 
+                src="/file1.svg" 
+                alt="Villa Altona Logo"
+                width="90" 
+                height="70" 
+                className="relative z-10 filter drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"
+                style={{ 
+                  backgroundColor: 'transparent',
+                  filter: 'contrast(1.1) brightness(1.05)'
+                }}
+              />
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="mt-1 text-[#141414] text-xs font-medium tracking-[0.2em] uppercase opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ fontFamily: '"Noto Sans", sans-serif' }}
+            >
+              Luxury Villa
+            </motion.div>
           </motion.div>
           
           {/* Right side - User Dropdown Menu */}
