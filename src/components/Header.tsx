@@ -83,69 +83,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
           scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white/90 backdrop-blur-sm'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4">
-          {/* Main Header Row */}
-          <div className="flex items-center justify-between h-20">
-            {/* Mobile Menu Button */}
-            <motion.button
-              className="lg:hidden p-2 text-[#141414] hover:bg-gray-100 rounded-lg transition-colors duration-200"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              whileTap={{ scale: 0.95 }}
-            >
-              <AnimatePresence mode="wait">
-                {isMenuOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <X className="h-6 w-6" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Menu className="h-6 w-6" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
-
-            {/* Centered Logo */}
-            <motion.button
-              type="button"
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer group focus:outline-none focus:ring-0 border-none bg-transparent p-0 m-0"
-              onClick={() => scrollToSection('hero')}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              style={{ 
-                WebkitTapHighlightColor: 'transparent',
-                outline: 'none',
-                border: 'none',
-                background: 'none',
-                padding: 0,
-                margin: 0
-              }}
-            >
-              <img 
-                src="/file3.svg" 
-                alt="Villa Altona Logo" 
-                className="h-12 w-auto group-hover:opacity-80 transition-opacity duration-300 select-none pointer-events-none"
-                draggable="false"
-                style={{
-                  display: 'block',
-                  maxWidth: '100%',
-                  height: 'auto'
-                }}
-              />
-            </motion.button>
-          </div>
+       
 
           {/* Desktop Navigation - Centered Below Logo */}
           <div className="hidden lg:block border-t border-gray-200/50">
