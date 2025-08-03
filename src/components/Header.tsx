@@ -84,8 +84,8 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
-            
+          {/* Top row with mobile menu button and user menu */}
+          <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Mobile Menu Button */}
             <motion.button
               className="lg:hidden p-2 text-[#141414] hover:bg-gray-100 rounded-lg transition-colors duration-200"
@@ -117,41 +117,9 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </AnimatePresence>
             </motion.button>
 
-            {/* Left Navigation - Desktop */}
-            <nav className="hidden lg:flex items-center space-x-8">
-              {menuItems.slice(0, 3).map((item, index) => (
-                <motion.button
-                  key={item.sectionId}
-                  onClick={() => scrollToSection(item.sectionId)}
-                  className={`relative px-2 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
-                    activeSection === item.sectionId 
-                      ? 'text-[#141414]' 
-                      : 'text-gray-600 hover:text-[#141414]'
-                  }`}
-                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                  whileHover={{ y: -1 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + index * 0.1 }}
-                >
-                  {item.label}
-                  {activeSection === item.sectionId && (
-                    <motion.div
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
-                      layoutId="activeSection"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  )}
-                </motion.button>
-              ))}
-            </nav>
-
             {/* Centered Logo */}
             <motion.div 
-              className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer group"
+              className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer group lg:relative lg:left-auto lg:transform-none"
               onClick={() => scrollToSection('hero')}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
@@ -159,42 +127,10 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               <img 
                 src="/file1.svg" 
                 alt="Villa Altona Logo" 
-                className="h-12 lg:h-14 w-auto group-hover:opacity-80 transition-opacity duration-300"
+                className="h-10 lg:h-12 w-auto group-hover:opacity-80 transition-opacity duration-300"
               />
             </motion.div>
 
-            {/* Right Navigation - Desktop */}
-            <nav className="hidden lg:flex items-center space-x-8">
-              {menuItems.slice(3).map((item, index) => (
-                <motion.button
-                  key={item.sectionId}
-                  onClick={() => scrollToSection(item.sectionId)}
-                  className={`relative px-2 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
-                    activeSection === item.sectionId 
-                      ? 'text-[#141414]' 
-                      : 'text-gray-600 hover:text-[#141414]'
-                  }`}
-                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                  whileHover={{ y: -1 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                >
-                  {item.label}
-                  {activeSection === item.sectionId && (
-                    <motion.div
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
-                      layoutId="activeSection"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  )}
-                </motion.button>
-              ))}
-            </nav>
-            
             {/* Right side - User Menu */}
             <div className="flex items-center">
               {userEmail && (
@@ -243,6 +179,40 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Desktop Navigation - Below Logo */}
+          <div className="hidden lg:block">
+            <nav className="flex items-center justify-center space-x-12 pb-4">
+              {menuItems.map((item, index) => (
+                <motion.button
+                  key={item.sectionId}
+                  onClick={() => scrollToSection(item.sectionId)}
+                  className={`relative px-2 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
+                    activeSection === item.sectionId 
+                      ? 'text-[#141414]' 
+                      : 'text-gray-600 hover:text-[#141414]'
+                  }`}
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + index * 0.1 }}
+                >
+                  {item.label}
+                  {activeSection === item.sectionId && (
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
+                      layoutId="activeSection"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  )}
+                </motion.button>
+              ))}
+            </nav>
           </div>
         </div>
 
