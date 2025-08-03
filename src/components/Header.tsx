@@ -141,13 +141,13 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   className="text-[#141414] text-lg font-bold tracking-tight"
                   style={{ fontFamily: '"Noto Serif", serif' }}
                 >
-                  
+                  Villa Altona
                 </h1>
                 <p 
                   className="text-[#141414] text-[9px] font-medium tracking-[0.15em] uppercase opacity-50 mt-0.5"
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
                 >
-                  Villa Altona
+                  
                 </p>
               </div>
             </div>
