@@ -80,7 +80,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'bg-neutral-50/95 backdrop-blur-lg border-b border-gray-200 shadow-sm' : 'bg-neutral-50'
+          scrolled ? 'bg-neutral-50/80 backdrop-blur-md border-b border-gray-200/50 shadow-lg' : 'bg-neutral-50'
         }`}
       >
         {/* Logo Section */}
