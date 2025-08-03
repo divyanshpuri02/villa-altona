@@ -605,6 +605,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
               </form>
 
               <div className="mt-6 text-center">
+                {!isForgotPassword && !isOtpVerification && !isResetPassword && (
                 <p className="text-neutral-500 text-sm" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
                   {isLogin ? "Don't have an account?" : "Already have an account?"}
                   <button
@@ -615,6 +616,26 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                     {isLogin ? 'Sign Up' : 'Sign In'}
                   </button>
                 </p>
+                )}
+                
+                {(isForgotPassword || isOtpVerification || isResetPassword) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsForgotPassword(false);
+                      setIsOtpVerification(false);
+                      setIsResetPassword(false);
+                      setIsLogin(true);
+                      setError(null);
+                      setSuccess(null);
+                      setFormData({ name: '', email: '', password: '', confirmPassword: '', otp: '' });
+                    }}
+                    className="text-[#141414] text-sm hover:underline flex items-center justify-center gap-1"
+                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  >
+                    ← Back to Sign In
+                  </button>
+                )}
               </div>
             </div>
           </motion.div>
