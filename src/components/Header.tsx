@@ -143,12 +143,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 >
                   Villa Altona
                 </h1>
-                <p 
-                  className="text-[#141414] text-[9px] font-medium tracking-[0.15em] uppercase opacity-50 mt-0.5"
-                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                >
-                  Luxury Villa
-                </p>
+            
               </div>
             </div>
           </motion.div>
