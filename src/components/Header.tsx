@@ -136,7 +136,6 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   filter: 'contrast(1.05) brightness(1.02)'
                 }}
               />
-            s */}
             </div>
           </motion.div>
           
