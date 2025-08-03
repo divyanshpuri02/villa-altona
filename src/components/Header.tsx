@@ -156,14 +156,11 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
-              <div className="text-center">
-                <h1 className="text-2xl lg:text-3xl font-bold text-[#141414] tracking-wide group-hover:text-gray-700 transition-colors duration-300" style={{ fontFamily: '"Noto Serif", serif' }}>
-                  VILLA ALTONA
-                </h1>
-                <p className="text-xs text-gray-500 tracking-widest uppercase" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                  THE PALM, GOA
-                </p>
-              </div>
+              <img 
+                src="/file1.svg" 
+                alt="Villa Altona Logo" 
+                className="h-12 lg:h-14 w-auto group-hover:opacity-80 transition-opacity duration-300"
+              />
             </motion.div>
 
             {/* Right Navigation - Desktop */}
