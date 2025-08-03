@@ -20,6 +20,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
   const [success, setSuccess] = useState<string | null>(null);
   const [otpTimer, setOtpTimer] = useState(0);
   const [generatedOtp, setGeneratedOtp] = useState('');
+  const [showDemoOtp, setShowDemoOtp] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState({
     hasSpecial: false,
     hasCapital: false,
@@ -205,8 +206,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setLoading(false);
     setSuccess(`OTP sent to ${formData.email}. Check your email.`);
     
-    // For demo purposes, show OTP in console
-    console.log('Demo OTP:', otp);
+    // Show OTP in UI for demo purposes
+    setShowDemoOtp(true);
     
     // Start OTP timer
     setOtpTimer(300); // 5 minutes
@@ -299,8 +300,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setLoading(false);
     setSuccess('New OTP sent to your email!');
     
-    // For demo purposes, show OTP in console
-    console.log('Demo OTP (Resent):', otp);
+    // Show new OTP in UI for demo purposes
+    setShowDemoOtp(true);
     
     // Reset timer
     setOtpTimer(300);
@@ -426,6 +427,30 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                 </motion.div>
               )}
 
+              {/* Demo OTP Display */}
+              {showDemoOtp && isOtpVerification && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <p className="text-blue-700 text-sm font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                      Demo Mode - Your OTP Code:
+                    </p>
+                  </div>
+                  <div className="bg-white rounded-lg p-3 border border-blue-200">
+                    <p className="text-2xl font-bold text-blue-800 text-center tracking-widest" style={{ fontFamily: '"Noto Sans", monospace' }}>
+                      {generatedOtp}
+                    </p>
+                  </div>
+                  <p className="text-blue-600 text-xs mt-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                    In a real application, this would be sent to your email address.
+                  </p>
+                </motion.div>
+              )}
+
               {/* Google Login Button */}
               {!isForgotPassword && !isOtpVerification && !isResetPassword && (
                 <motion.button
@@ -474,7 +499,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
               )}
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={
+                isForgotPassword ? handleForgotPassword :
+                isOtpVerification ? handleOtpVerification :
+                isResetPassword ? handleResetPassword :
+                handleSubmit
+              } className="space-y-4">
                 {!isLogin && (
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-500" />
@@ -490,7 +520,195 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                   </div>
                 )}
 
-                <div className="relative">
+                {/* Email Field - Show for login, signup, and forgot password */}
+                {(!isOtpVerification && !isResetPassword) && (
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-500" />
+                    <input
+                      type="email"
+                      placeholder="Email Address"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      required
+                      className="w-full pl-10 pr-4 py-3 bg-[#ededed] border-none rounded-xl text-[#141414] placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#141414] text-sm"
+                      style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                    />
+                  </div>
+                )}
+
+                {/* OTP Field - Show only during OTP verification */}
+                {isOtpVerification && (
+                  <div className="relative">
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-500 flex items-center justify-center">
+                      <span className="text-sm font-bold">#</span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Enter 6-digit OTP"
+                      value={formData.otp}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+                        handleInputChange('otp', value);
+                      }}
+                      maxLength={6}
+                      required
+                      className="w-full pl-10 pr-4 py-3 bg-[#ededed] border-none rounded-xl text-[#141414] placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#141414] text-sm text-center tracking-widest font-mono"
+                      style={{ fontFamily: '"Noto Sans", monospace' }}
+                    />
+                    {otpTimer > 0 && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-500 text-xs">
+                        {formatTime(otpTimer)}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Password Field - Show for login, signup, and reset password */}
+                {(!isForgotPassword && !isOtpVerification) && (
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-500" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password"
+                      value={formData.password}
+                      onChange={(e) => handlePasswordInputChange(e.target.value)}
+                      required
+                      className="w-full pl-10 pr-12 py-3 bg-[#ededed] border-none rounded-xl text-[#141414] placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#141414] text-sm"
+                      style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-500 hover:text-[#141414]"
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                  </div>
+                )}
+
+                {/* Confirm Password Field - Show for signup and reset password */}
+                {(!isLogin && !isForgotPassword && !isOtpVerification) && (
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-500" />
+                    <input
+                      type="password"
+                      placeholder="Confirm Password"
+                      value={formData.confirmPassword}
+                      onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                      required={!isLogin}
+                      className={`w-full pl-10 pr-4 py-3 bg-[#ededed] border-none rounded-xl text-[#141414] placeholder:text-neutral-500 focus:outline-none focus:ring-2 text-sm ${
+                        formData.confirmPassword && formData.password !== formData.confirmPassword 
+                          ? 'focus:ring-red-500 ring-2 ring-red-500' 
+                          : 'focus:ring-[#141414]'
+                      }`}
+                      style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                    />
+                    {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500">
+                        <span className="text-xs">✗</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Resend OTP Button */}
+                {isOtpVerification && otpTimer === 0 && (
+                  <motion.button
+                    type="button"
+                    onClick={handleResendOtp}
+                    disabled={loading}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-gray-100 text-[#141414] rounded-xl h-10 px-4 font-medium text-sm hover:bg-gray-200 transition-all duration-300 disabled:opacity-50"
+                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  >
+                    {loading ? 'Sending...' : 'Resend OTP'}
+                  </motion.button>
+                )}
+
+                <motion.button
+                  type="submit"
+                  disabled={loading || !isFormValid()}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-[#141414] text-white rounded-xl h-12 px-4 font-bold text-sm hover:bg-gray-800 transition-all duration-300 disabled:opacity-50 flex items-center justify-center"
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                >
+                  {loading ? (
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"
+                      />
+                      {isForgotPassword ? 'Sending OTP...' :
+                       isOtpVerification ? 'Verifying...' :
+                       isResetPassword ? 'Resetting...' :
+                       isLogin ? 'Signing In...' : 'Creating Account...'}
+                    </>
+                  ) : (
+                    <span>
+                      {isForgotPassword ? 'Send OTP' :
+                       isOtpVerification ? 'Verify OTP' :
+                       isResetPassword ? 'Reset Password' :
+                       isLogin ? 'Sign In' : 'Create Account'}
+                    </span>
+                  )}
+                </motion.button>
+              </form>
+
+              {/* Forgot Password Link - Show only on login screen */}
+              {isLogin && !isForgotPassword && !isOtpVerification && !isResetPassword && (
+                <div className="mt-4 text-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsForgotPassword(true);
+                      setError(null);
+                      setSuccess(null);
+                    }}
+                    className="text-[#141414] text-sm hover:underline"
+                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  >
+                    Forgot your password?
+                  </button>
+                </div>
+              )}
+
+              <div className="mt-6 text-center">
+                {!isForgotPassword && !isOtpVerification && !isResetPassword && (
+                <p className="text-neutral-500 text-sm" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  {isLogin ? "Don't have an account?" : "Already have an account?"}
+                  <button
+                    type="button"
+                    onClick={switchMode}
+                    className="ml-1 text-[#141414] font-medium hover:underline"
+                  >
+                    {isLogin ? 'Sign Up' : 'Sign In'}
+                  </button>
+                </p>
+                )}
+                
+                {(isForgotPassword || isOtpVerification || isResetPassword) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsForgotPassword(false);
+                      setIsOtpVerification(false);
+                      setIsResetPassword(false);
+                      setIsLogin(true);
+                      setError(null);
+                      setSuccess(null);
+                      setShowDemoOtp(false);
+                      setFormData({ name: '', email: '', password: '', confirmPassword: '', otp: '' });
+                    }}
+                    className="text-[#141414] text-sm hover:underline flex items-center justify-center gap-1"
+                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  >
+                    ← Back to Sign In
+                  </button>
+                )}
+              </div>
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-500" />
                   <input
                     type="email"
