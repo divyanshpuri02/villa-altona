@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowLeft } from 'lucide-react';
+import { Menu, X, ArrowLeft, ChevronDown, User } from 'lucide-react';
 
 interface HeaderProps {
   userEmail?: string;
@@ -9,6 +9,7 @@ interface HeaderProps {
 
 export default function Header({ userEmail, onLogout }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
 
@@ -128,29 +129,69 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               alt="Villa Altona Logo"
               width="80" 
               height="60" 
-              className="text-[#141414]"
+              className="text-[#141414] bg-transparent"
+              style={{ backgroundColor: 'transparent' }}
             />
             <div className="text-[#141414] text-xs font-light tracking-[0.2em] mt-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
               VILLA ALTONA
             </div>
           </motion.div>
           
-          {/* Right side - User Menu */}
+          {/* Right side - User Dropdown Menu */}
           {userEmail ? (
-            <div className="flex items-center gap-3">
-              <span className="hidden md:block text-sm text-neutral-500" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                {userEmail}
-              </span>
-              <button
-                onClick={onLogout}
-                className="text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-gray-100"
+            <div className="relative ml-auto">
+              <motion.button
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                className="flex items-center gap-2 text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100"
                 style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                Logout
-              </button>
+                <User className="h-4 w-4" />
+                <span className="max-w-[120px] truncate">{userEmail}</span>
+                <motion.div
+                  animate={{ rotate: isUserMenuOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </motion.div>
+              </motion.button>
+              
+              {/* User Dropdown Menu */}
+              <AnimatePresence>
+                {isUserMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                  >
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <p className="text-xs text-neutral-500 uppercase tracking-wide" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                        Signed in as
+                      </p>
+                      <p className="text-sm font-medium text-[#141414] truncate" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                        {userEmail}
+                      </p>
+                    </div>
+                    <motion.button
+                      onClick={() => {
+                        onLogout?.();
+                        setIsUserMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
+                      style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                      whileHover={{ x: 4 }}
+                    >
+                      Sign out
+                    </motion.button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ) : (
-            <div className="w-20"></div>
+            <div className="w-24 ml-auto"></div>
           )}
         </div>
 
@@ -226,17 +267,26 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   </motion.button>
                 ))}
                 {userEmail && (
-                  <div className="px-4 py-3 border-t border-gray-200 mt-2">
-                    <p className="text-sm text-neutral-500 mb-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                      {userEmail}
-                    </p>
-                    <button
-                      onClick={onLogout}
-                      className="text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200"
+                  <div className="border-t border-gray-200 mt-2">
+                    <div className="px-4 py-2">
+                      <p className="text-xs text-neutral-500 uppercase tracking-wide mb-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                        Signed in as
+                      </p>
+                      <p className="text-sm font-medium text-[#141414] mb-3" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                        {userEmail}
+                      </p>
+                    </div>
+                    <motion.button
+                      onClick={() => {
+                        onLogout?.();
+                        setIsMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
                       style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                      whileHover={{ x: 4 }}
                     >
-                      Logout
-                    </button>
+                      Sign out
+                    </motion.button>
                   </div>
                 )}
               </div>
