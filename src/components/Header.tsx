@@ -144,6 +144,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   height: 'auto'
                 }}
               />
+            </motion.button>
           </div>
 
           {/* Desktop Navigation - Centered Below Logo */}
