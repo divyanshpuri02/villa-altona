@@ -21,6 +21,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
   const [otpTimer, setOtpTimer] = useState(0);
   const [generatedOtp, setGeneratedOtp] = useState('');
   const [showDemoOtp, setShowDemoOtp] = useState(false);
+  const [failedLoginAttempts, setFailedLoginAttempts] = useState(0);
+  const [showForgotPasswordOption, setShowForgotPasswordOption] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState({
     hasSpecial: false,
     hasCapital: false,
@@ -103,11 +105,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
       const user = findUserByEmail(formData.email);
       if (!user) {
         setError('No account found with this email address');
+        setFailedLoginAttempts(prev => {
+          const newCount = prev + 1;
+          if (newCount >= 2) {
+            setShowForgotPasswordOption(true);
+          }
+          return newCount;
+        });
         return false;
       }
       
       if (user.password !== formData.password) {
         setError('Incorrect password');
+        setFailedLoginAttempts(prev => {
+          const newCount = prev + 1;
+          if (newCount >= 2) {
+            setShowForgotPasswordOption(true);
+          }
+          return newCount;
+        });
         return false;
       }
     }
@@ -331,12 +347,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setIsResetPassword(false);
     setFormData({ name: '', email: '', password: '', confirmPassword: '', otp: '' });
     setPasswordStrength({ hasSpecial: false, hasCapital: false, hasMinLength: false, isValid: false });
+    setFailedLoginAttempts(0);
+    setShowForgotPasswordOption(false);
   };
 
   const handleInputChange = (field: string, value: string) => {
     setError(null); // Clear error when user starts typing
     setSuccess(null); // Clear success when user starts typing
     setFormData({...formData, [field]: value});
+    
+    // Reset failed attempts when user starts typing in email or password field
+    if (field === 'email' || field === 'password') {
+      setFailedLoginAttempts(0);
+      setShowForgotPasswordOption(false);
+    }
   };
 
   const handlePasswordInputChange = (password: string) => {
@@ -344,6 +368,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setSuccess(null); // Clear success when user starts typing
     setFormData({...formData, password});
     if (!isLogin) validatePassword(password);
+    
+    // Reset failed attempts when user starts typing password
+    setFailedLoginAttempts(0);
+    setShowForgotPasswordOption(false);
   };
 
   const isFormValid = () => {
@@ -411,7 +439,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                   <p className="text-red-600 text-sm font-medium" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
                     {error}
                   </p>
-                </motion.div>
+                  {/* Show forgot password option after 2 failed attempts */}
+                  {showForgotPasswordOption && isLogin && (
+                    <motion.button
+                      type="button"
+                      onClick={() => setIsForgotPassword(true)}
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-2 text-blue-600 text-sm font-medium hover:text-blue-800 underline"
+                      style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                    >
+                      Forgot your password? Reset it here
+                    </motion.button>
+                  )}
+                    {isLogin && !showForgotPasswordOption && (
               )}
 
               {/* Success Message */}
