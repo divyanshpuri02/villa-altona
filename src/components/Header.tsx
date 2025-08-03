@@ -223,6 +223,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </div>
             </nav>
           </div>
+        </div>
 
         {/* Mobile Navigation */}
         <AnimatePresence>
