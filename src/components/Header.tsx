@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowLeft, ChevronDown, User } from 'lucide-react';
+import { Menu, X, ChevronDown, User } from 'lucide-react';
 
 interface HeaderProps {
   userEmail?: string;
@@ -14,13 +14,12 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
   const [activeSection, setActiveSection] = useState('');
 
   const menuItems = [
-    { label: 'Home', sectionId: 'hero' },
-    { label: 'About', sectionId: 'about' },
-    { label: 'Amenities', sectionId: 'amenities' },
-    { label: 'Gallery', sectionId: 'gallery' },
-    { label: 'Booking', sectionId: 'booking' },
-    { label: 'Reviews', sectionId: 'testimonials' },
-    { label: 'Contact', sectionId: 'contact' },
+    { label: 'OFFERS', sectionId: 'hero' },
+    { label: 'STAYS', sectionId: 'about' },
+    { label: 'DINING', sectionId: 'amenities' },
+    { label: 'ENTERTAINMENT', sectionId: 'gallery' },
+    { label: 'AQUAVENTURE', sectionId: 'testimonials' },
+    { label: 'EXPERIENCES', sectionId: 'contact' },
   ];
 
   useEffect(() => {
@@ -81,137 +80,105 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'bg-neutral-50/80 backdrop-blur-md border-b border-gray-200/50 shadow-lg' : 'bg-neutral-50'
+          scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white/90 backdrop-blur-sm'
         }`}
       >
-        {/* Logo Section */}
-        <div className="flex items-center justify-between p-4 pb-2 max-w-7xl mx-auto">
-          {/* Mobile Menu Button */}
-          <motion.button
-            className="md:hidden p-2 text-[#141414]"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            whileTap={{ scale: 0.95 }}
-          >
-            <AnimatePresence mode="wait">
-              {isMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <X className="h-6 w-6" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Menu className="h-6 w-6" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.button>
-
-          {/* Centered Logo */}
-          <motion.div 
-            className="flex-1 flex justify-center items-center cursor-pointer group"
-            onClick={() => scrollToSection('hero')}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-          >
-            <div className="relative flex flex-col items-center">
-              <img 
-                src="/file1.svg" 
-                alt="Villa Altona Logo"
-                width="80" 
-                height="60" 
-                className="filter drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"
-                style={{ 
-                  backgroundColor: 'transparent',
-                  filter: 'contrast(1.05) brightness(1.02)'
-                }}
-              />
-            </div>
-          </motion.div>
-          
-          {/* Right side - User Dropdown Menu */}
-          {userEmail ? (
-            <div className="relative">
-              <motion.button
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center gap-2 text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100"
-                style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <User className="h-4 w-4" />
-                <span className="max-w-[120px] truncate">{userEmail}</span>
-                <motion.div
-                  animate={{ rotate: isUserMenuOpen ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ChevronDown className="h-4 w-4" />
-                </motion.div>
-              </motion.button>
-              
-              {/* User Dropdown Menu */}
-              <AnimatePresence>
-                {isUserMenuOpen && (
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between h-20">
+            
+            {/* Mobile Menu Button */}
+            <motion.button
+              className="lg:hidden p-2 text-[#141414] hover:bg-gray-100 rounded-lg transition-colors duration-200"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              whileTap={{ scale: 0.95 }}
+            >
+              <AnimatePresence mode="wait">
+                {isMenuOpen ? (
                   <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
                   >
-                    
-                    <motion.button
-                      onClick={() => {
-                        onLogout?.();
-                        setIsUserMenuOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
-                      style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                      whileHover={{ x: 4 }}
-                    >
-                      Sign out
-                    </motion.button>
+                    <X className="h-6 w-6" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu className="h-6 w-6" />
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
-          ) : (
-            <div className="w-24"></div>
-          )}
-        </div>
+            </motion.button>
 
-        {/* Desktop Navigation */}
-        <motion.nav 
-          className={`hidden md:block transition-all duration-300 ${
-            scrolled ? 'py-2' : 'py-3'
-          }`}
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-center space-x-8">
-              {menuItems.map((item, index) => (
+            {/* Left Navigation - Desktop */}
+            <nav className="hidden lg:flex items-center space-x-8">
+              {menuItems.slice(0, 3).map((item, index) => (
                 <motion.button
                   key={item.sectionId}
                   onClick={() => scrollToSection(item.sectionId)}
-                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
+                  className={`relative px-2 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
                     activeSection === item.sectionId 
                       ? 'text-[#141414]' 
-                      : 'text-neutral-500 hover:text-[#141414]'
+                      : 'text-gray-600 hover:text-[#141414]'
                   }`}
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                  whileHover={{ y: -2 }}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + index * 0.1 }}
+                >
+                  {item.label}
+                  {activeSection === item.sectionId && (
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
+                      layoutId="activeSection"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  )}
+                </motion.button>
+              ))}
+            </nav>
+
+            {/* Centered Logo */}
+            <motion.div 
+              className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer group"
+              onClick={() => scrollToSection('hero')}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <div className="text-center">
+                <h1 className="text-2xl lg:text-3xl font-bold text-[#141414] tracking-wide group-hover:text-gray-700 transition-colors duration-300" style={{ fontFamily: '"Noto Serif", serif' }}>
+                  VILLA ALTONA
+                </h1>
+                <p className="text-xs text-gray-500 tracking-widest uppercase" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                  THE PALM, GOA
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Right Navigation - Desktop */}
+            <nav className="hidden lg:flex items-center space-x-8">
+              {menuItems.slice(3).map((item, index) => (
+                <motion.button
+                  key={item.sectionId}
+                  onClick={() => scrollToSection(item.sectionId)}
+                  className={`relative px-2 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
+                    activeSection === item.sectionId 
+                      ? 'text-[#141414]' 
+                      : 'text-gray-600 hover:text-[#141414]'
+                  }`}
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.95 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -229,9 +196,73 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   )}
                 </motion.button>
               ))}
+            </nav>
+            
+            {/* Right side - Book Now Button & User Menu */}
+            <div className="flex items-center gap-4">
+              {/* Book Now Button */}
+              <motion.button
+                onClick={() => scrollToSection('booking')}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 text-sm font-bold tracking-wide rounded transition-all duration-300 shadow-md hover:shadow-lg"
+                style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                whileHover={{ scale: 1.05, y: -1 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                BOOK NOW
+              </motion.button>
+
+              {/* User Menu */}
+              {userEmail && (
+                <div className="relative">
+                  <motion.button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center gap-2 text-sm text-[#141414] hover:text-gray-600 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100"
+                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <User className="h-4 w-4" />
+                    <span className="max-w-[120px] truncate hidden sm:block">{userEmail}</span>
+                    <motion.div
+                      animate={{ rotate: isUserMenuOpen ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </motion.div>
+                  </motion.button>
+                  
+                  {/* User Dropdown Menu */}
+                  <AnimatePresence>
+                    {isUserMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                      >
+                        <motion.button
+                          onClick={() => {
+                            onLogout?.();
+                            setIsUserMenuOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
+                          style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                          whileHover={{ x: 4 }}
+                        >
+                          Sign out
+                        </motion.button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
             </div>
           </div>
-        </motion.nav>
+        </div>
 
         {/* Mobile Navigation */}
         <AnimatePresence>
@@ -241,9 +272,9 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="md:hidden bg-neutral-50 border-t border-gray-200"
+              className="lg:hidden bg-white border-t border-gray-200"
             >
-              <div className="py-4">
+              <div className="py-4 px-4 space-y-2">
                 {menuItems.map((item, index) => (
                   <motion.button
                     key={item.sectionId}
@@ -251,20 +282,21 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     onClick={() => scrollToSection(item.sectionId)}
-                    className={`block w-full text-left px-4 py-3 transition-all duration-300 ${
+                    className={`block w-full text-left px-4 py-3 text-sm font-medium tracking-wide transition-all duration-300 rounded-lg ${
                       activeSection === item.sectionId 
                         ? 'text-[#141414] bg-gray-100 border-l-4 border-[#141414]' 
-                        : 'text-neutral-600 hover:bg-gray-50 hover:text-[#141414]'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-[#141414]'
                     }`}
                     style={{ fontFamily: '"Noto Sans", sans-serif' }}
                   >
                     {item.label}
                   </motion.button>
                 ))}
+                
                 {userEmail && (
-                  <div className="border-t border-gray-200 mt-2">
+                  <div className="border-t border-gray-200 mt-4 pt-4">
                     <div className="px-4 py-2">
-                      <p className="text-xs text-neutral-500 uppercase tracking-wide mb-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide mb-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
                         Signed in as
                       </p>
                       <p className="text-sm font-medium text-[#141414] mb-3" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
@@ -276,7 +308,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                         onLogout?.();
                         setIsMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200 rounded-lg"
                       style={{ fontFamily: '"Noto Sans", sans-serif' }}
                       whileHover={{ x: 4 }}
                     >
@@ -292,7 +324,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
 
       {/* Progress Indicator */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#141414] to-gray-600 z-50 origin-left"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-blue-800 z-50 origin-left"
         style={{
           scaleX: scrolled ? Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight), 1) : 0
         }}
