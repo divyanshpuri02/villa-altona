@@ -171,9 +171,6 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   >
                     <div className="px-4 py-2 border-b border-gray-100">
                     
-                      <p className="text-sm font-medium text-[#141414] truncate" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                        {userEmail}
-                      </p>
                     </div>
                     <motion.button
                       onClick={() => {
