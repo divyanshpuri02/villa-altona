@@ -134,7 +134,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               }}
             >
               <img 
-                src="/file1.svg" 
+                src="/file3.svg" 
                 alt="Villa Altona Logo" 
                 className="h-12 w-auto group-hover:opacity-80 transition-opacity duration-300 select-none pointer-events-none"
                 draggable="false"
