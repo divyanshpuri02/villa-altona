@@ -94,23 +94,13 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
 
         {/* Centered VA Logo */}
         <div className="flex flex-col items-center justify-center flex-1">
-          <svg 
+          <img 
+            src="/file.svg" 
+            alt="Villa Altona Logo"
             width="80" 
             height="60" 
-            viewBox="0 0 300 180" 
             className="text-[#141414]"
-          >
-            {/* V Letter - More elegant and spaced */}
-            <path 
-              d="M30 30 L90 140 L120 30 L150 30 L105 170 L75 170 L30 30 Z" 
-              fill="currentColor"
-            />
-            {/* A Letter - More refined */}
-            <path 
-              d="M180 30 L210 170 L240 170 L270 30 L250 30 L240 60 L210 60 L200 30 L180 30 Z M220 85 L230 85 L225 55 L220 85 Z" 
-              fill="currentColor"
-            />
-          </svg>
+          />
           <div className="text-[#141414] text-xs font-light tracking-[0.2em] mt-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
             VILLA ALTONA
           </div>
