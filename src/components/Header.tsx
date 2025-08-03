@@ -118,18 +118,32 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             </motion.button>
 
             {/* Centered Logo */}
-            <motion.div 
-              className="flex-1 flex justify-center lg:flex-none lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2 cursor-pointer group"
+            <motion.button
+              type="button"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer group focus:outline-none focus:ring-0 border-none bg-transparent p-0 m-0"
               onClick={() => scrollToSection('hero')}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
+              style={{ 
+                WebkitTapHighlightColor: 'transparent',
+                outline: 'none',
+                border: 'none',
+                background: 'none',
+                padding: 0,
+                margin: 0
+              }}
             >
               <img 
                 src="/file1.svg" 
                 alt="Villa Altona Logo" 
-                className="h-12 w-auto group-hover:opacity-80 transition-opacity duration-300"
+                className="h-12 w-auto group-hover:opacity-80 transition-opacity duration-300 select-none pointer-events-none"
+                draggable="false"
+                style={{
+                  display: 'block',
+                  maxWidth: '100%',
+                  height: 'auto'
+                }}
               />
-            </motion.div>
           </div>
 
           {/* Desktop Navigation - Centered Below Logo */}
