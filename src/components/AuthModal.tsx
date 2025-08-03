@@ -72,8 +72,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
   };
 
   const validateForm = () => {
-    setError(null);
-    
     if (!isLogin) {
       // Signup validation
       if (!passwordStrength.isValid) {
@@ -111,6 +109,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    setError(null);
     
     if (!validateForm()) {
       return;
@@ -178,6 +178,17 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setError(null);
     setFormData({ name: '', email: '', password: '', confirmPassword: '' });
     setPasswordStrength({ hasSpecial: false, hasCapital: false, hasMinLength: false, isValid: false });
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setError(null); // Clear error when user starts typing
+    setFormData({...formData, [field]: value});
+  };
+
+  const handlePasswordInputChange = (password: string) => {
+    setError(null); // Clear error when user starts typing
+    setFormData({...formData, password});
+    if (!isLogin) validatePassword(password);
   };
 
   const isFormValid = () => {
@@ -302,7 +313,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                     type="email"
                     placeholder="Email Address"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
                     required
                     className="w-full pl-10 pr-4 py-3 bg-[#ededed] border-none rounded-xl text-[#141414] placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#141414] text-sm"
                     style={{ fontFamily: '"Noto Sans", sans-serif' }}
@@ -315,7 +326,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     value={formData.password}
-                    onChange={(e) => handlePasswordChange(e.target.value)}
+                    onChange={(e) => handlePasswordInputChange(e.target.value)}
                     required
                     className="w-full pl-10 pr-12 py-3 bg-[#ededed] border-none rounded-xl text-[#141414] placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#141414] text-sm"
                     style={{ fontFamily: '"Noto Sans", sans-serif' }}
@@ -363,7 +374,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                       type="password"
                       placeholder="Confirm Password"
                       value={formData.confirmPassword}
-                      onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                      onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                       required={!isLogin}
                       className={`w-full pl-10 pr-4 py-3 bg-[#ededed] border-none rounded-xl text-[#141414] placeholder:text-neutral-500 focus:outline-none focus:ring-2 text-sm ${
                         formData.confirmPassword && formData.password !== formData.confirmPassword 
