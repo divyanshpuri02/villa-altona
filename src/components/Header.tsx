@@ -126,7 +126,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
           >
             <div className="relative flex flex-col items-center">
               <img 
-                src="/file1.svg" 
+                src="/file3.svg" 
                 alt="Villa Altona Logo"
                 width="80" 
                 height="60" 
