@@ -14,12 +14,12 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
   const [activeSection, setActiveSection] = useState('');
 
   const menuItems = [
-    { label: 'OFFERS', sectionId: 'hero' },
-    { label: 'STAYS', sectionId: 'about' },
-    { label: 'DINING', sectionId: 'amenities' },
-    { label: 'ENTERTAINMENT', sectionId: 'gallery' },
-    { label: 'AQUAVENTURE', sectionId: 'testimonials' },
-    { label: 'EXPERIENCES', sectionId: 'contact' },
+    { label: 'About', sectionId: 'about' },
+    { label: 'Amenities', sectionId: 'amenities' },
+    { label: 'Gallery', sectionId: 'gallery' },
+    { label: 'Booking', sectionId: 'booking' },
+    { label: 'Reviews', sectionId: 'testimonials' },
+    { label: 'Contact', sectionId: 'contact' },
   ];
 
   useEffect(() => {
