@@ -95,7 +95,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         {/* Centered VA Logo */}
         <div className="flex flex-col items-center justify-center flex-1">
           <img 
-            src="/file(1).svg" 
+            src="/file.svg" 
             alt="Villa Altona Logo"
             width="80" 
             height="60" 
