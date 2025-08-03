@@ -141,15 +141,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 }}
               />
             </div>
-            <motion.div
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-              className="mt-1 text-[#141414] text-xs font-medium tracking-[0.2em] uppercase opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-              style={{ fontFamily: '"Noto Sans", sans-serif' }}
-            >
-              Luxury Villa
-            </motion.div>
+           
           </motion.div>
           
           {/* Right side - User Dropdown Menu */}
