@@ -10,11 +10,14 @@ interface HeaderProps {
 export default function Header({ userEmail, onLogout }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
 
   const menuItems = [
+    { label: 'Home', sectionId: 'hero' },
     { label: 'About', sectionId: 'about' },
     { label: 'Amenities', sectionId: 'amenities' },
     { label: 'Gallery', sectionId: 'gallery' },
+    { label: 'Booking', sectionId: 'booking' },
     { label: 'Reviews', sectionId: 'testimonials' },
     { label: 'Contact', sectionId: 'contact' },
   ];
@@ -22,12 +25,34 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
+      
+      // Update active section based on scroll position
+      const sections = menuItems.map(item => item.sectionId);
+      const currentSection = sections.find(sectionId => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
     };
+    
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [menuItems]);
 
   const scrollToSection = (sectionId: string) => {
+    if (sectionId === 'hero') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setIsMenuOpen(false);
+      return;
+    }
+    
     if (isMenuOpen) {
       setIsMenuOpen(false);
       setTimeout(() => {
@@ -49,20 +74,20 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
   };
 
   return (
-    <motion.header 
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-neutral-50/95 backdrop-blur-lg border-b border-gray-200' : 'bg-neutral-50'
-      }`}
-    >
-      <div className="flex items-center justify-between p-4 pb-2 max-w-7xl mx-auto">
-        {/* Left spacer for mobile menu */}
-        <div className="flex items-center">
+    <>
+      <motion.header 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled ? 'bg-neutral-50/95 backdrop-blur-lg border-b border-gray-200 shadow-sm' : 'bg-neutral-50'
+        }`}
+      >
+        {/* Logo Section */}
+        <div className="flex items-center justify-between p-4 pb-2 max-w-7xl mx-auto">
           {/* Mobile Menu Button */}
           <motion.button
-            className="md:hidden p-2 text-[#141414] mr-2"
+            className="md:hidden p-2 text-[#141414]"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             whileTap={{ scale: 0.95 }}
           >
@@ -90,78 +115,151 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               )}
             </AnimatePresence>
           </motion.button>
-        </div>
 
-        {/* Centered VA Logo */}
-        <div className="flex flex-col items-center justify-center flex-1">
-          <img 
-            src="/file.svg" 
-            alt="Villa Altona Logo"
-            width="80" 
-            height="60" 
-            className="text-[#141414]"
-          />
-          <div className="text-[#141414] text-xs font-light tracking-[0.2em] mt-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-            VILLA ALTONA
-          </div>
-        </div>
-        
-        {/* Right side - User Menu */}
-        {userEmail ? (
-          <div className="flex items-center gap-3">
-            <span className="hidden md:block text-sm text-neutral-500" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-              {userEmail}
-            </span>
-            <button
-              onClick={onLogout}
-              className="text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-gray-100"
-              style={{ fontFamily: '"Noto Sans", sans-serif' }}
-            >
-              Logout
-            </button>
-          </div>
-        ) : (
-          <div className="w-20"></div>
-        )}
-      </div>
-
-      {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-neutral-50 border-t border-gray-200"
+          {/* Centered Logo */}
+          <motion.div 
+            className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center justify-center cursor-pointer"
+            onClick={() => scrollToSection('hero')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <div className="py-4">
+            <img 
+              src="/file.svg" 
+              alt="Villa Altona Logo"
+              width="80" 
+              height="60" 
+              className="text-[#141414]"
+            />
+            <div className="text-[#141414] text-xs font-light tracking-[0.2em] mt-1" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+              VILLA ALTONA
+            </div>
+          </motion.div>
+          
+          {/* Right side - User Menu */}
+          {userEmail ? (
+            <div className="flex items-center gap-3">
+              <span className="hidden md:block text-sm text-neutral-500" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                {userEmail}
+              </span>
+              <button
+                onClick={onLogout}
+                className="text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-gray-100"
+                style={{ fontFamily: '"Noto Sans", sans-serif' }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="w-20"></div>
+          )}
+        </div>
+
+        {/* Desktop Navigation */}
+        <motion.nav 
+          className={`hidden md:block transition-all duration-300 ${
+            scrolled ? 'py-2' : 'py-3'
+          }`}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex justify-center space-x-8">
               {menuItems.map((item, index) => (
                 <motion.button
                   key={item.sectionId}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
                   onClick={() => scrollToSection(item.sectionId)}
-                  className="block w-full text-left px-4 py-3 text-[#141414] hover:bg-gray-100 transition-all duration-300"
+                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
+                    activeSection === item.sectionId 
+                      ? 'text-[#141414]' 
+                      : 'text-neutral-500 hover:text-[#141414]'
+                  }`}
+                  style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + index * 0.1 }}
                 >
                   {item.label}
+                  {activeSection === item.sectionId && (
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
+                      layoutId="activeSection"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  )}
                 </motion.button>
               ))}
-              {userEmail && (
-                <div className="px-4 py-3 border-t border-gray-200 mt-2">
-                  <p className="text-sm text-neutral-500 mb-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
-                    {userEmail}
-                  </p>
-                  <button
-                    onClick={onLogout}
-                    className="text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200"
+            </div>
+          </div>
+        </motion.nav>
+
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden bg-neutral-50 border-t border-gray-200"
+            >
+              <div className="py-4">
+                {menuItems.map((item, index) => (
+                  <motion.button
+                    key={item.sectionId}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    onClick={() => scrollToSection(item.sectionId)}
+                    className={`block w-full text-left px-4 py-3 transition-all duration-300 ${
+                      activeSection === item.sectionId 
+                        ? 'text-[#141414] bg-gray-100 border-l-4 border-[#141414]' 
+                        : 'text-neutral-600 hover:bg-gray-50 hover:text-[#141414]'
+                    }`}
                     style={{ fontFamily: '"Noto Sans", sans-serif' }}
                   >
-                    Logout
-                  </button>
-                </div>
-              )}
+                    {item.label}
+                  </motion.button>
+                ))}
+                {userEmail && (
+                  <div className="px-4 py-3 border-t border-gray-200 mt-2">
+                    <p className="text-sm text-neutral-500 mb-2" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                      {userEmail}
+                    </p>
+                    <button
+                      onClick={onLogout}
+                      className="text-sm text-[#141414] hover:text-neutral-600 transition-colors duration-200"
+                      style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.header>
+
+      {/* Progress Indicator */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#141414] to-gray-600 z-50 origin-left"
+        style={{
+          scaleX: scrolled ? Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight), 1) : 0
+        }}
+        initial={{ scaleX: 0 }}
+        animate={{ 
+          scaleX: scrolled ? Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight), 1) : 0 
+        }}
+        transition={{ duration: 0.1 }}
+      />
+    </>
+  );
+}
             </div>
           </motion.div>
         )}

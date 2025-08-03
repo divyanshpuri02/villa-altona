@@ -42,7 +42,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-neutral-50 pt-20">
+    <section id="hero" className="bg-neutral-50 pt-32">
       {/* Property Gallery Carousel */}
       <div className="@container">
         <div className="@[480px]:px-4 @[480px]:py-3">
