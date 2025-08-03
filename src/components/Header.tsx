@@ -24,8 +24,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setScrolled(scrollPosition > 100);
+      setScrolled(window.scrollY > 50);
       
       // Update active section based on scroll position
       const sections = menuItems.map(item => item.sectionId);
@@ -33,7 +32,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         const element = document.getElementById(sectionId);
         if (element) {
           const rect = element.getBoundingClientRect();
-          return rect.top <= 150 && rect.bottom >= 150;
+          return rect.top <= 100 && rect.bottom >= 100;
         }
         return false;
       });
@@ -59,15 +58,15 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
       setTimeout(() => {
         const element = document.getElementById(sectionId);
         if (element) {
-          const yOffset = -120;
+          const yOffset = -100;
           const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
           window.scrollTo({ top: y, behavior: 'smooth' });
         }
-      }, 300);
+      }, 400);
     } else {
       const element = document.getElementById(sectionId);
       if (element) {
-        const yOffset = -120;
+        const yOffset = -100;
         const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
@@ -76,28 +75,20 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
 
   return (
     <>
-      {/* Atlantis-Style Navigation Overlay */}
       <motion.header 
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
-          scrolled 
-            ? 'bg-white/95 backdrop-blur-xl shadow-2xl border-b border-white/20' 
-            : 'bg-gradient-to-b from-black/40 via-black/20'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white/90 backdrop-blur-sm'
         }`}
       >
-        {/* Main Navigation Container - Atlantis Style */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 lg:h-24">
-            
-            {/* Mobile Menu Button */}
+        {/* Main Container Div - Contains Logo and User Menu */}
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between h-20">
+            {/* Mobile Menu Button - Left */}
             <motion.button
-              className={`lg:hidden p-3 rounded-xl transition-all duration-300 ${
-                scrolled 
-                  ? 'text-[#141414] hover:bg-gray-100' 
-                  : 'text-white hover:bg-white/10'
-              }`}
+              className="lg:hidden p-2 text-[#141414] hover:bg-gray-100 rounded-lg transition-colors duration-200"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               whileTap={{ scale: 0.95 }}
             >
@@ -126,9 +117,9 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </AnimatePresence>
             </motion.button>
 
-            {/* Centered Logo - Atlantis Style */}
+            {/* Centered Logo - Now in main div */}
             <motion.div
-              className="flex-1 flex justify-center lg:flex-none"
+              className="flex-1 flex justify-center lg:flex-none lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -141,33 +132,20 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 whileTap={{ scale: 0.95 }}
               >
                 <div className="text-center">
-                  <h1 className={`text-2xl lg:text-3xl font-bold tracking-tight transition-all duration-300 ${
-                    scrolled ? 'text-[#141414]' : 'text-white drop-shadow-lg'
-                  }`} style={{ fontFamily: '"Noto Serif", serif' }}>
+                  <h1 className="text-2xl font-bold text-[#141414] tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
                     Villa Altona
                   </h1>
-                  <motion.div 
-                    className={`h-0.5 w-full bg-gradient-to-r from-transparent via-current to-transparent opacity-60 mt-1 transition-all duration-300 ${
-                      scrolled ? 'opacity-40' : 'opacity-80'
-                    }`}
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 0.8, delay: 0.5 }}
-                  />
+                  <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#141414] to-transparent opacity-60 mt-1"></div>
                 </div>
               </motion.button>
             </motion.div>
 
-            {/* User Menu - Right Side */}
+            {/* User Menu - Right - Now in main div */}
             {userEmail && (
               <div className="relative">
                 <motion.button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className={`flex items-center gap-2 text-sm transition-all duration-300 px-4 py-2 rounded-xl ${
-                    scrolled 
-                      ? 'text-[#141414] hover:bg-gray-100' 
-                      : 'text-white hover:bg-white/10'
-                  }`}
+                  className="flex items-center gap-2 text-sm text-[#141414] hover:text-gray-600 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100"
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -190,14 +168,14 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute right-0 top-full mt-2 w-48 bg-white/95 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 py-2 z-50"
+                      className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
                     >
                       <motion.button
                         onClick={() => {
                           onLogout?.();
                           setIsUserMenuOpen(false);
                         }}
-                        className="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50/80 transition-colors duration-200 rounded-lg mx-2"
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
                         style={{ fontFamily: '"Noto Sans", sans-serif' }}
                         whileHover={{ x: 4 }}
                       >
@@ -210,9 +188,9 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             )}
           </div>
 
-          {/* Desktop Navigation - Atlantis Style Overlay */}
-          <div className="hidden lg:block">
-            <nav className="flex items-center justify-center pb-6">
+          {/* Desktop Navigation - Separate nav section below main div */}
+          <div className="hidden lg:block border-t border-gray-200/50">
+            <nav className="flex items-center justify-center py-4">
               <div className="flex items-center space-x-8">
                 {menuItems.map((item, index) => (
                   <motion.button
@@ -220,11 +198,11 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                     onClick={() => scrollToSection(item.sectionId)}
                     className={`relative px-4 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
                       activeSection === item.sectionId 
-                        ? scrolled ? 'text-[#141414]' : 'text-white' 
-                        : scrolled ? 'text-gray-600 hover:text-[#141414]' : 'text-white/80 hover:text-white'
+                        ? 'text-[#141414]' 
+                        : 'text-gray-600 hover:text-[#141414]'
                     }`}
                     style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                    whileHover={{ y: -2 }}
+                    whileHover={{ y: -1 }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -233,9 +211,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                     {item.label}
                     {activeSection === item.sectionId && (
                       <motion.div
-                        className={`absolute bottom-0 left-0 right-0 h-0.5 ${
-                          scrolled ? 'bg-[#141414]' : 'bg-white'
-                        }`}
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
                         layoutId="activeSection"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -249,32 +225,30 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
           </div>
         </div>
 
-        {/* Mobile Navigation Menu - Full Screen Overlay */}
+        {/* Mobile Navigation */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "100vh" }}
+              animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="lg:hidden fixed inset-0 top-20 bg-black/95 backdrop-blur-xl z-40"
+              transition={{ duration: 0.3 }}
+              className="lg:hidden bg-white border-t border-gray-200"
             >
-              <div className="flex flex-col items-center justify-center h-full space-y-8 px-6">
+              <div className="py-4 px-4 space-y-2">
                 {menuItems.map((item, index) => (
                   <motion.button
                     key={item.sectionId}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
                     onClick={() => scrollToSection(item.sectionId)}
-                    className={`text-2xl font-medium tracking-wide transition-all duration-300 py-4 px-8 rounded-xl ${
+                    className={`block w-full text-left px-4 py-3 text-sm font-medium tracking-wide transition-all duration-300 rounded-lg ${
                       activeSection === item.sectionId 
-                        ? 'text-white bg-white/10 border border-white/20' 
-                        : 'text-white/80 hover:text-white hover:bg-white/5'
+                        ? 'text-[#141414] bg-gray-100 border-l-4 border-[#141414]' 
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-[#141414]'
                     }`}
                     style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                   >
                     {item.label}
                   </motion.button>
@@ -285,9 +259,9 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         </AnimatePresence>
       </motion.header>
 
-      {/* Scroll Progress Indicator */}
+      {/* Progress Indicator */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 z-50 origin-left"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-blue-800 z-50 origin-left"
         style={{
           scaleX: scrolled ? Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight), 1) : 0
         }}
