@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, User } from 'lucide-react';
 
@@ -86,7 +86,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         <div className="max-w-7xl mx-auto px-4">
           {/* Main Header Row */}
           <div className="flex items-center justify-between h-20">
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Left */}
             <motion.button
               className="lg:hidden p-2 text-[#141414] hover:bg-gray-100 rounded-lg transition-colors duration-200"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -118,64 +118,30 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             </motion.button>
 
             {/* Centered Logo */}
-            <motion.button
-              type="button"
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer group focus:outline-none focus:ring-0 border-none bg-transparent p-0 m-0"
-              onClick={() => scrollToSection('hero')}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              style={{ 
-                WebkitTapHighlightColor: 'transparent',
-                outline: 'none',
-                border: 'none',
-                background: 'none',
-                padding: 0,
-                margin: 0
-              }}
+            <motion.div
+              className="flex-1 flex justify-center lg:flex-none lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
             >
-            
-            </motion.button>
-          </div>
+              <motion.button
+                type="button"
+                className="group focus:outline-none"
+                onClick={() => scrollToSection('hero')}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="text-center">
+                  <h1 className="text-2xl font-bold text-[#141414] tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
+                    Villa Altona
+                  </h1>
+                  <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#141414] to-transparent opacity-60 mt-1"></div>
+                </div>
+              </motion.button>
+            </motion.div>
 
-          {/* Desktop Navigation - Centered Below Logo */}
-          <div className="hidden lg:block border-t border-gray-200/50">
-            <nav className="flex items-center justify-center py-4">
-              <div className="flex items-center space-x-8">
-                {menuItems.map((item, index) => (
-                  <motion.button
-                    key={item.sectionId}
-                    onClick={() => scrollToSection(item.sectionId)}
-                    className={`relative px-4 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
-                      activeSection === item.sectionId 
-                        ? 'text-[#141414]' 
-                        : 'text-gray-600 hover:text-[#141414]'
-                    }`}
-                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
-                    whileHover={{ y: -1 }}
-                    whileTap={{ scale: 0.95 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 + index * 0.1 }}
-                  >
-                    {item.label}
-                    {activeSection === item.sectionId && (
-                      <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
-                        layoutId="activeSection"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    )}
-                  </motion.button>
-                ))}
-              </div>
-            </nav>
-          </div>
-
-          {/* User Menu - Right Side */}
-          {userEmail && (
-            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+            {/* User Menu - Right */}
+            {userEmail && (
               <div className="relative">
                 <motion.button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -219,8 +185,44 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   )}
                 </AnimatePresence>
               </div>
-            </div>
-          )}
+            )}
+          </div>
+
+          {/* Desktop Navigation - Below Logo */}
+          <div className="hidden lg:block border-t border-gray-200/50">
+            <nav className="flex items-center justify-center py-4">
+              <div className="flex items-center space-x-8">
+                {menuItems.map((item, index) => (
+                  <motion.button
+                    key={item.sectionId}
+                    onClick={() => scrollToSection(item.sectionId)}
+                    className={`relative px-4 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
+                      activeSection === item.sectionId 
+                        ? 'text-[#141414]' 
+                        : 'text-gray-600 hover:text-[#141414]'
+                    }`}
+                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                    whileHover={{ y: -1 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + index * 0.1 }}
+                  >
+                    {item.label}
+                    {activeSection === item.sectionId && (
+                      <motion.div
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
+                        layoutId="activeSection"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </motion.button>
+                ))}
+              </div>
+            </nav>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
