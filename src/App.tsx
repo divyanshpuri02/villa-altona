@@ -82,6 +82,10 @@ function App() {
     setModalTimer(timer);
   };
 
+  const handleShowAuth = () => {
+    setShowAuthModal(true);
+  };
+
   // Only show auth modal if user is not authenticated
   const shouldShowAuthModal = showAuthModal && !isAuthenticated;
 
@@ -107,7 +111,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-neutral-50" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
-      <Header userEmail={userEmail} onLogout={handleLogout} />
+      <Header userEmail={userEmail} onLogout={handleLogout} onShowAuth={handleShowAuth} />
       <Hero />
       <About />
       <Amenities />

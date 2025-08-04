@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, User, LogOut } from 'lucide-react';
 
-const Header = () => {
+interface HeaderProps {
+  userEmail?: string;
+  onLogout?: () => void;
+  onShowAuth?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [user, setUser] = useState<{ email: string } | null>({ email: 'user@example.com' });
+  
+  // Check if user is authenticated
+  const isAuthenticated = !!userEmail;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,8 +33,16 @@ const Header = () => {
   };
 
   const handleSignOut = () => {
-    setUser(null);
+    if (onLogout) {
+      onLogout();
+    }
     setIsUserMenuOpen(false);
+  };
+
+  const handleSignIn = () => {
+    if (onShowAuth) {
+      onShowAuth();
+    }
   };
 
   return (
@@ -64,7 +80,7 @@ const Header = () => {
           </div>
 
           {/* User menu */}
-          {user && (
+          {isAuthenticated ? (
             <div className="relative">
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -73,14 +89,14 @@ const Header = () => {
               >
                 <User size={20} />
                 <span className="hidden sm:block text-sm truncate max-w-32">
-                  {user.email}
+                  {userEmail}
                 </span>
               </button>
 
               {isUserMenuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-md rounded-md shadow-lg py-1 z-50 border border-white/20">
                   <div className="px-4 py-2 text-sm text-black-300 border-b border-white/20">
-                    {user.email}
+                    {userEmail}
                   </div>
                   <button
                     onClick={handleSignOut}
@@ -91,6 +107,19 @@ const Header = () => {
                   </button>
                 </div>
               )}
+            </div>
+          ) : (
+            <div className="relative">
+              <button
+                onClick={handleSignIn}
+                className="flex items-center space-x-2 p-2 rounded-md text-white hover:text-gray-300 transition-colors duration-200"
+                aria-label="Sign in"
+              >
+                <User size={20} />
+                <span className="hidden sm:block text-sm">
+                  Sign In
+                </span>
+              </button>
             </div>
           )}
         </div>
