@@ -88,7 +88,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
           <div className="flex items-center justify-between h-20">
             {/* Mobile Menu Button - Left */}
             <motion.button
-              className="lg:hidden p-2 text-white hover:bg-white/20 rounded-lg transition-colors duration-200"
+              className="lg:hidden p-2 text-black hover:bg-white/20 rounded-lg transition-colors duration-200"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               whileTap={{ scale: 0.95 }}
             >
