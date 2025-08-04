@@ -124,6 +124,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   <img 
                     src="/public/file3.svg" 
                     alt="Villa Altona Logo" 
+                    image height="200" width="300"
                     className="h-8 w-auto mr-2"
                     onError={(e) => {
                       // Fallback to text if SVG fails to load
