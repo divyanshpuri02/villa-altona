@@ -123,6 +123,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 
                   <img height="150" width="150" transform="scale(20)"
                     src="/public/file1.svg" 
+                    srcset="file1.svg" 
                 
                   />
                   
