@@ -120,9 +120,9 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             {/* Centered Logo - Now in main div */}
             
            
-                <h1 className="text-center">
+                <h1>
               
-                  {/* <svg href="public/file.svg"></svg> */}
+                  <svg href="public/file.svg"></svg>
         
                 </h1>
              
