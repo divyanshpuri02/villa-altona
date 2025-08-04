@@ -1,3 +1,5 @@
+import { sendContactForm } from './bookingService';
+
 export interface ContactFormData {
   name: string;
   email: string;
@@ -6,6 +8,10 @@ export interface ContactFormData {
 }
 
 export const sendContactEmail = async (formData: ContactFormData): Promise<void> => {
-  console.log('Contact form:', formData);
-  localStorage.setItem('contact', JSON.stringify(formData));
+  try {
+    await sendContactForm(formData);
+  } catch (error) {
+    console.error('Error sending contact email:', error);
+    throw new Error('Failed to send contact form');
+  }
 };

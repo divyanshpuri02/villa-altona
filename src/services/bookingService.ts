@@ -1,5 +1,6 @@
-import { collection, addDoc, query, where, getDocs, Timestamp } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { collection, addDoc, query, where, getDocs, Timestamp, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
+import { functions, db } from '../firebase/config';
 
 export interface BookingData {
   checkIn: Date;
@@ -9,6 +10,10 @@ export interface BookingData {
   guestDetails: GuestDetail[];
   totalAmount: number;
   paymentStatus: string;
+  userEmail: string;
+  userName: string;
+  userPhone?: string;
+  specialRequests?: string;
 }
 
 export interface GuestDetail {
@@ -16,7 +21,7 @@ export interface GuestDetail {
   email?: string;
   phone?: string;
   age?: number;
-  type?: string;
+  type: 'adult' | 'child';
   idType?: string;
   idNumber?: string;
 }
@@ -27,13 +32,22 @@ export interface BookedDateRange {
   status: 'confirmed' | 'pending' | 'cancelled';
 }
 
+// Cloud Functions
+const createBookingFunction = httpsCallable(functions, 'createBooking');
+const createPaymentIntentFunction = httpsCallable(functions, 'createPaymentIntent');
+const confirmPaymentFunction = httpsCallable(functions, 'confirmPayment');
+const cancelBookingFunction = httpsCallable(functions, 'cancelBooking');
+const getUserBookingsFunction = httpsCallable(functions, 'getUserBookings');
+const checkVillaAvailabilityFunction = httpsCallable(functions, 'checkVillaAvailability');
+const sendContactFormFunction = httpsCallable(functions, 'sendContactForm');
+
 // Get all booked dates from the database
 export const getBookedDates = async (): Promise<Date[]> => {
   try {
     const bookingsRef = collection(db, 'bookings');
     const q = query(
       bookingsRef,
-      where('status', 'in', ['confirmed', 'pending'])
+      where('paymentStatus', 'in', ['completed', 'pending'])
     );
     
     const querySnapshot = await getDocs(q);
@@ -41,8 +55,8 @@ export const getBookedDates = async (): Promise<Date[]> => {
     
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      const checkIn = data.checkIn.toDate();
-      const checkOut = data.checkOut.toDate();
+      const checkIn = data.checkIn?.toDate ? data.checkIn.toDate() : new Date(data.checkIn);
+      const checkOut = data.checkOut?.toDate ? data.checkOut.toDate() : new Date(data.checkOut);
       
       // Generate all dates between check-in and check-out
       const currentDate = new Date(checkIn);
@@ -55,16 +69,8 @@ export const getBookedDates = async (): Promise<Date[]> => {
     return bookedDates;
   } catch (error) {
     console.error('Error fetching booked dates:', error);
-    // Return some demo booked dates for testing
-    const today = new Date();
-    const demoBookedDates = [
-      new Date(today.getFullYear(), today.getMonth(), 21),
-      new Date(today.getFullYear(), today.getMonth(), 22),
-      new Date(today.getFullYear(), today.getMonth(), 23),
-      new Date(today.getFullYear(), today.getMonth() + 1, 15),
-      new Date(today.getFullYear(), today.getMonth() + 1, 16),
-    ];
-    return demoBookedDates;
+    // Return empty array on error
+    return [];
   }
 };
 
@@ -76,36 +82,144 @@ export const isDateBooked = (date: Date, bookedDates: Date[]): boolean => {
     bookedDate.getDate() === date.getDate()
   );
 };
-export const checkAvailability = async (checkIn: Date, checkOut: Date): Promise<boolean> => {
+
+// Check availability using cloud function
+export const checkAvailability = async (checkIn: Date, checkOut: Date): Promise<{
+  available: boolean;
+  totalAmount: number;
+  pricePerNight: number;
+}> => {
   try {
-    const bookingsRef = collection(db, 'bookings');
-    const q = query(
-      bookingsRef,
-      where('checkIn', '<=', Timestamp.fromDate(checkOut)),
-      where('checkOut', '>=', Timestamp.fromDate(checkIn))
-    );
-    
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.empty;
+    const result = await checkVillaAvailabilityFunction({
+      checkIn: checkIn.toISOString(),
+      checkOut: checkOut.toISOString()
+    });
+
+    return {
+      available: result.data.available,
+      totalAmount: result.data.totalAmount,
+      pricePerNight: result.data.pricePerNight
+    };
   } catch (error) {
     console.error('Error checking availability:', error);
-    return true;
+    throw new Error('Failed to check availability');
   }
 };
 
-export const createBooking = async (bookingData: BookingData): Promise<string> => {
+// Create booking using cloud function
+export const createBooking = async (bookingData: Omit<BookingData, 'totalAmount' | 'paymentStatus'>): Promise<{
+  bookingId: string;
+  totalAmount: number;
+}> => {
   try {
-    const docRef = await addDoc(collection(db, 'bookings'), {
-      ...bookingData,
-      checkIn: Timestamp.fromDate(bookingData.checkIn),
-      checkOut: Timestamp.fromDate(bookingData.checkOut),
-      createdAt: Timestamp.now(),
-      status: 'pending'
+    const result = await createBookingFunction({
+      checkIn: bookingData.checkIn.toISOString(),
+      checkOut: bookingData.checkOut.toISOString(),
+      adults: bookingData.adults,
+      children: bookingData.children,
+      guestDetails: bookingData.guestDetails,
+      userEmail: bookingData.userEmail,
+      userName: bookingData.userName,
+      userPhone: bookingData.userPhone,
+      specialRequests: bookingData.specialRequests
     });
 
-    return docRef.id;
+    return {
+      bookingId: result.data.bookingId,
+      totalAmount: result.data.totalAmount
+    };
   } catch (error) {
     console.error('Error creating booking:', error);
     throw new Error('Failed to create booking');
+  }
+};
+
+// Create payment intent
+export const createPaymentIntent = async (bookingId: string, paymentMethodId?: string): Promise<{
+  paymentIntent: {
+    id: string;
+    status: string;
+    client_secret: string;
+  };
+}> => {
+  try {
+    const result = await createPaymentIntentFunction({
+      bookingId,
+      paymentMethodId
+    });
+
+    return {
+      paymentIntent: result.data.paymentIntent
+    };
+  } catch (error) {
+    console.error('Error creating payment intent:', error);
+    throw new Error('Failed to create payment intent');
+  }
+};
+
+// Confirm payment
+export const confirmPayment = async (bookingId: string, paymentIntentId: string): Promise<void> => {
+  try {
+    await confirmPaymentFunction({
+      bookingId,
+      paymentIntentId
+    });
+  } catch (error) {
+    console.error('Error confirming payment:', error);
+    throw new Error('Failed to confirm payment');
+  }
+};
+
+// Cancel booking
+export const cancelBooking = async (bookingId: string, userEmail: string): Promise<{
+  refundAmount: number;
+}> => {
+  try {
+    const result = await cancelBookingFunction({
+      bookingId,
+      userEmail
+    });
+
+    return {
+      refundAmount: result.data.refundAmount
+    };
+  } catch (error) {
+    console.error('Error cancelling booking:', error);
+    throw new Error('Failed to cancel booking');
+  }
+};
+
+// Get user bookings
+export const getUserBookings = async (userEmail: string): Promise<BookingData[]> => {
+  try {
+    const result = await getUserBookingsFunction({
+      userEmail
+    });
+
+    return result.data.bookings.map((booking: any) => ({
+      ...booking,
+      checkIn: new Date(booking.checkIn),
+      checkOut: new Date(booking.checkOut),
+      createdAt: new Date(booking.createdAt),
+      updatedAt: new Date(booking.updatedAt)
+    }));
+  } catch (error) {
+    console.error('Error getting user bookings:', error);
+    throw new Error('Failed to get bookings');
+  }
+};
+
+// Send contact form
+export const sendContactForm = async (formData: {
+  name: string;
+  email: string;
+  phone?: string;
+  message: string;
+}): Promise<void> => {
+  try {
+    await sendContactFormFunction(formData);
+  } catch (error) {
+    console.error('Error sending contact form:', error);
+    throw new Error('Failed to send contact form');
   }
 };
