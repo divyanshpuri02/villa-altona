@@ -121,7 +121,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             
            
                 <h1>
-              hello <svg href="public/file.svg"></svg> </h1>
+              hello <svg href="public/file3.svg"></svg> </h1>
                   
         
               
