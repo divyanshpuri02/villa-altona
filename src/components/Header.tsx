@@ -121,7 +121,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="text-center">
                 
-                  <img height="100" width="200" transform="scale(10)"
+                  <img height="100" width="200" transform="scale(2)"
                     src="/public/file3.svg" 
                 
                   />
