@@ -121,10 +121,11 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="text-center">
                 
-                  <img 
+                  <img  height="200" width="300"
                     src="/public/file3.svg" 
                     alt="Villa Altona Logo" 
-                    image height="200" width="300"
+                    image
+                    <rect width="90" height="90" fill="yellow" filter="url(#f1)" />
                     className="h-8 w-auto mr-2"
                     onError={(e) => {
                       // Fallback to text if SVG fails to load
