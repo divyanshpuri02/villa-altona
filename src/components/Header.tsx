@@ -120,7 +120,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             {/* Centered Logo - Now in main div */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="text-center">
-                <h1 className="flex items-center justify-center text-2xl font-bold text-white tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
+                <h1 className="flex items-center justify-center text-2xl font-bold text-black tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
                   <img 
                     src="/public/file3.svg" 
                     alt="Villa Altona Logo" 
