@@ -60,8 +60,8 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Logo - Centered */}
-          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          {/* Logo - Left on desktop, centered on mobile */}
+          <div className="md:relative md:left-0 md:top-0 md:transform-none absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div className="text-center">
               <h1 className="text-2xl font-bold text-black tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
                 <img
@@ -79,9 +79,9 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
             </div>
           </div>
 
-          {/* User menu */}
+          {/* User menu - Always on the right */}
           {isAuthenticated ? (
-            <div className="relative">
+            <div className="relative ml-auto">
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 className="flex items-center space-x-2 p-2 rounded-md text-black hover:text-gray-300 transition-colors duration-200"
@@ -109,7 +109,7 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
               )}
             </div>
           ) : (
-            <div className="relative">
+            <div className="relative ml-auto">
               <button
                 onClick={handleSignIn}
                 className="flex items-center space-x-2 p-2 rounded-md text-black hover:text-gray-300 transition-colors duration-200"
