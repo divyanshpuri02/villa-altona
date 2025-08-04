@@ -117,15 +117,15 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </AnimatePresence>
             </motion.button>
 
-        
-           
+            {/* Centered Logo - Now in main div */}
+            
            
                 <div className="text-center">
                   <svg href="public/file1.svg"></svg>
         
                 </div>
              
-            </motion.div>
+          
 
             {/* User Menu - Right - Now in main div */}
             {userEmail && (
