@@ -121,7 +121,8 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             
            
                 <div className="text-center">
-                  <svg href="public/file.svg"></svg>
+                  <h1>hello</h1>
+                  {/* <svg href="public/file.svg"></svg> */}
         
                 </div>
              
