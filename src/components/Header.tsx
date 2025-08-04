@@ -135,7 +135,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               <div className="relative">
                 <motion.button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 text-sm text-black hover:text-gray transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/20"
+                  className="flex items-center gap-2 text-sm text-black hover:text-gray-300 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-black/20"
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
