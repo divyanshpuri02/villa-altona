@@ -80,7 +80,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white/90 backdrop-blur-sm'
+          scrolled ? 'bg-black/95 backdrop-blur-md shadow-lg' : 'bg-black/90 backdrop-blur-sm'
         }`}
       >
         {/* Main Container Div - Contains Logo and User Menu */}
@@ -88,7 +88,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
           <div className="flex items-center justify-between h-20">
             {/* Mobile Menu Button - Left */}
             <motion.button
-              className="lg:hidden p-2 text-[#141414] hover:bg-gray-100 rounded-lg transition-colors duration-200"
+              className="lg:hidden p-2 text-white hover:bg-white/20 rounded-lg transition-colors duration-200"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               whileTap={{ scale: 0.95 }}
             >
@@ -118,33 +118,43 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             </motion.button>
 
             {/* Centered Logo - Now in main div */}
-            
-           
-                <h1>
-              hello <svg href="public/file3.svg"></svg> </h1>
-                  
-        
-              
-             
-          
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div className="text-center">
+                <h1 className="flex items-center justify-center text-2xl font-bold text-white tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
+                  <img 
+                    src="/public/file3.svg" 
+                    alt="Villa Altona Logo" 
+                    className="h-8 w-auto mr-2"
+                    onError={(e) => {
+                      // Fallback to text if SVG fails to load
+                      e.currentTarget.style.display = 'none';
+                      const textNode = document.createTextNode('Villa Altona');
+                      e.currentTarget.parentNode?.appendChild(textNode);
+                    }}
+                  />
+                  <span>Villa Altona</span>
+                </h1>
+                <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-white to-transparent opacity-60 mt-1"></div>
+              </div>
+            </div>
 
             {/* User Menu - Right - Now in main div */}
             {userEmail && (
               <div className="relative">
                 <motion.button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 text-sm text-[#141414] hover:text-gray-600 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100"
+                  className="flex items-center gap-2 text-sm text-white hover:text-gray-300 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/20"
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <User className="h-4 w-4" />
+                  <User className="h-4 w-4 text-white" />
                   <span className="max-w-[120px] truncate hidden sm:block">{userEmail}</span>
                   <motion.div
                     animate={{ rotate: isUserMenuOpen ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className="h-4 w-4 text-white" />
                   </motion.div>
                 </motion.button>
                 
@@ -177,7 +187,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
           </div>
 
           {/* Desktop Navigation - Separate nav section below main div */}
-          <div className="hidden lg:block border-t border-gray-200/50">
+          <div className="hidden lg:block border-t border-white/20">
             <nav className="flex items-center justify-center py-4">
               <div className="flex items-center space-x-8">
                 {menuItems.map((item, index) => (
@@ -186,8 +196,8 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                     onClick={() => scrollToSection(item.sectionId)}
                     className={`relative px-4 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
                       activeSection === item.sectionId 
-                        ? 'text-[#141414]' 
-                        : 'text-gray-600 hover:text-[#141414]'
+                        ? 'text-white' 
+                        : 'text-gray-300 hover:text-white'
                     }`}
                     style={{ fontFamily: '"Noto Sans", sans-serif' }}
                     whileHover={{ y: -1 }}
@@ -199,7 +209,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                     {item.label}
                     {activeSection === item.sectionId && (
                       <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#141414]"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
                         layoutId="activeSection"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -221,7 +231,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="lg:hidden bg-white border-t border-gray-200"
+              className="lg:hidden bg-black/95 backdrop-blur-md border-t border-white/20"
             >
               <div className="py-4 px-4 space-y-2">
                 {menuItems.map((item, index) => (
@@ -233,8 +243,8 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                     onClick={() => scrollToSection(item.sectionId)}
                     className={`block w-full text-left px-4 py-3 text-sm font-medium tracking-wide transition-all duration-300 rounded-lg ${
                       activeSection === item.sectionId 
-                        ? 'text-[#141414] bg-gray-100 border-l-4 border-[#141414]' 
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-[#141414]'
+                        ? 'text-white bg-white/20 border-l-4 border-white' 
+                        : 'text-gray-300 hover:bg-white/10 hover:text-white'
                     }`}
                     style={{ fontFamily: '"Noto Sans", sans-serif' }}
                   >
