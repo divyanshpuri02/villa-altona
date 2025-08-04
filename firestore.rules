@@ -3,6 +3,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Allow read and list access to bookings collection
+    match /bookings/{bookingId} {
+      allow read, list: true;
+    }
+
     // This rule allows anyone with your Firestore database reference to view, edit,
     // and delete all data in your Firestore database. It is useful for getting
     // started, but it is configured to expire after 30 days because it
