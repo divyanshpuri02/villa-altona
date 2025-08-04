@@ -59,7 +59,7 @@ const Header = () => {
                 />
                 <span style={{ display: 'none' }}>Villa Altona</span>
               </h1>
-              <div className="h-0.2 w-full bg-gradient-to-r from-transparent via-black to-transparent opacity-60 mt-1"></div>
+              <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-black to-transparent opacity-60 mt-1"></div>
             </div>
           </div>
 
