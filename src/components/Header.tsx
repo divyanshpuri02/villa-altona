@@ -80,7 +80,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'bg-white/45 backdrop-blur-md shadow-lg' : 'bg-white/10 backdrop-blur-sm'
+          scrolled ? 'bg-white/45 backdrop-blur-md shadow-lg' : 'bg-white/100 backdrop-blur-sm'
         }`}
       >
         {/* Main Container Div - Contains Logo and User Menu */}
