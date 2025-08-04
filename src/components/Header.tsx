@@ -120,7 +120,8 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             {/* Centered Logo - Now in main div */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="text-center">
-                <iframe  <img height="150" width="150" transform="scale(20)"
+                <iframe src="triangle.svg" width="500" height="500">
+                  <img height="150" width="150" transform="scale(20)"
                     src="/public/file1.svg" 
                     srcset="/public/file1.svg"></img></iframe>
                 
