@@ -49,10 +49,13 @@ const Header = () => {
             <div className="text-center">
               <h1 className="text-2xl font-bold text-black tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
                 <img
-                  src="/file1.svg" 
+                  src="/file.svg" 
                   alt="Villa Altona" 
                   className="h-20 w-auto"
-                  
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling!.style.display = 'inline';
+                  }}
                 />
                 <span style={{ display: 'none' }}>Villa Altona</span>
               </h1>
