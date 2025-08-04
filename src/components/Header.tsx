@@ -123,7 +123,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 <iframe
                   <img height="150" width="150" transform="scale(20)"
                     src="/public/file1.svg" 
-                    srcset="/public/file1.svg"  />
+                    srcset="/public/file1.svg"
                   <iframe/>
                 <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-white to-transparent opacity-60 mt-1"></div>
               </div>
