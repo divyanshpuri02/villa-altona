@@ -124,13 +124,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <motion.button
-                type="button"
-                className="group focus:outline-none"
-                onClick={() => scrollToSection('hero')}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+           
                 <div className="text-center">
                   <svg href="public/file1.svg"</svg>
         
