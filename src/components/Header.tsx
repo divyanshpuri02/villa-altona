@@ -133,7 +133,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               >
                 <div className="text-center">
                   <svg href="public/file1.svg"</svg>
-                  <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#141414] to-transparent opacity-60 mt-1"></div>
+        
                 </div>
               </motion.button>
             </motion.div>
