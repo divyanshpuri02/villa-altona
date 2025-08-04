@@ -68,7 +68,7 @@ const Header = () => {
             <div className="relative">
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center space-x-5 p-2 rounded-md text-black hover:text-gray-300 transition-colors duration-200"
+                className="flex items-center space-x-10 p-2 rounded-md text-black hover:text-gray-300 transition-colors duration-200"
                 aria-label="User menu"
               >
                 <User size={20} />
