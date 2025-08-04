@@ -41,7 +41,7 @@ const Header = () => {
             className="md:hidden p-2 rounded-md text-black hover:bg-white/20 transition-colors duration-200"
             aria-label="Toggle mobile menu"
           >
-            {isMobileMenuOpen ? <X size={30} /> : <Menu size={30} />}
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
           {/* Logo - Centered */}
@@ -68,7 +68,7 @@ const Header = () => {
             <div className="relative">
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center space-x-2 p-2 rounded-md text-black hover:text-gray-300 transition-colors duration-200"
+                className="flex items-center space-x-5 p-2 rounded-md text-black hover:text-gray-300 transition-colors duration-200"
                 aria-label="User menu"
               >
                 <User size={20} />
