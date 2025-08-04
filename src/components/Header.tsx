@@ -121,7 +121,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="text-center">
                
-                  <img height="150" width="150" className="lg:hidden p-2 text-black hover:bg-white/20 rounded-lg transition-colors duration-200"
+                  <img height="150" width="150" className="lg:hidden p-2 text-black hover:svg-white/20 rounded-lg transition-colors duration-200"
                     src="/public/file1.svg" 
                     srcset="/public/file1.svg"></img>
                 
