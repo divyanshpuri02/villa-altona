@@ -118,14 +118,14 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             </motion.button>
 
             {/* Centered Logo - Now in main div */}
-        
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="text-center">
                
                   <img height="150" width="150" 
                     src="/public/file1.svg" 
                     srcset="/public/file1.svg"></img>
-            
-              
+                
+              </div>
             </div>
 
             {/* User Menu - Right - Now in main div */}
