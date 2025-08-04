@@ -268,15 +268,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     e.preventDefault();
     setError(null);
     
-    if (!passwordStrength.isValid) {
-      setError('Password does not meet requirements');
-      return;
-    }
-    
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
+    // Validation is already handled by isFormValid()
     
     setLoading(true);
     
@@ -342,6 +334,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setIsLogin(!isLogin);
     setError(null);
     setSuccess(null);
+    resetAllStates();
+  };
+
+  const resetAllStates = () => {
     setIsForgotPassword(false);
     setIsOtpVerification(false);
     setIsResetPassword(false);
@@ -349,6 +345,16 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setPasswordStrength({ hasSpecial: false, hasCapital: false, hasMinLength: false, isValid: false });
     setFailedLoginAttempts(0);
     setShowForgotPasswordOption(false);
+    setOtpTimer(0);
+    setGeneratedOtp('');
+    setShowDemoOtp(false);
+  };
+
+  const handleModalClose = () => {
+    resetAllStates();
+    setError(null);
+    setSuccess(null);
+    onClose();
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -382,7 +388,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
       return formData.otp && formData.otp.length === 6;
     }
     if (isResetPassword) {
-      return formData.password && formData.confirmPassword && passwordStrength.isValid && formData.password === formData.confirmPassword;
+      validatePassword(formData.password);
+      return formData.password && 
+             formData.confirmPassword && 
+             passwordStrength.isValid && 
+             formData.password === formData.confirmPassword;
     }
     if (isLogin) {
       return formData.email && formData.password;
@@ -409,7 +419,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
             {/* Header */}
             <div className="flex items-center bg-neutral-50 p-4 pb-2 justify-between border-b border-[#ededed]">
               <button
-                onClick={onClose}
+                onClick={handleModalClose}
                 className="text-[#141414] flex size-12 shrink-0 items-center justify-center hover:bg-[#ededed] rounded-lg transition-colors duration-200"
               >
                 <X className="h-6 w-6" />
@@ -630,7 +640,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                 )}
 
                 {/* Confirm Password Field - Show for signup and reset password */}
-                {(!isLogin && !isForgotPassword && !isOtpVerification) && (
+                {((!isLogin && !isForgotPassword && !isOtpVerification) || isResetPassword) && (
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-500" />
                     <input
@@ -638,7 +648,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                       placeholder="Confirm Password"
                       value={formData.confirmPassword}
                       onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                      required={!isLogin}
+                      required={!isLogin || isResetPassword}
                       className={`w-full pl-10 pr-4 py-3 bg-[#ededed] border-none rounded-xl text-[#141414] placeholder:text-neutral-500 focus:outline-none focus:ring-2 text-sm ${
                         formData.confirmPassword && formData.password !== formData.confirmPassword 
                           ? 'focus:ring-red-500 ring-2 ring-red-500' 
@@ -649,6 +659,33 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                     {formData.confirmPassword && formData.password !== formData.confirmPassword && (
                       <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500">
                         <span className="text-xs">✗</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Password Requirements - Show during reset password */}
+                {isResetPassword && formData.password && (
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm">
+                    <p className="font-medium text-gray-700 mb-2">Password Requirements:</p>
+                    <div className="space-y-1">
+                      <div className={`flex items-center gap-2 ${passwordStrength.hasMinLength ? 'text-green-600' : 'text-red-600'}`}>
+                        <span>{passwordStrength.hasMinLength ? '✓' : '✗'}</span>
+                        <span>At least 8 characters</span>
+                      </div>
+                      <div className={`flex items-center gap-2 ${passwordStrength.hasCapital ? 'text-green-600' : 'text-red-600'}`}>
+                        <span>{passwordStrength.hasCapital ? '✓' : '✗'}</span>
+                        <span>One uppercase letter</span>
+                      </div>
+                      <div className={`flex items-center gap-2 ${passwordStrength.hasSpecial ? 'text-green-600' : 'text-red-600'}`}>
+                        <span>{passwordStrength.hasSpecial ? '✓' : '✗'}</span>
+                        <span>One special character</span>
+                      </div>
+                    </div>
+                    {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                      <div className="flex items-center gap-2 text-red-600 mt-2">
+                        <span>✗</span>
+                        <span>Passwords must match</span>
                       </div>
                     )}
                   </div>
