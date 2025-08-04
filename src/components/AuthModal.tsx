@@ -388,7 +388,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
       return formData.otp && formData.otp.length === 6;
     }
     if (isResetPassword) {
-      validatePassword(formData.password);
       return formData.password && 
              formData.confirmPassword && 
              passwordStrength.isValid && 
