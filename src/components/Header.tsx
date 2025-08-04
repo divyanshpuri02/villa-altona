@@ -133,7 +133,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               >
                 <div className="text-center">
                   <h1 className="text-2xl font-bold text-[#141414] tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
-                    <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                    <svg="public/file1.svg"
  
 </svg>
                   </h1>
