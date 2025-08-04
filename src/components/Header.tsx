@@ -49,7 +49,7 @@ const Header = () => {
             <div className="text-center">
               <h1 className="text-2xl font-bold text-black tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
                 <img
-                  src="/file2.svg" 
+                  src="/file11.svg" 
                   alt="Villa Altona" 
                   className="h-10 w-auto"
                   onError={(e) => {
