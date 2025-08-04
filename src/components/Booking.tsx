@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, AlertCircle } from 'lucide-react';
 import BookingConfirmationModal from './BookingConfirmationModal';
+import { getBookedDates, isDateBooked } from '../services/bookingService';
 
 interface BookingProps {
   isAuthenticated: boolean;
@@ -15,11 +16,35 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
   const [children, setChildren] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [bookedDates, setBookedDates] = useState<Date[]>([]);
   const [errors, setErrors] = useState({
     checkIn: false,
     checkOut: false,
     dateOrder: false
   });
+
+  // Load booked dates on component mount
+  React.useEffect(() => {
+    const loadBookedDates = async () => {
+      const dates = await getBookedDates();
+      setBookedDates(dates);
+    };
+    loadBookedDates();
+  }, []);
+
+  // Format date for input and check if it's booked
+  const formatDateForInput = (date: Date): string => {
+    return date.toISOString().split('T')[0];
+  };
+
+  const getDateInputStyle = (dateString: string, isBooked: boolean) => {
+    const baseStyle = "form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal";
+    
+    if (isBooked) {
+      return `${baseStyle} bg-red-50 text-red-600 line-through`;
+    }
+    return `${baseStyle} bg-[#ededed]`;
+  };
 
   const validateForm = () => {
     const newErrors = {
@@ -59,6 +84,12 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
     setShowConfirmation(true);
   };
 
+  // Check if selected dates are booked
+  const checkInDate = checkIn ? new Date(checkIn) : null;
+  const checkOutDate = checkOut ? new Date(checkOut) : null;
+  const isCheckInBooked = checkInDate ? isDateBooked(checkInDate, bookedDates) : false;
+  const isCheckOutBooked = checkOutDate ? isDateBooked(checkOutDate, bookedDates) : false;
+
   return (
     <>
       <section id="booking" className="bg-neutral-50 py-8">
@@ -83,13 +114,20 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
               className="flex w-full flex-wrap items-end gap-4 px-0 py-3"
             >
               <label className="flex flex-col min-w-40 flex-1">
+                {isCheckInBooked && (
+                  <div className="mb-2 text-red-600 text-sm font-medium flex items-center gap-1">
+                    <span>⚠️</span>
+                    <span>This date is already booked</span>
+                  </div>
+                )}
                 <input
                   type="date"
                   value={checkIn}
                   onChange={(e) => setCheckIn(e.target.value)}
                   placeholder="Check-in Date"
-                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal"
+                  className={getDateInputStyle(checkIn, isCheckInBooked)}
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  min={formatDateForInput(new Date())}
                 />
               </label>
             </motion.div>
@@ -102,13 +140,20 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
               className="flex w-full flex-wrap items-end gap-4 px-0 py-3"
             >
               <label className="flex flex-col min-w-40 flex-1">
+                {isCheckOutBooked && (
+                  <div className="mb-2 text-red-600 text-sm font-medium flex items-center gap-1">
+                    <span>⚠️</span>
+                    <span>This date is already booked</span>
+                  </div>
+                )}
                 <input
                   type="date"
                   value={checkOut}
                   onChange={(e) => setCheckOut(e.target.value)}
                   placeholder="Check-out Date"
-                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none bg-[#ededed] focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal"
+                  className={getDateInputStyle(checkOut, isCheckOutBooked)}
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  min={checkIn || formatDateForInput(new Date())}
                 />
               </label>
             </motion.div>
@@ -158,7 +203,7 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
             </motion.div>
 
             {/* Error Messages */}
-            {(errors.checkIn || errors.checkOut || errors.dateOrder) && (
+            {(errors.checkIn || errors.checkOut || errors.dateOrder || isCheckInBooked || isCheckOutBooked) && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -181,6 +226,12 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
                     {errors.dateOrder && (
                       <li>• Check-out date must be after check-in date</li>
                     )}
+                    {isCheckInBooked && (
+                      <li>• Check-in date is already booked. Please select another date.</li>
+                    )}
+                    {isCheckOutBooked && (
+                      <li>• Check-out date is already booked. Please select another date.</li>
+                    )}
                   </ul>
                 </div>
               </motion.div>
@@ -195,11 +246,11 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
             >
               <motion.button
                 type="button"
-                disabled={loading || !isFormValid()}
+                disabled={loading || !isFormValid() || isCheckInBooked || isCheckOutBooked}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={`flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 text-base font-bold leading-normal tracking-[0.015em] transition-all duration-300 ${
-                  isFormValid() 
+                  isFormValid() && !isCheckInBooked && !isCheckOutBooked
                     ? 'bg-[#141414] text-white hover:bg-gray-800' 
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 } disabled:opacity-50`}
