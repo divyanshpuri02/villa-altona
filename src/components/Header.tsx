@@ -59,7 +59,7 @@ const Header = () => {
                 />
                 <span style={{ display: 'none' }}>Villa Altona</span>
               </h1>
-              <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-black to-transparent opacity-60"></div>
+              <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-black to-transparent opacity-60 mt-1"></div>
             </div>
           </div>
 
@@ -78,7 +78,7 @@ const Header = () => {
               </button>
 
               {isUserMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-black/95 backdrop-blur-md rounded-md shadow-lg py-1 z-50 border border-white/20">
+                <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-md rounded-md shadow-lg py-1 z-50 border border-white/20">
                   <div className="px-4 py-2 text-sm text-gray-300 border-b border-white/20">
                     {user.email}
                   </div>
