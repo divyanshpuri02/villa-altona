@@ -133,7 +133,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               >
                 <div className="text-center">
                   <h1 className="text-2xl font-bold text-[#141414] tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
-                    Villa Altona
+                   <svg href="public/file1.svg"</svg>
                   </h1>
                   <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#141414] to-transparent opacity-60 mt-1"></div>
                 </div>
