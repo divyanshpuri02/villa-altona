@@ -48,7 +48,7 @@ const Header = () => {
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div className="text-center">
               <h1 className="text-2xl font-bold text-black tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
-                <img hieght="100" width="100"
+                <img hieght="200" width="200"
                   src="/file1.svg" 
                   alt="Villa Altona" 
                   className="h-8 w-auto"
