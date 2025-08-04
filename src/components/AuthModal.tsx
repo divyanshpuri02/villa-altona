@@ -373,7 +373,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setError(null); // Clear error when user starts typing
     setSuccess(null); // Clear success when user starts typing
     setFormData({...formData, password});
-    if (!isLogin) validatePassword(password);
+    if (!isLogin || isResetPassword) validatePassword(password);
     
     // Reset failed attempts when user starts typing password
     setFailedLoginAttempts(0);
@@ -623,7 +623,15 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"
                       value={formData.password}
-                      onChange={(e) => handlePasswordInputChange(e.target.value)}
+                      onChange={(e) => {
+                        const password = e.target.value;
+                        setError(null);
+                        setSuccess(null);
+                        setFormData({...formData, password});
+                        if (!isLogin || isResetPassword) validatePassword(password);
+                        setFailedLoginAttempts(0);
+                        setShowForgotPasswordOption(false);
+                      }}
                       required
                       className="w-full pl-10 pr-12 py-3 bg-[#ededed] border-none rounded-xl text-[#141414] placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#141414] text-sm"
                       style={{ fontFamily: '"Noto Sans", sans-serif' }}
@@ -664,7 +672,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                 )}
 
                 {/* Password Requirements - Show during reset password */}
-                {isResetPassword && formData.password && (
+                {(isResetPassword || (!isLogin && !isForgotPassword && !isOtpVerification)) && formData.password && (
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm">
                     <p className="font-medium text-gray-700 mb-2">Password Requirements:</p>
                     <div className="space-y-1">
@@ -681,7 +689,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                         <span>One special character</span>
                       </div>
                     </div>
-                    {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                    {(isResetPassword || !isLogin) && formData.confirmPassword && formData.password !== formData.confirmPassword && (
                       <div className="flex items-center gap-2 text-red-600 mt-2">
                         <span>✗</span>
                         <span>Passwords must match</span>
