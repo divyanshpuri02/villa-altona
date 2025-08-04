@@ -74,8 +74,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
   };
 
   return (
-    <>
-     
+    
         {/* Main Container Div - Contains Logo and User Menu */}
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
