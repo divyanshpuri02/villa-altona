@@ -52,10 +52,7 @@ const Header = () => {
                   src="/file1.svg" 
                   alt="Villa Altona" 
                   className="h-20 w-auto"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling!.style.display = 'inline';
-                  }}
+                  
                 />
                 <span style={{ display: 'none' }}>Villa Altona</span>
               </h1>
