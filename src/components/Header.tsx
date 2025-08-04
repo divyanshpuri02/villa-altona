@@ -119,14 +119,11 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
 
             {/* Centered Logo - Now in main div */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div className="text-center">
+              <div className="text-align-center">
                
                   <img height="150" width="150" 
                     src="/public/file1.svg" 
                     srcset="/public/file1.svg"></img>
-                
-                 
-                <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-black to-transparent opacity-60 mt-1"></div>
               </div>
             </div>
 
