@@ -112,7 +112,7 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
             <div className="relative">
               <button
                 onClick={handleSignIn}
-                className="flex items-center space-x-2 p-2 rounded-md text-white hover:text-gray-300 transition-colors duration-200"
+                className="flex items-center space-x-2 p-2 rounded-md text-black hover:text-gray-300 transition-colors duration-200"
                 aria-label="Sign in"
               >
                 <User size={20} />
