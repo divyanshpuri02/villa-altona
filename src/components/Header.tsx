@@ -51,7 +51,7 @@ const Header = () => {
                 <img 
                   src="/file1.svg" 
                   alt="Villa Altona" 
-                  className="h-200 w-auto"
+                  className="h-30 w-auto"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                     e.currentTarget.nextElementSibling!.style.display = 'inline';
