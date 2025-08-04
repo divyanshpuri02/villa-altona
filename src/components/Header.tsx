@@ -48,8 +48,8 @@ const Header = () => {
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div className="text-center">
               <h1 className="text-2xl font-bold text-black tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
-                <img 
-                  src="/file3.svg" 
+                <img hieght="100" width="100"
+                  src="/file1.svg" 
                   alt="Villa Altona" 
                   className="h-8 w-auto"
                   onError={(e) => {
@@ -84,7 +84,7 @@ const Header = () => {
                   </div>
                   <button
                     onClick={handleSignOut}
-                    className="flex items-center w-full px-4 py-2 text-sm text-white hover:bg-white/20 transition-colors duration-200"
+                    className="flex items-center w-full px-4 py-2 text-sm text-black hover:bg-white/20 transition-colors duration-200"
                   >
                     <LogOut size={16} className="mr-2" />
                     Sign out
@@ -102,7 +102,7 @@ const Header = () => {
               <button
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase())}
-                className="text-white hover:text-gray-300 transition-colors duration-200 text-sm font-medium relative group"
+                className="text-black hover:text-gray-300 transition-colors duration-200 text-sm font-medium relative group"
               >
                 {item}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
@@ -119,7 +119,7 @@ const Header = () => {
                 <button
                   key={item}
                   onClick={() => scrollToSection(item.toLowerCase())}
-                  className="block w-full text-left px-3 py-2 text-white hover:bg-white/20 transition-colors duration-200 text-sm font-medium rounded-md"
+                  className="block w-full text-left px-3 py-2 text-black hover:bg-white/20 transition-colors duration-200 text-sm font-medium rounded-md"
                 >
                   {item}
                 </button>
