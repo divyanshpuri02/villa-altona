@@ -144,7 +144,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                     animate={{ rotate: isUserMenuOpen ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <ChevronDown className="h-4 w-4 text-white" />
+                    <ChevronDown className="h-4 w-4 text-black" />
                   </motion.div>
                 </motion.button>
                 
