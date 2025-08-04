@@ -129,7 +129,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   <svg href="public/file1.svg"</svg>
         
                 </div>
-              </motion.button>
+             
             </motion.div>
 
             {/* User Menu - Right - Now in main div */}
