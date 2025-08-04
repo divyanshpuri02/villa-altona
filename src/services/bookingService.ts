@@ -1,6 +1,6 @@
 import { collection, addDoc, query, where, getDocs, Timestamp, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
-import { functions, db } from '../firebase/config';
+import { functions, db } from '../config/firebase';
 
 export interface BookingData {
   checkIn: Date;
@@ -69,12 +69,8 @@ export const getBookedDates = async (): Promise<Date[]> => {
     return bookedDates;
   } catch (error) {
     console.error('Error fetching booked dates:', error);
-    // Return sample dates if Firebase is not connected
-    return [
-      new Date('2024-03-15'),
-      new Date('2024-03-16'),
-      new Date('2024-04-10')
-    ];
+    // Return empty array if Firebase is not connected
+    return [];
   }
 };
 
@@ -106,12 +102,7 @@ export const checkAvailability = async (checkIn: Date, checkOut: Date): Promise<
     };
   } catch (error) {
     console.error('Error checking availability:', error);
-    // Return mock availability if backend is not ready
-    return {
-      available: true,
-      totalAmount: 300000,
-      pricePerNight: 100000
-    };
+    throw new Error('Unable to check availability. Please try again.');
   }
 };
 

@@ -1,6 +1,6 @@
 // Sample data service for populating the database
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { db } from '../config/firebase';
 
 export interface SampleBooking {
   checkIn: Date;
@@ -19,8 +19,8 @@ export interface SampleBooking {
 
 export const sampleBookings: SampleBooking[] = [
   {
-    checkIn: new Date('2024-03-15'),
-    checkOut: new Date('2024-03-18'),
+    checkIn: new Date('2025-03-15'),
+    checkOut: new Date('2025-03-18'),
     adults: 4,
     children: 2,
     totalAmount: 300000,
@@ -29,12 +29,12 @@ export const sampleBookings: SampleBooking[] = [
     userName: 'Priya Sharma',
     userPhone: '+91 98765 43210',
     confirmationCode: 'VA2024-ABC123DEF',
-    createdAt: new Date('2024-02-15'),
-    updatedAt: new Date('2024-02-15')
+    createdAt: new Date('2025-02-15'),
+    updatedAt: new Date('2025-02-15')
   },
   {
-    checkIn: new Date('2024-04-10'),
-    checkOut: new Date('2024-04-14'),
+    checkIn: new Date('2025-04-10'),
+    checkOut: new Date('2025-04-14'),
     adults: 6,
     children: 0,
     totalAmount: 400000,
@@ -43,12 +43,12 @@ export const sampleBookings: SampleBooking[] = [
     userName: 'Rajesh Patel',
     userPhone: '+91 87654 32109',
     confirmationCode: 'VA2024-XYZ789GHI',
-    createdAt: new Date('2024-03-10'),
-    updatedAt: new Date('2024-03-10')
+    createdAt: new Date('2025-03-10'),
+    updatedAt: new Date('2025-03-10')
   },
   {
-    checkIn: new Date('2024-05-20'),
-    checkOut: new Date('2024-05-25'),
+    checkIn: new Date('2025-05-20'),
+    checkOut: new Date('2025-05-25'),
     adults: 8,
     children: 4,
     totalAmount: 500000,
@@ -57,8 +57,8 @@ export const sampleBookings: SampleBooking[] = [
     userName: 'Amit Kumar',
     userPhone: '+91 76543 21098',
     confirmationCode: 'VA2024-PQR456STU',
-    createdAt: new Date('2024-04-20'),
-    updatedAt: new Date('2024-04-20')
+    createdAt: new Date('2025-04-20'),
+    updatedAt: new Date('2025-04-20')
   }
 ];
 

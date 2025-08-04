@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Users, CreditCard, FileText, Download, Shield, Clock, CheckCircle } from 'lucide-react';
+import { createBooking, createPaymentIntent, confirmPayment } from '../services/bookingService';
 
 interface BookingConfirmationModalProps {
   isOpen: boolean;
@@ -17,6 +18,8 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
   const [showSuccess, setShowSuccess] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
+  const [bookingId, setBookingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [reservationData, setReservationData] = useState({
     checkIn: { date: '', time: '4:00 PM' },
     checkOut: { date: '', time: '11:00 AM' },
@@ -72,16 +75,58 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
   }, [bookingData]);
 
   const handleConfirmBooking = async () => {
-    setShowPayment(true);
+    setProcessing(true);
+    setError(null);
+    
+    try {
+      // Get user data from localStorage
+      const authData = localStorage.getItem('villa_auth');
+      if (!authData) {
+        throw new Error('Please sign in to continue with booking');
+      }
+      
+      const { email } = JSON.parse(authData);
+      
+      // Create booking
+      const result = await createBooking({
+        checkIn: new Date(bookingData.checkIn),
+        checkOut: new Date(bookingData.checkOut),
+        adults: bookingData.adults,
+        children: bookingData.children,
+        guestDetails: [],
+        userEmail: email,
+        userName: 'Guest User', // You can enhance this to get actual name
+        specialRequests: ''
+      });
+      
+      setBookingId(result.bookingId);
+      setProcessing(false);
+      setShowPayment(true);
+    } catch (error) {
+      setProcessing(false);
+      setError(error instanceof Error ? error.message : 'Failed to create booking');
+    }
   };
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = async () => {
     setShowPayment(false);
-    setShowSuccess(true);
-    setTimeout(() => {
-      setShowSuccess(false);
-      onClose();
-    }, 3000);
+    
+    try {
+      // In a real implementation, this would be handled by Stripe webhooks
+      // For demo purposes, we'll simulate payment confirmation
+      if (bookingId) {
+        // The payment confirmation would normally be handled by Stripe webhooks
+        console.log('Payment successful for booking:', bookingId);
+      }
+      
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        onClose();
+      }, 3000);
+    } catch (error) {
+      console.error('Error confirming payment:', error);
+    }
   };
 
   const handlePaymentFailure = () => {
@@ -158,6 +203,13 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
             </div>
 
             <div className="p-4">
+              {/* Error Message */}
+              {error && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-600 text-sm font-medium">{error}</p>
+                </div>
+              )}
+
               {/* Check-in Details */}
               <div className="flex items-center gap-4 bg-neutral-50 px-0 min-h-[72px] py-2 justify-between">
                 <div className="flex items-center gap-4">
@@ -269,11 +321,14 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
                   onClick={handleConfirmBooking}
                 >
                   {processing ? (
+                    <>
                       <motion.div
                         animate={{ rotate: 360 }}
                         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                         className="h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"
                       />
+                      Creating Booking...
+                    </>
                   ) : (
                     <span className="truncate">Confirm & Pay</span>
                   )}
@@ -289,10 +344,11 @@ const BookingConfirmationModal: React.FC<BookingConfirmationModalProps> = ({ isO
 
 // Payment Modal Component
 const PaymentModal: React.FC<{
+  bookingId?: string;
   onSuccess: () => void;
   onFailure: () => void;
   onClose: () => void;
-}> = ({ onSuccess, onFailure, onClose }) => {
+}> = ({ bookingId, onSuccess, onFailure, onClose }) => {
   const [selectedPayment, setSelectedPayment] = useState('');
   const [processing, setProcessing] = useState(false);
   const [showFailure, setShowFailure] = useState(false);
@@ -311,8 +367,8 @@ const PaymentModal: React.FC<{
     // Simulate payment processing
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // 80% success rate for demo
-    const success = Math.random() > 0.2;
+    // For demo purposes, always succeed
+    const success = true;
     setProcessing(false);
     
     if (success) {
@@ -373,6 +429,9 @@ const PaymentModal: React.FC<{
           <h2 className="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12" style={{ fontFamily: '"Noto Serif", serif' }}>
             Payment Options
           </h2>
+          {bookingId && (
+            <p className="text-xs text-gray-500 text-center mt-1">Booking ID: {bookingId}</p>
+          )}
         </div>
 
         <div className="p-4">
