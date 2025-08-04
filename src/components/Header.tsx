@@ -38,7 +38,7 @@ const Header = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-md text-black hover:bg-white/90 transition-colors duration-200"
+            className="md:hidden p-2 rounded-md text-black hover:bg-white/20 transition-colors duration-200"
             aria-label="Toggle mobile menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -59,7 +59,7 @@ const Header = () => {
                 />
                 <span style={{ display: 'none' }}>Villa Altona</span>
               </h1>
-              <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-black to-transparent opacity-60 mt-1"></div>
+              <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-black to-transparent opacity-10 mt-1"></div>
             </div>
           </div>
 
