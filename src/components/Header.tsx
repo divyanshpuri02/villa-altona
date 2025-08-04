@@ -37,7 +37,6 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
     
     const actualSectionId = sectionMap[sectionId] || sectionId;
     const element = document.getElementById(actualSectionId);
-    const element = document.getElementById(sectionId);
     if (element) {
       const headerHeight = 120; // Account for fixed header height
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
