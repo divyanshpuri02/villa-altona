@@ -125,7 +125,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                     src="/public/file1.svg" 
                     srcset="/public/file1.svg"></img>
             
-              </div>
+              
             </div>
 
             {/* User Menu - Right - Now in main div */}
