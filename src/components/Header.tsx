@@ -121,7 +121,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="text-center">
                 
-                  <svg  height="500" width="800" transform="scale(10)"
+                  <svg img height="500" width="800" transform="scale(10)"
                     src="/public/file3.svg" 
                     alt="Villa Altona Logo" 
                 
