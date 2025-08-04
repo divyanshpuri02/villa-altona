@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "demo-key",
+  apiKey: "AIzaSyBqJNWqJNWqJNWqJNWqJNWqJNWqJNWqJNW",
   authDomain: "villa-altona-goa.firebaseapp.com",
   projectId: "villa-altona-goa",
   storageBucket: "villa-altona-goa.appspot.com",
