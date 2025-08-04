@@ -118,7 +118,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
             </motion.button>
 
             {/* Centered Logo - Now in main div */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"> {/*to align logo to centre */}
               <div className="text-center">
                
                   <img height="150" width="150" 
