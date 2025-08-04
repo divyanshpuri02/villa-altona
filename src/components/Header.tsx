@@ -117,13 +117,8 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               </AnimatePresence>
             </motion.button>
 
-            {/* Centered Logo - Now in main div */}
-            <motion.div
-              className="flex-1 flex justify-center lg:flex-none lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
+        
+           
            
                 <div className="text-center">
                   <svg href="public/file1.svg"></svg>
