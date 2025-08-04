@@ -113,7 +113,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <nav className="md:hidden bg-black/95 backdrop-blur-md border-t border-white/20">
+          <nav className="md:hidden bg-white/95 backdrop-blur-md border-t border-white/20">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {['About', 'Amenities', 'Gallery', 'Booking', 'Reviews', 'Contact'].map((item) => (
                 <button
