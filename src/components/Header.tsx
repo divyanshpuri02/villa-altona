@@ -156,7 +156,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                      className="absolute right-0 top-full mt-2 w-48 bg-black rounded-lg shadow-lg border border-gray-200 py-2 z-50"
                     >
                       <motion.button
                         onClick={() => {
