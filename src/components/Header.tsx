@@ -123,15 +123,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                 
                   <img height="500" width="800" transform="scale(10)"
                     src="/public/file3.svg" 
-                    alt="Villa Altona Logo" 
                 
-                    className="h-8 w-auto mr-2"
-                    onError={(e) => {
-                      // Fallback to text if SVG fails to load
-                      e.currentTarget.style.display = 'none';
-                      const textNode = document.createTextNode('Villa Altona');
-                      e.currentTarget.parentNode?.appendChild(textNode);
-                    }}
                   />
                   
                 <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-white to-transparent opacity-60 mt-1"></div>
