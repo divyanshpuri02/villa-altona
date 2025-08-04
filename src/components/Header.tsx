@@ -25,6 +25,18 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
+    // Map navigation items to actual section IDs
+    const sectionMap: { [key: string]: string } = {
+      'reviews': 'testimonials',
+      'about': 'about',
+      'amenities': 'amenities',
+      'gallery': 'gallery',
+      'booking': 'booking',
+      'contact': 'contact'
+    };
+    
+    const actualSectionId = sectionMap[sectionId] || sectionId;
+    const element = document.getElementById(actualSectionId);
     const element = document.getElementById(sectionId);
     if (element) {
       const headerHeight = 120; // Account for fixed header height
