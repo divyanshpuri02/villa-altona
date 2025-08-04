@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Loader2, AlertCircle } from 'lucide-react';
 import BookingConfirmationModal from './BookingConfirmationModal';
 import { getBookedDates, isDateBooked } from '../services/bookingService';
+import { getBookedDates, isDateBooked } from '../services/bookingService';
 
 interface BookingProps {
   isAuthenticated: boolean;
@@ -26,8 +27,13 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
   // Load booked dates on component mount
   React.useEffect(() => {
     const loadBookedDates = async () => {
-      const dates = await getBookedDates();
+      try {
+        const dates = await getBookedDates();
+        setBookedDates(dates);
+      } catch (error) {
+        console.log('Using offline mode - some dates may not be accurate');
       setBookedDates(dates);
+      }
     };
     loadBookedDates();
   }, []);

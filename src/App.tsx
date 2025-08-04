@@ -12,6 +12,7 @@ import WhatsAppFloat from './components/WhatsAppFloat'
 import MapLocation from './components/MapLocation'
 import AuthModal from './components/AuthModal'
 
+import DemoNotice from './components/DemoNotice'
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -111,6 +112,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-neutral-50" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
+      <DemoNotice />
       <Header userEmail={userEmail} onLogout={handleLogout} onShowAuth={handleShowAuth} />
       <Hero />
       <About />
