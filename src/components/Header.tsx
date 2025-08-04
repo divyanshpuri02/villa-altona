@@ -138,7 +138,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <User className="h-4 w-4 text-white" />
+                  <User className="h-4 w-4 text-black" />
                   <span className="max-w-[120px] truncate hidden sm:block">{userEmail}</span>
                   <motion.div
                     animate={{ rotate: isUserMenuOpen ? 180 : 0 }}
