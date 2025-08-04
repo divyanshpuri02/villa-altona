@@ -79,7 +79,7 @@ const Header = () => {
 
               {isUserMenuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-md rounded-md shadow-lg py-1 z-50 border border-white/20">
-                  <div className="px-4 py-2 text-sm text-gray-300 border-b border-white/20">
+                  <div className="px-4 py-2 text-sm text-black-300 border-b border-white/20">
                     {user.email}
                   </div>
                   <button
