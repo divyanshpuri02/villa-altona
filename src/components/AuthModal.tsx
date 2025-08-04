@@ -743,6 +743,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
                   )}
                 </motion.button>
               </form>
+
+              {/* Toggle between Login and Signup */}
+              {!isForgotPassword && !isOtpVerification && !isResetPassword && (
+                <div className="mt-6 text-center">
+                  <p className="text-neutral-500 text-sm" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+                    {isLogin ? "Don't have an account?" : "Already have an account?"}
+                  </p>
+                  <motion.button
+                    type="button"
+                    onClick={switchMode}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="mt-2 text-[#141414] font-medium text-sm hover:text-gray-600 transition-colors duration-200 underline"
+                    style={{ fontFamily: '"Noto Sans", sans-serif' }}
+                  >
+                    {isLogin ? 'Sign up here' : 'Sign in here'}
+                  </motion.button>
+                </div>
+              )}
             </div>
           </motion.div>
         </motion.div>
