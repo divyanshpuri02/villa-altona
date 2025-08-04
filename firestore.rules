@@ -5,7 +5,7 @@ service cloud.firestore {
 
     // Allow read and list access to bookings collection
     match /bookings/{bookingId} {
-      allow read, list: true;
+      allow read, write: true;
     }
 
     // This rule allows anyone with your Firestore database reference to view, edit,
