@@ -4,15 +4,13 @@ service cloud.firestore {
   match /databases/{database}/documents {
     // Bookings collection - users can only read/write their own bookings
     match /bookings/{bookingId} {
-      allow read, write: if request.auth != null && 
+      // Allow public read access for availability checking
+      allow read: if true;
+      
+      // Allow authenticated users to write their own bookings
+      allow write: if request.auth != null && 
         (request.auth.token.email == resource.data.userEmail || 
          request.auth.token.email == request.resource.data.userEmail);
-      
-      // Allow listing bookings for availability checking (read-only for authenticated users)
-      allow list: if true;
-      
-      // Allow public read for availability checking (limited fields)
-      allow read: if true;
     }
     
     // Contacts collection - authenticated users can create
