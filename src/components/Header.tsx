@@ -122,7 +122,7 @@ export default function Header({ userEmail, onLogout }: HeaderProps) {
               <div className="text-center">
                 
                   <img height="100" width="100" transform="scale(20)"
-                    src="/public/file3.svg" 
+                    src="/public/file1.svg" 
                 
                   />
                   
