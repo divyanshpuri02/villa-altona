@@ -1,0 +1,45 @@
+type User @table {
+  displayName: String!
+  email: String!
+  createdAt: Timestamp!
+  photoUrl: String
+  role: String
+}
+
+type Villa @table {
+  name: String!
+  description: String!
+  locationCity: String!
+  locationCountry: String!
+  pricePerNight: Float!
+  capacity: Int!
+  bedrooms: Int!
+  bathrooms: Int!
+  owner: User!
+  amenities: [String]
+  photos: [String]
+  isPublished: Boolean
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+type Booking @table {
+  villa: Villa!
+  renter: User!
+  checkInDate: Date!
+  checkOutDate: Date!
+  totalPrice: Float!
+  status: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp
+  numberOfGuests: Int
+}
+
+type Review @table {
+  villa: Villa!
+  reviewer: User!
+  rating: Int!
+  comment: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp
+}
