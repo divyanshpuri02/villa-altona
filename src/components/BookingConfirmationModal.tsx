@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Users, CreditCard, FileText, Download, Shield, Clock, CheckCircle } from 'lucide-react';
+import { X, Calendar, Users, CreditCard, Shield, CheckCircle } from 'lucide-react';
 
 interface BookingConfirmationModalProps {
   isOpen: boolean;

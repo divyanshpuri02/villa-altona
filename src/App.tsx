@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes } from "react-router-dom";
 import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -34,7 +34,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-  const [modalTimer, setModalTimer] = useState<NodeJS.Timeout | null>(null);
+  const [modalTimer, setModalTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
   const [hasShownInitialModal, setHasShownInitialModal] = useState(false);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ function App() {
         clearTimeout(modalTimer);
       }
     };
-  }, []);
+  }, [modalTimer]);
 
   // Handle modal close - restart timer if user is not authenticated
   const handleModalClose = () => {

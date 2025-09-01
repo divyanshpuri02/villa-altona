@@ -1,31 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Calendar, 
   Users, 
   DollarSign, 
   Mail, 
-  TrendingUp, 
-  Clock,
-  CheckCircle,
+  TrendingUp,
   XCircle,
-  AlertCircle,
-  Download,
-  Filter,
   Search,
-  Eye,
-  Edit
+  Eye
 } from 'lucide-react';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebase/config';
-
-interface BookingStats {
-  totalBookings: number;
-  completedBookings: number;
-  pendingBookings: number;
-  cancelledBookings: number;
-  totalRevenue: number;
-}
 
 interface AdminStats {
   recentBookings: number;

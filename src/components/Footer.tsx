@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Home, Calendar, FileText, MessageSquare, Mail, Phone, MapPin, Facebook, Instagram, Twitter, Youtube, Send, Loader2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Youtube, Send, Loader2 } from 'lucide-react';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
-
-  const navItems = [
-    { icon: Home, label: 'Home', active: false },
-    { icon: Calendar, label: 'Calendar', active: false },
-    { icon: FileText, label: 'Details', active: true },
-    { icon: MessageSquare, label: 'Contact', active: false },
-  ];
 
   const quickLinks = [
     { label: 'About Villa', href: '#about' },
