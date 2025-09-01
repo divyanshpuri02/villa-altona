@@ -38,8 +38,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     confirmPassword: '',
     otp: ''
   });
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-
+  
   // User info and Firestore data
   const [user, setUser] = useState<any>(null);
   const [userData, setUserData] = useState<any>(null);
@@ -70,7 +69,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
       setUserData(null);
       setUserImages([]);
     }
-  }, [isOpen, imageUrl]);
+  }, [isOpen]);
 
   // Sign out handler
   const handleSignOut = async () => {
@@ -125,11 +124,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
       hasMinLength,
       isValid: hasSpecial && hasCapital && hasMinLength
     });
-  };
-
-  const handlePasswordChange = (password: string) => {
-    setFormData({...formData, password});
-    if (!isLogin) validatePassword(password);
   };
 
   const validateForm = () => {
@@ -287,34 +281,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
       setSuccess('User profile saved to Firestore!');
     } catch (err: any) {
       setError('Failed to save user profile: ' + err.message);
-    }
-  };
-
-  // Upload image to Firebase Storage
-  const uploadImageToStorage = async (file: File, userId: string) => {
-    try {
-      const storage = getStorage();
-      const fileRef = storageRef(storage, `user-images/${userId}/${file.name}`);
-      await uploadBytes(fileRef, file);
-      const url = await getDownloadURL(fileRef);
-      setSuccess('Image uploaded! URL: ' + url);
-      return url;
-    } catch (err: any) {
-      setError('Image upload failed: ' + err.message);
-      return null;
-    }
-  };
-
-  // Call a Firebase Function (example: 'customFunction')
-  const callCustomFunction = async (data: any) => {
-    try {
-      const customFunction = httpsCallable(functions, 'customFunction');
-      const result = await customFunction(data);
-      setSuccess('Function result: ' + JSON.stringify(result.data));
-      return result.data;
-    } catch (err: any) {
-      setError('Function call failed: ' + err.message);
-      return null;
     }
   };
 

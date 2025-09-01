@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Navigation, Clock, Phone } from 'lucide-react';
 
