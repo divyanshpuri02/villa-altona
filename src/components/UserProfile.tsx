@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { User, Calendar, CreditCard, Mail, Phone, MapPin, Clock, Download, Star } from 'lucide-react';
+import { User, Calendar, Mail, Phone, Download, Star } from 'lucide-react';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebase/config';
 

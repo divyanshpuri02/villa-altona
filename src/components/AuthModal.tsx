@@ -25,11 +25,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [otpTimer, setOtpTimer] = useState(0);
-  const [generatedOtp, setGeneratedOtp] = useState('');
-  const [showDemoOtp, setShowDemoOtp] = useState(false);
-  const [failedLoginAttempts, setFailedLoginAttempts] = useState(0);
-  const [showForgotPasswordOption, setShowForgotPasswordOption] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState({
     hasSpecial: false,
     hasCapital: false,
@@ -43,8 +38,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     confirmPassword: '',
     otp: ''
   });
-  // State for demo image upload
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   // User info and Firestore data
@@ -89,34 +82,15 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     onClose();
   };
 
-  // Handler for image upload
-  const handleImageUpload = async () => {
-    if (!selectedImage) {
-      setError('Please select an image file first.');
-      return;
-    }
-    if (!auth.currentUser) {
-      setError('You must be logged in to upload an image.');
-      return;
-    }
-    const url = await uploadImageToStorage(selectedImage, auth.currentUser.uid);
-    if (url) setImageUrl(url);
-  };
-
-  // Handler for custom function call
-  const handleFunctionCall = async () => {
-    const result = await callCustomFunction({ message: 'Hello from client!' });
-    // You can use result as needed
-  };
   // Firebase Auth signup
   const firebaseSignup = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       setSuccess('Signup successful!');
       // Save user profile to Firestore
-      await saveUserToFirestore(userCredential.user.uid, formData.name, email);
+      await saveUserToFirestore(auth.currentUser?.uid || '', formData.name, email);
       onLogin(email);
     } catch (error: any) {
       setError(error.message);
@@ -253,11 +227,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setIsResetPassword(false);
     setFormData({ name: '', email: '', password: '', confirmPassword: '', otp: '' });
     setPasswordStrength({ hasSpecial: false, hasCapital: false, hasMinLength: false, isValid: false });
-    setFailedLoginAttempts(0);
-    setShowForgotPasswordOption(false);
-    setOtpTimer(0);
-    setGeneratedOtp('');
-    setShowDemoOtp(false);
   };
 
   const handleModalClose = () => {
@@ -272,10 +241,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setSuccess(null); // Clear success when user starts typing
     setFormData({...formData, [field]: value});
     
-    // Reset failed attempts when user starts typing in email or password field
+    // Reset error state when user starts typing in email or password field
     if (field === 'email' || field === 'password') {
-      setFailedLoginAttempts(0);
-      setShowForgotPasswordOption(false);
+      // Additional cleanup could go here
     }
   };
 
@@ -285,9 +253,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setFormData({...formData, password});
     if (!isLogin || isResetPassword) validatePassword(password);
     
-    // Reset failed attempts when user starts typing password
-    setFailedLoginAttempts(0);
-    setShowForgotPasswordOption(false);
+    // Reset error state when user starts typing password
   };
 
   const isFormValid = () => {
