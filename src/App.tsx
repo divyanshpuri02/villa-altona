@@ -60,7 +60,7 @@ function App() {
         clearTimeout(modalTimer);
       }
     };
-  }, []);
+  }, [modalTimer]);
 
   // Handle modal close - restart timer if user is not authenticated
   const handleModalClose = () => {

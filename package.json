@@ -9,14 +9,14 @@
     "preview": "vite preview",
     "firebase": "firebase",
     "deploy": "firebase deploy --only functions,firestore:rules,firestore:indexes",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint src/ --max-warnings 0"
   },
   "dependencies": {
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "@stripe/stripe-js": "^7.8.0",
     "@types/react-router-dom": "^5.3.3",
     "date-fns": "^2.30.0",
-    "emailjs-com": "^3.2.0",
+    "@emailjs/browser": "^4.3.3",
     "firebase": "^10.14.1",
     "framer-motion": "^10.16.0",
     "lucide-react": "^0.300.0",

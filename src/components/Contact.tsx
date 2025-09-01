@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle, ChevronDown } from 'lucide-react';
+import { Mail, Phone, CheckCircle, ChevronDown } from 'lucide-react';
 import { sendContactEmail, ContactFormData } from '../services/emailService';
 
 const Contact: React.FC = () => {

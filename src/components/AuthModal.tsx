@@ -141,10 +141,15 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
   };
 
   const validatePassword = (password: string) => {
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const hasCapital = /[A-Z]/.test(password);
+    const hasMinLength = password.length >= 8;
+    
     setPasswordStrength({
-      hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-      hasCapital: /[A-Z]/.test(password),
-      hasMinLength: password.length >= 8,
+      hasSpecial,
+      hasCapital,
+      hasMinLength,
+      isValid: hasSpecial && hasCapital && hasMinLength
     });
   };
 
