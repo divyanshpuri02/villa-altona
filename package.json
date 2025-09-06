@@ -12,6 +12,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@dataconnect/generated": "file:src/dataconnect-generated",
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "@stripe/stripe-js": "^7.8.0",
     "@types/react-router-dom": "^5.3.3",
@@ -23,7 +24,8 @@
     "react": "^18.3.1",
     "react-datepicker": "^4.25.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.7.1"
+    "react-router-dom": "^7.7.1",
+    "stripe": "^18.5.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

@@ -1,61 +1,33 @@
-// Import required modules
-import js from '@eslint/js';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import importPlugin from 'eslint-plugin-import';
-
-export default [
-  js.configs.recommended,
-  {
-    files: ['**/*.ts', '**/*.js'],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: {
-        project: ['./tsconfig.json', './tsconfig.dev.json'],
-        sourceType: 'module'
-      },
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        Buffer: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly',
-        global: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly'
-      }
-    },
-    plugins: {
-      '@typescript-eslint': typescriptEslint,
-      import: importPlugin
-    },
-    rules: {
-      'no-restricted-globals': ['error', 'name', 'length'],
-      'prefer-arrow-callback': 'error',
-      'quotes': ['error', 'single', { allowTemplateLiterals: true }],
-      'object-curly-spacing': ['error', 'always'],
-      'comma-dangle': ['error', 'never'],
-      'max-len': ['error', { code: 120 }],
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      'import/no-unresolved': 'error'
-    },
-    settings: {
-      'import/resolver': {
-        typescript: {
-          alwaysTryTypes: true
-        }
-      }
-    }
+module.exports = {
+  root: true,
+  env: {
+    es6: true,
+    node: true,
   },
-  {
-    ignores: [
-      '/lib/**/*',
-      '**/*.d.ts'
-    ]
-  }
-];
+  extends: [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "google",
+    "plugin:@typescript-eslint/recommended",
+  ],
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: ["tsconfig.json", "tsconfig.dev.json"],
+    sourceType: "module",
+  },
+  ignorePatterns: [
+    "/lib/**/*", // Ignore built files.
+    "/generated/**/*", // Ignore generated files.
+  ],
+  plugins: [
+    "@typescript-eslint",
+    "import",
+  ],
+  rules: {
+    "quotes": ["error", "double"],
+    "import/no-unresolved": 0,
+    "indent": ["error", 2],
+  },
+};
