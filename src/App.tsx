@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react'
+<<<<<<< HEAD
+=======
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+>>>>>>> 831823ff4cf216945a2d47443ab0d851e1d3047c
 import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -10,9 +14,31 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import WhatsAppFloat from './components/WhatsAppFloat'
 import MapLocation from './components/MapLocation'
+<<<<<<< HEAD
 import AuthModal from './components/AuthModal'
 
 import DemoNotice from './components/DemoNotice'
+=======
+import { AuthModal } from './components/AuthModal'
+
+import DemoNotice from './components/DemoNotice'
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import app from "./firebase/config";
+
+// Use debug token on localhost, reCAPTCHA in production
+const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+
+if (isLocalhost) {
+  // Set debug token for localhost
+  (globalThis as any).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
+
+initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider("38187e2d-8c85-4053-8d4b-1d228f249d55"),
+  isTokenAutoRefreshEnabled: true,
+});
+
+>>>>>>> 831823ff4cf216945a2d47443ab0d851e1d3047c
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -111,6 +137,7 @@ function App() {
   }
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-neutral-50" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
       <DemoNotice />
       <Header userEmail={userEmail} onLogout={handleLogout} onShowAuth={handleShowAuth} />
@@ -131,6 +158,33 @@ function App() {
         onLogin={handleLogin}
       />
     </div>
+=======
+    <BrowserRouter>
+      <div className="min-h-screen bg-neutral-50" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
+        <DemoNotice />
+        <Header userEmail={userEmail} onLogout={handleLogout} onShowAuth={handleShowAuth} />
+        <Hero />
+        <About />
+        <Amenities />
+        <Gallery />
+        <Booking isAuthenticated={isAuthenticated} onShowAuth={() => setShowAuthModal(true)} />
+        <Testimonials />
+        <MapLocation />
+        <Contact />
+        <Footer />
+        <WhatsAppFloat />
+        
+        <AuthModal 
+          isOpen={shouldShowAuthModal}
+          onClose={handleModalClose}
+          onLogin={handleLogin}
+        />
+      </div>
+      <Routes>
+        {/* Routes can be added here for different pages */}
+      </Routes>
+    </BrowserRouter>
+>>>>>>> 831823ff4cf216945a2d47443ab0d851e1d3047c
   )
 }
 

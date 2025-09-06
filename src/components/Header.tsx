@@ -65,7 +65,11 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+<<<<<<< HEAD
       isScrolled ? 'bg-white/90 backdrop-blur-md shadow-lg' : 'bg-white/90 backdrop-blur-sm'
+=======
+      isScrolled ? 'bg-white/100 backdrop-blur-md shadow-lg' : 'bg-white/100 backdrop-blur-sm'
+>>>>>>> 831823ff4cf216945a2d47443ab0d851e1d3047c
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 relative">
@@ -100,6 +104,7 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
           {/* User menu - Always on the right */}
           {isAuthenticated ? (
             <div className="relative ml-auto">
+<<<<<<< HEAD
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 className="flex items-center space-x-2 p-2 rounded-md text-black hover:text-gray-300 transition-colors duration-200"
@@ -125,6 +130,34 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
                   </button>
                 </div>
               )}
+=======
+              <div className="relative flex flex-col items-center">
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center space-x-2 p-2 rounded-md text-black hover:text-gray-300 transition-colors duration-200"
+                  aria-label="User menu"
+                >
+                  <User size={20} />
+                  <span className="hidden sm:block text-sm truncate max-w-32">
+                    {userEmail}
+                  </span>
+                </button>
+                {isUserMenuOpen && (
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white shadow-lg rounded-lg p-3 z-50 w-56">
+                    <div className="text-sm text-gray-600 max-w-[220px] truncate text-center" title={userEmail}>
+                      {userEmail}
+                    </div>
+                    <button
+                      onClick={handleSignOut}
+                      className="flex items-center gap-2 mt-2 text-gray-700 hover:text-red-600 transition-colors duration-200 group"
+                    >
+                      <LogOut size={16} className="mr-3 group-hover:text-red-600 transition-colors duration-200" />
+                      Sign out
+                    </button>
+                  </div>
+                )}
+              </div>
+>>>>>>> 831823ff4cf216945a2d47443ab0d851e1d3047c
             </div>
           ) : (
             <div className="relative ml-auto">

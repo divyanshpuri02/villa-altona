@@ -28,8 +28,8 @@ const adminToken = defineSecret('ADMIN_TOKEN');
 // Initialize Stripe
 let stripe: Stripe;
 
-// Email transport
-let transport: nodemailer.Transporter;
+// Email transporter
+let transporter: nodemailer.Transporter;
 
 // Types
 interface BookingData {
@@ -80,8 +80,8 @@ const initializeServices = (context: any) => {
     });
   }
   
-  if (!transport) {
-    transport = nodemailer.createTransport({
+  if (!transporter) {
+    transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: emailUser.value(),
@@ -92,8 +92,8 @@ const initializeServices = (context: any) => {
 };
 
 const initializeEmailService = (context: any) => {
-  if (!transport) {
-    transport = nodemailer.createTransport({
+  if (!transporter) {
+    transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: emailUser.value(),
@@ -146,7 +146,7 @@ const sendBookingConfirmationEmail = async (booking: any, bookingId: string) => 
     `
   };
 
-  await transport.sendMail(mailOptions);
+  await transporter.sendMail(mailOptions);
 };
 
 const sendContactFormEmail = async (contactData: ContactFormData) => {
@@ -171,7 +171,7 @@ const sendContactFormEmail = async (contactData: ContactFormData) => {
     `
   };
 
-  await transport.sendMail(mailOptions);
+  await transporter.sendMail(mailOptions);
 };
 
 // Cloud Functions
