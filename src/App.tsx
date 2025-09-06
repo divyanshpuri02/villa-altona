@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
-<<<<<<< HEAD
-=======
 import { BrowserRouter, Routes, Route } from "react-router-dom";
->>>>>>> 831823ff4cf216945a2d47443ab0d851e1d3047c
 import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -14,11 +11,6 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import WhatsAppFloat from './components/WhatsAppFloat'
 import MapLocation from './components/MapLocation'
-<<<<<<< HEAD
-import AuthModal from './components/AuthModal'
-
-import DemoNotice from './components/DemoNotice'
-=======
 import { AuthModal } from './components/AuthModal'
 
 import DemoNotice from './components/DemoNotice'
@@ -38,7 +30,6 @@ initializeAppCheck(app, {
   isTokenAutoRefreshEnabled: true,
 });
 
->>>>>>> 831823ff4cf216945a2d47443ab0d851e1d3047c
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -59,7 +50,7 @@ function App() {
       const timer = setTimeout(() => {
         setShowAuthModal(true);
         setHasShownInitialModal(true);
-      }, 4000);
+      }, 2000);
       setModalTimer(timer);
     }
 
@@ -79,7 +70,7 @@ function App() {
       // Start new timer to show modal again after 4 seconds
       const timer = setTimeout(() => {
         setShowAuthModal(true);
-      }, 4000);
+      }, 10000);
       setModalTimer(timer);
     }
   };
@@ -137,28 +128,6 @@ function App() {
   }
 
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen bg-neutral-50" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
-      <DemoNotice />
-      <Header userEmail={userEmail} onLogout={handleLogout} onShowAuth={handleShowAuth} />
-      <Hero />
-      <About />
-      <Amenities />
-      <Gallery />
-      <Booking isAuthenticated={isAuthenticated} onShowAuth={() => setShowAuthModal(true)} />
-      <Testimonials />
-      <MapLocation />
-      <Contact />
-      <Footer />
-      <WhatsAppFloat />
-      
-      <AuthModal 
-        isOpen={shouldShowAuthModal}
-        onClose={handleModalClose}
-        onLogin={handleLogin}
-      />
-    </div>
-=======
     <BrowserRouter>
       <div className="min-h-screen bg-neutral-50" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
         <DemoNotice />
@@ -184,7 +153,6 @@ function App() {
         {/* Routes can be added here for different pages */}
       </Routes>
     </BrowserRouter>
->>>>>>> 831823ff4cf216945a2d47443ab0d851e1d3047c
   )
 }
 

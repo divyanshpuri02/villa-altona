@@ -1,8 +1,6 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
-export { AuthModal }; // Exporting here for use in App.tsx
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -770,3 +768,5 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     </AnimatePresence>
   );
 };
+
+export default AuthModal;
