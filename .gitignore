@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+
+# Firebase
+.firebase/
+*.cache
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+node_modules/
+dist/
+build/
+*.log
+.env*
+dataconnect/
+emulator-data/
+*.dmg
+*.zip
+*.tar.gz
