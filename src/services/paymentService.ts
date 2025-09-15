@@ -1,5 +1,7 @@
 import { loadStripe } from '@stripe/stripe-js';
 import { createPaymentIntent, confirmPayment } from './bookingService';
+import { httpsCallable } from 'firebase/functions';
+import { functions } from '../firebase/config';
 
 // Initialize Stripe
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_...');
@@ -24,7 +26,60 @@ export const paymentMethods: PaymentMethod[] = [
   { id: 'upi', name: 'UPI Payment', type: 'upi', icon: '📱' },
   { id: 'netbanking', name: 'Net Banking', type: 'netbanking', icon: '🏦' },
   { id: 'wallet', name: 'Digital Wallet', type: 'wallet', icon: '💰' },
+  { id: 'razorpay', name: 'Razorpay', type: 'upi', icon: '💰' },
 ];
+
+// Razorpay helpers
+const createRazorpayOrderFn = httpsCallable(functions, 'createRazorpayOrder');
+const verifyRazorpaySignatureFn = httpsCallable(functions, 'verifyRazorpaySignature');
+
+declare global {
+  interface Window { Razorpay?: any }
+}
+
+const loadRazorpayScript = (): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    if (window.Razorpay) return resolve();
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('Failed to load Razorpay'));
+    document.body.appendChild(script);
+  });
+};
+
+export const processRazorpayPayment = async (paymentData: PaymentData): Promise<{ success: boolean; error?: string } > => {
+  try {
+    await loadRazorpayScript();
+    const orderRes = await createRazorpayOrderFn({ bookingId: paymentData.bookingId });
+    const { orderId, amount, keyId } = orderRes.data as any;
+
+    return await new Promise((resolve) => {
+      const rzp = new window.Razorpay({
+        key: keyId,
+        amount,
+        currency: 'INR',
+        name: 'Villa Altona',
+        order_id: orderId,
+        prefill: { name: paymentData.customerName, email: paymentData.customerEmail },
+        handler: async (resp: any) => {
+          try {
+            await verifyRazorpaySignatureFn({ orderId, paymentId: resp.razorpay_payment_id, signature: resp.razorpay_signature, bookingId: paymentData.bookingId });
+            resolve({ success: true });
+          } catch (e: any) {
+            resolve({ success: false, error: e?.message || 'Verification failed' });
+          }
+        },
+        modal: { ondismiss: () => resolve({ success: false, error: 'Payment cancelled' }) },
+        theme: { color: '#141414' }
+      });
+      rzp.open();
+    });
+  } catch (error) {
+    console.error('Razorpay payment error:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Razorpay payment failed' };
+  }
+};
 
 // Process Stripe Card Payment
 export const processStripePayment = async (paymentData: PaymentData): Promise<{
@@ -39,11 +94,11 @@ export const processStripePayment = async (paymentData: PaymentData): Promise<{
     }
 
     // Create payment intent via cloud function
-    const { paymentIntent } = await createPaymentIntent(paymentData.bookingId);
+  const { clientSecret, paymentIntentId } = await createPaymentIntent(paymentData.bookingId);
 
     // Confirm payment with Stripe
     const { error, paymentIntent: confirmedPayment } = await stripe.confirmCardPayment(
-      paymentIntent.client_secret,
+      clientSecret,
       {
         payment_method: {
           card: {
@@ -68,11 +123,11 @@ export const processStripePayment = async (paymentData: PaymentData): Promise<{
 
     if (confirmedPayment?.status === 'succeeded') {
       // Confirm payment in our backend
-      await confirmPayment(paymentData.bookingId, confirmedPayment.id);
+  await confirmPayment(paymentData.bookingId, confirmedPayment.id);
       
       return {
         success: true,
-        paymentIntentId: confirmedPayment.id
+        paymentIntentId
       };
     }
 
@@ -108,12 +163,12 @@ export const processUPIPayment = async (paymentData: PaymentData): Promise<{
     
     if (success) {
       // Create and confirm payment intent
-      const { paymentIntent } = await createPaymentIntent(paymentData.bookingId);
-      await confirmPayment(paymentData.bookingId, paymentIntent.id);
+  const { paymentIntentId } = await createPaymentIntent(paymentData.bookingId);
+  await confirmPayment(paymentData.bookingId, paymentIntentId);
       
       return {
         success: true,
-        paymentIntentId: paymentIntent.id
+        paymentIntentId
       };
     } else {
       return {
@@ -147,12 +202,12 @@ export const processNetBankingPayment = async (paymentData: PaymentData): Promis
     const success = Math.random() > 0.15;
     
     if (success) {
-      const { paymentIntent } = await createPaymentIntent(paymentData.bookingId);
-      await confirmPayment(paymentData.bookingId, paymentIntent.id);
+      const { paymentIntentId } = await createPaymentIntent(paymentData.bookingId);
+      await confirmPayment(paymentData.bookingId, paymentIntentId);
       
       return {
         success: true,
-        paymentIntentId: paymentIntent.id
+        paymentIntentId
       };
     } else {
       return {
@@ -186,12 +241,12 @@ export const processWalletPayment = async (paymentData: PaymentData): Promise<{
     const success = Math.random() > 0.05;
     
     if (success) {
-      const { paymentIntent } = await createPaymentIntent(paymentData.bookingId);
-      await confirmPayment(paymentData.bookingId, paymentIntent.id);
+      const { paymentIntentId } = await createPaymentIntent(paymentData.bookingId);
+      await confirmPayment(paymentData.bookingId, paymentIntentId);
       
       return {
         success: true,
-        paymentIntentId: paymentIntent.id
+        paymentIntentId
       };
     } else {
       return {
@@ -221,6 +276,8 @@ export const processPayment = async (
   switch (paymentMethod) {
     case 'card':
       return processStripePayment(paymentData);
+    case 'razorpay':
+      return processRazorpayPayment(paymentData);
     case 'upi':
       return processUPIPayment(paymentData);
     case 'netbanking':

@@ -42,7 +42,7 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
     return date.toISOString().split('T')[0];
   };
 
-  const getDateInputStyle = (dateString: string, isBooked: boolean) => {
+  const getDateInputStyle = (isBooked: boolean) => {
     const baseStyle = "form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border-none focus:border-none h-14 placeholder:text-neutral-500 p-4 text-base font-normal leading-normal";
     
     if (isBooked) {
@@ -130,7 +130,7 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
                   value={checkIn}
                   onChange={(e) => setCheckIn(e.target.value)}
                   placeholder="Check-in Date"
-                  className={getDateInputStyle(checkIn, isCheckInBooked)}
+                  className={getDateInputStyle(isCheckInBooked)}
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
                   min={formatDateForInput(new Date())}
                 />
@@ -156,7 +156,7 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
                   value={checkOut}
                   onChange={(e) => setCheckOut(e.target.value)}
                   placeholder="Check-out Date"
-                  className={getDateInputStyle(checkOut, isCheckOutBooked)}
+                  className={getDateInputStyle(isCheckOutBooked)}
                   style={{ fontFamily: '"Noto Sans", sans-serif' }}
                   min={checkIn || formatDateForInput(new Date())}
                 />

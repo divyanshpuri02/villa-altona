@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from './components/Header'
-import Hero from './components/Hero'
-import About from './components/About'
-import Amenities from './components/Amenities'
-import Gallery from './components/Gallery'
-import Booking from './components/Booking'
-import Testimonials from './components/Testimonials'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
-import WhatsAppFloat from './components/WhatsAppFloat'
-import MapLocation from './components/MapLocation'
+import Layout from './components/Layout'
+import Home from './pages/Home'
+import AdminDashboardPage from './pages/AdminDashboardPage'
+import UserProfilePage from './pages/UserProfilePage'
+import DatabaseSetupPage from './pages/DatabaseSetupPage'
+import BookingPage from './pages/BookingPage'
+import NotFound from './pages/NotFound'
+import PaymentPage from './pages/PaymentPage'
+import CheckoutPage from './pages/CheckoutPage'
+import ProtectedRoute from './components/ProtectedRoute'
 import { AuthModal } from './components/AuthModal'
+import { getAuth, connectAuthEmulator, GoogleAuthProvider, signInWithPopup, signInAnonymously } from 'firebase/auth';
 
-import DemoNotice from './components/DemoNotice'
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import app from "./firebase/config";
 
@@ -37,14 +36,25 @@ function App() {
   const [modalTimer, setModalTimer] = useState<NodeJS.Timeout | null>(null);
   const [hasShownInitialModal, setHasShownInitialModal] = useState(false);
 
-  useEffect(() => {
-    // Check if user is already logged in
+useEffect(() => {
+  
+  
+  const auth = getAuth(app);
+  if (import.meta.env.DEV) {
+    // Suppress emulator domain warnings
+    connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+  }
+  // Check if user is already logged in
     const savedAuth = localStorage.getItem('villa_auth');
     if (savedAuth) {
       const authData = JSON.parse(savedAuth);
       setIsAuthenticated(true);
       setUserEmail(authData.email);
       setHasShownInitialModal(true); // Don't show modal if already authenticated
+      // Ensure Firebase has an auth user for callables
+      if (!auth.currentUser) {
+        signInAnonymously(auth).catch(() => {/* noop */});
+      }
     } else {
       // Start timer to show modal after 4 seconds
       const timer = setTimeout(() => {
@@ -85,6 +95,11 @@ function App() {
       clearTimeout(modalTimer);
       setModalTimer(null);
     }
+    // Ensure Firebase auth user exists (for callables auth context)
+    const auth = getAuth(app);
+    if (!auth.currentUser) {
+      signInAnonymously(auth).catch(() => {/* noop */});
+    }
   };
 
   const handleLogout = () => {
@@ -104,17 +119,24 @@ function App() {
     setShowAuthModal(true);
   };
 
+  // Auto-open auth modal on global request (e.g., booking flow)
+  useEffect(() => {
+    const openAuth = () => setShowAuthModal(true);
+    window.addEventListener('OPEN_AUTH_MODAL', openAuth as EventListener);
+    return () => window.removeEventListener('OPEN_AUTH_MODAL', openAuth as EventListener);
+  }, []);
+
   // Only show auth modal if user is not authenticated
   const shouldShowAuthModal = showAuthModal && !isAuthenticated;
 
   if (!isAuthenticated && !hasShownInitialModal) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-center justify-center" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center font-sans">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-[#141414] mb-4" style={{ fontFamily: '"Noto Serif", serif' }}>
+          <h1 className="text-4xl text-[#141414] mb-4">
             Villa Altona
           </h1>
-          <p className="text-neutral-500" style={{ fontFamily: '"Noto Sans", sans-serif' }}>
+          <p className="text-neutral-500">
             Welcome to Villa Altona
           </p>
         </div>
@@ -122,36 +144,73 @@ function App() {
           isOpen={shouldShowAuthModal}
           onClose={handleModalClose}
           onLogin={handleLogin}
+          onGoogleLogin={handleGoogleLogin}
         />
       </div>
     );
   }
 
+
+  async function handleGoogleLogin(): Promise<void> {
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // Extract the user's email
+      const userEmail = result.user.email;
+      
+      // Call the handleLogin function with the user's email
+      if (userEmail) {
+        handleLogin(userEmail);
+      } else {
+        console.error("No email found in Google authentication result");
+      }
+    } catch (error) {
+      console.error("Google login error:", error);
+      // You could also show a user-friendly error message here
+    }
+  }
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-neutral-50" style={{ fontFamily: '"Inter", "Noto Sans", sans-serif' }}>
-        <DemoNotice />
-        <Header userEmail={userEmail} onLogout={handleLogout} onShowAuth={handleShowAuth} />
-        <Hero />
-        <About />
-        <Amenities />
-        <Gallery />
-        <Booking isAuthenticated={isAuthenticated} onShowAuth={() => setShowAuthModal(true)} />
-        <Testimonials />
-        <MapLocation />
-        <Contact />
-        <Footer />
-        <WhatsAppFloat />
-        
-        <AuthModal 
-          isOpen={shouldShowAuthModal}
-          onClose={handleModalClose}
-          onLogin={handleLogin}
-        />
-      </div>
       <Routes>
-        {/* Routes can be added here for different pages */}
+        <Route
+          path="/"
+          element={<Layout userEmail={userEmail} onLogout={handleLogout} onShowAuth={handleShowAuth} />}
+        >
+          <Route index element={<Home isAuthenticated={isAuthenticated} onShowAuth={() => setShowAuthModal(true)} />} />
+          <Route
+            path="/booking"
+            element={<BookingPage isAuthenticated={isAuthenticated} onShowAuth={() => setShowAuthModal(true)} />}
+          />
+          <Route path="/pay/:bookingId" element={<PaymentPage />} />
+          <Route path="/checkout/:bookingId" element={<CheckoutPage />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <UserProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <AdminDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/setup" element={<DatabaseSetupPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
+      <AuthModal 
+        isOpen={shouldShowAuthModal}
+        onClose={handleModalClose}
+        onLogin={handleLogin}
+        onGoogleLogin={handleGoogleLogin}
+      />
     </BrowserRouter>
   )
 }

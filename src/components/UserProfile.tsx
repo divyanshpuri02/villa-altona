@@ -51,12 +51,25 @@ const UserProfile: React.FC<UserProfileProps> = ({ userEmail, onClose }) => {
       
       // Load profile and bookings in parallel
       const [profileResult, bookingsResult] = await Promise.all([
-        getUserProfileFunction({ userEmail }),
-        getUserBookingsFunction({ userEmail })
+        getUserProfileFunction({}),
+        getUserBookingsFunction({})
       ]);
 
       setProfile((profileResult.data as any).profile as UserProfileData);
-      setBookings((bookingsResult.data as any).bookings as UserBooking[]);
+      const rawBookings = (bookingsResult.data as any).bookings || [];
+      setBookings(
+        rawBookings.map((b: any) => ({
+          id: b.id,
+          checkIn: b.checkIn?.toDate ? b.checkIn.toDate() : new Date(b.checkIn),
+          checkOut: b.checkOut?.toDate ? b.checkOut.toDate() : new Date(b.checkOut),
+          adults: b.adults,
+          children: b.children || 0,
+          totalAmount: b.totalAmount,
+          paymentStatus: b.paymentStatus,
+          confirmationCode: b.confirmationCode,
+          createdAt: b.createdAt?.toDate ? b.createdAt.toDate() : (b.createdAt ? new Date(b.createdAt) : new Date())
+        }))
+      );
     } catch (error) {
       console.error('Error loading user data:', error);
     } finally {
@@ -68,7 +81,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userEmail, onClose }) => {
     if (!confirm('Are you sure you want to cancel this booking?')) return;
 
     try {
-      await cancelBookingFunction({ bookingId, userEmail });
+  await cancelBookingFunction({ bookingId });
       await loadUserData(); // Reload data
     } catch (error) {
       console.error('Error cancelling booking:', error);

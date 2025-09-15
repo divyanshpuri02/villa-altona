@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, User, LogOut } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   userEmail?: string;
@@ -81,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
           {/* Logo - Left on desktop, centered on mobile */}
           <div className="md:relative md:left-0 md:top-0 md:transform-none absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-black tracking-tight" style={{ fontFamily: '"Noto Serif", serif' }}>
+              <h1 className="text-2xl font-bold text-black tracking-tight">
                 <img
                   src="/file1.svg" 
                   alt="Villa Altona" 
@@ -91,7 +92,7 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
                     (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = 'inline';
                   }}
                 />
-                <span style={{ display: 'none' }}>Villa Altona</span>
+                <span className="hidden">Villa Altona</span>
               </h1>
               <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-black to-transparent opacity-60 mt-1"></div>
             </div>
@@ -112,10 +113,24 @@ const Header: React.FC<HeaderProps> = ({ userEmail, onLogout, onShowAuth }) => {
               </button>
 
               {isUserMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-md rounded-md shadow-lg py-1 z-50 border border-white/20">
+                <div className="absolute right-0 mt-2 w-56 bg-white/95 backdrop-blur-md rounded-md shadow-lg py-1 z-50 border border-white/20">
                   <div className="px-4 py-2 text-sm text-black-300 border-b border-white/20">
                     {userEmail}
                   </div>
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsUserMenuOpen(false)}
+                    className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/admin"
+                    onClick={() => setIsUserMenuOpen(false)}
+                    className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    Admin Dashboard
+                  </Link>
                   <button
                     onClick={handleSignOut}
                     className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 group"

@@ -220,6 +220,22 @@ export default function Footer() {
 
       <div className="h-5 bg-neutral-50"></div>
       
+      {/* Navigation */}
+      <div className="px-4 py-4 border-t border-[#ededed]">
+        <div className="flex justify-center gap-6">
+          {navItems.map((item, index) => (
+            <a 
+              key={index}
+              href="#"
+              className={`flex items-center gap-2 ${item.active ? 'text-[#141414] font-medium' : 'text-neutral-500'}`}
+            >
+              <item.icon className="h-4 w-4" />
+              <span className="text-sm">{item.label}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      
       {/* Copyright */}
       <div className="px-4 py-4 border-t border-[#ededed]">
         <p className="text-neutral-500 text-sm text-center" style={{ fontFamily: '"Noto Sans", sans-serif' }}>

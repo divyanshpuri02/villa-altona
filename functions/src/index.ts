@@ -1,32 +1,1098 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+import { initializeApp } from 'firebase-admin/app';
+import { getFirestore, FieldValue, Timestamp, Query } from 'firebase-admin/firestore';
+import { getAuth } from 'firebase-admin/auth';
+import { 
+  onCall, 
+  onRequest, 
+  HttpsError,
+  CallableRequest
+} from 'firebase-functions/v2/https';
+import { Request, Response } from 'express';
+import { 
+  onDocumentCreated, 
+  onDocumentUpdated,
+  DocumentSnapshot,
+  Change
+} from 'firebase-functions/v2/firestore';
+import { defineSecret } from 'firebase-functions/params';
+import * as logger from 'firebase-functions/logger';
+import * as nodemailer from 'nodemailer';
+import Stripe from 'stripe';
+// import Razorpay from 'razorpay';
+// import * as crypto from 'crypto';
 
-import {setGlobalOptions} from "firebase-functions";
-import {onRequest} from "firebase-functions/https";
-import * as logger from "firebase-functions/logger";
+// Initialize Firebase
+initializeApp();
+const db = getFirestore();
+const auth = getAuth();
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+// Define secrets for secure values
+const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
+const stripeWebhookSecret = defineSecret('STRIPE_WEBHOOK_SECRET');
+const emailUser = defineSecret('EMAIL_USER');
+const emailPassword = defineSecret('EMAIL_PASSWORD');
+// const razorpayKeyId = defineSecret('RAZORPAY_KEY_ID');
+// const razorpayKeySecret = defineSecret('RAZORPAY_KEY_SECRET');
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
+// Types for our booking data
+interface BookingData {
+  userId: string;
+  userName: string;
+  userEmail: string;
+  checkIn: Timestamp;
+  checkOut: Timestamp;
+  adults: number;
+  children?: number;
+  guestDetails: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+  };
+  specialRequests?: string;
+  totalAmount: number;
+  confirmationCode: string;
+  paymentStatus: 'pending' | 'completed' | 'failed' | 'cancelled' | 'refunded' | 'no-show';
+  paymentIntentId?: string;
+  refundAmount?: number;
+  refundId?: string;
+  adminNotes?: string;
+  paymentError?: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
+  cancelledAt?: Timestamp;
+}
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+// Initialize services (null initially, will be set in initializeServices)
+let stripe: Stripe | null = null;
+let transporter: nodemailer.Transporter | null = null;
+// let razorpay: Razorpay | null = null;
+
+// Helper function to initialize services
+const initializeServices = (_context: any): void => {
+  if (!stripe) {
+    const secret = process.env.STRIPE_SECRET_KEY || stripeSecretKey.value();
+    stripe = new Stripe(secret, { 
+      apiVersion: '2025-08-27.basil' // Using the compatible API version
+    });
+  }
+  // Initialize nodemailer if not already initialized
+  if (!transporter) {
+    transporter = nodemailer.createTransport({  // Fixed: createTransporter → createTransport
+      service: 'gmail',
+      auth: {
+        user: emailUser.value(),
+        pass: emailPassword.value()
+      }
+    });
+  }
+  // if (!razorpay) {
+  //   razorpay = new Razorpay({ key_id: razorpayKeyId.value(), key_secret: razorpayKeySecret.value() });
+  // }
+};
+
+// Helper to get or create a Stripe Customer for a Firebase user
+const getOrCreateStripeCustomer = async (uid: string, email?: string | null): Promise<string> => {
+  const userDocRef = db.collection('users').doc(uid);
+  const userDoc = await userDocRef.get();
+  const existing = userDoc.exists ? (userDoc.data() as any) : undefined;
+  if (existing?.stripeCustomerId) {
+    return existing.stripeCustomerId as string;
+  }
+  const customer = await requireStripe().customers.create({
+    email: email || undefined,
+    metadata: { uid }
+  });
+  await userDocRef.set({ stripeCustomerId: customer.id }, { merge: true });
+  return customer.id;
+};
+
+// Helper function to require auth
+const requireAuth = async (context: CallableRequest): Promise<string> => {
+  if (!context.auth) {
+    throw new HttpsError('unauthenticated', 'Authentication required');
+  }
+  return context.auth.uid;
+};
+
+// Helper function to require admin
+const requireAdmin = async (context: CallableRequest): Promise<string> => {
+  if (!context.auth) {
+    throw new HttpsError('unauthenticated', 'Authentication required');
+  }
+  const uid = context.auth.uid;
+  const userDoc = await db.collection('users').doc(uid).get();
+  if (!userDoc.exists || !userDoc.data()?.isAdmin) {
+    throw new HttpsError('permission-denied', 'Admin privileges required');
+  }
+  return uid;
+};
+
+// Helper to get Stripe (throws if not initialized)
+const requireStripe = (): Stripe => {
+  if (!stripe) throw new Error('Stripe is not initialized');
+  return stripe;
+};
+
+// Helper to generate confirmation code
+const generateConfirmationCode = (): string => {
+  const timestamp = Date.now().toString(36);
+  const random = Math.random().toString(36).substring(2, 7);
+  return `VA2024-${timestamp.toUpperCase()}-${random.toUpperCase()}`;
+};
+
+// Helper to send booking confirmation email
+const sendBookingConfirmationEmail = async (booking: BookingData): Promise<void> => {
+  if (!transporter) throw new Error('Email transport not initialized');
+  
+  const mailOptions = {
+    from: emailUser.value(),
+    to: booking.userEmail,
+    subject: `Villa Altona Booking Confirmation - ${booking.confirmationCode}`,
+    html: `
+      <h1>Your Booking is Confirmed!</h1>
+      <p>Dear ${booking.userName},</p>
+      <p>Thank you for booking Villa Altona. Your stay has been confirmed.</p>
+      <p><strong>Booking Details:</strong></p>
+      <ul>
+        <li>Confirmation Code: ${booking.confirmationCode}</li>
+        <li>Check-in: ${new Date(booking.checkIn.toDate()).toLocaleDateString()}</li>
+        <li>Check-out: ${new Date(booking.checkOut.toDate()).toLocaleDateString()}</li>
+        <li>Guests: ${booking.adults} adults, ${booking.children || 0} children</li>
+        <li>Total Amount: ₹${booking.totalAmount}</li>
+      </ul>
+      <p>If you have any questions, please contact us.</p>
+      <p>We look forward to welcoming you to Villa Altona!</p>
+    `
+  };
+  
+  await transporter.sendMail(mailOptions);
+};
+
+// Helper to send booking cancellation email
+const sendBookingCancellationEmail = async (booking: BookingData, refundAmount: number): Promise<void> => {
+  if (!transporter) throw new Error('Email transport not initialized');
+  
+  const mailOptions = {
+    from: emailUser.value(),
+    to: booking.userEmail,
+    subject: `Villa Altona Booking Cancellation - ${booking.confirmationCode}`,
+    html: `
+      <h1>Your Booking has been Cancelled</h1>
+      <p>Dear ${booking.userName},</p>
+      <p>Your booking at Villa Altona has been cancelled as requested.</p>
+      <p><strong>Booking Details:</strong></p>
+      <ul>
+        <li>Confirmation Code: ${booking.confirmationCode}</li>
+        <li>Check-in: ${new Date(booking.checkIn.toDate()).toLocaleDateString()}</li>
+        <li>Check-out: ${new Date(booking.checkOut.toDate()).toLocaleDateString()}</li>
+      </ul>
+      <p><strong>Refund Information:</strong></p>
+      <p>Refund Amount: ₹${refundAmount}</p>
+  <p>The refund has been initiated and will be credited to your original
+  payment method within 5-7 business days.</p>
+      <p>If you have any questions, please contact us.</p>
+    `
+  };
+  
+  await transporter.sendMail(mailOptions);
+};
+
+// Availability Check Function
+export const checkVillaAvailability = onCall({ 
+  region: 'asia-south1',
+  secrets: [stripeSecretKey]
+}, async (request: CallableRequest) => {
+  try {
+    initializeServices(request);
+    
+    const { checkIn, checkOut } = request.data;
+    
+    if (!checkIn || !checkOut) {
+      throw new HttpsError('invalid-argument', 'Check-in and check-out dates are required');
+    }
+    
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+    
+    if (isNaN(checkInDate.getTime()) || isNaN(checkOutDate.getTime())) {
+      throw new HttpsError('invalid-argument', 'Invalid date format');
+    }
+    
+    if (checkInDate >= checkOutDate) {
+      throw new HttpsError('invalid-argument', 'Check-out date must be after check-in date');
+    }
+    
+    // Check for overlapping bookings
+    const bookingsRef = db.collection('bookings');
+    const overlappingBookings = await bookingsRef
+      .where('checkOut', '>', checkInDate)
+      .where('checkIn', '<', checkOutDate)
+      .where('paymentStatus', 'in', ['completed', 'pending'])
+      .get();
+    
+    if (!overlappingBookings.empty) {
+      return { available: false, message: 'Selected dates are not available' };
+    }
+    
+    return { available: true, message: 'Villa is available for the selected dates' };
+  } catch (error: any) {
+    logger.error('Error checking availability:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Create Booking Function
+export const createBooking = onCall({ 
+  region: 'asia-south1'
+}, async (request: CallableRequest) => {
+  try {
+    initializeServices(request);
+    const userId = await requireAuth(request);
+    
+    const bookingData = request.data;
+    
+    // Validate booking data
+    if (!bookingData.checkIn || !bookingData.checkOut || 
+        !bookingData.adults || !bookingData.guestDetails || 
+        !bookingData.totalAmount) {
+      throw new HttpsError('invalid-argument', 'Missing required booking information');
+    }
+    
+    // Check availability again
+    const checkInDate = new Date(bookingData.checkIn);
+    const checkOutDate = new Date(bookingData.checkOut);
+    
+    const bookingsRef = db.collection('bookings');
+    const overlappingBookings = await bookingsRef
+      .where('checkOut', '>', checkInDate)
+      .where('checkIn', '<', checkOutDate)
+      .where('paymentStatus', 'in', ['completed', 'pending'])
+      .get();
+    
+    if (!overlappingBookings.empty) {
+      throw new HttpsError('failed-precondition', 'Selected dates are no longer available');
+    }
+    
+    // Get user info
+    const userRecord = await auth.getUser(userId);
+    
+    // Create booking with pending status
+    const confirmationCode = generateConfirmationCode();
+    
+    const newBooking = {
+      ...bookingData,
+      userId,
+      userEmail: userRecord.email || bookingData.userEmail,
+      userName: userRecord.displayName || bookingData.userName,
+      confirmationCode,
+      paymentStatus: 'pending' as const,
+      createdAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    };
+    
+    const bookingRef = await bookingsRef.add(newBooking);
+    
+    return { 
+      success: true, 
+      bookingId: bookingRef.id,
+      confirmationCode
+    };
+  } catch (error: any) {
+    logger.error('Error creating booking:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Razorpay: create order (COMMENTED OUT - no secret keys yet)
+/*
+export const createRazorpayOrder = onCall({
+  region: 'asia-south1',
+  secrets: [razorpayKeyId, razorpayKeySecret]
+}, async (request: CallableRequest) => {
+  try {
+    initializeServices(request);
+  await requireAuth(request);
+    const { bookingId } = request.data || {};
+    if (!bookingId) throw new HttpsError('invalid-argument', 'bookingId required');
+
+    const doc = await db.collection('bookings').doc(bookingId).get();
+    if (!doc.exists) throw new HttpsError('not-found', 'Booking not found');
+    const booking = doc.data() as BookingData;
+    if (booking.paymentStatus !== 'pending') {
+      throw new HttpsError('failed-precondition', 'Booking is not payable');
+    }
+
+    const amountPaise = Math.round(Number(booking.totalAmount) * 100);
+    if (!razorpay) throw new Error('Razorpay not initialized');
+    const order = await razorpay.orders.create({
+      amount: amountPaise,
+      currency: 'INR',
+      receipt: bookingId,
+      payment_capture: 1
+    } as any);
+
+    await db.collection('bookings').doc(bookingId).update({ updatedAt: Timestamp.now(), paymentIntentId: order.id });
+    return { orderId: order.id, amount: amountPaise, keyId: razorpayKeyId.value() };
+  } catch (error: any) {
+    logger.error('createRazorpayOrder error:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Razorpay: verify signature (COMMENTED OUT - no secret keys yet)
+export const verifyRazorpaySignature = onCall({
+  region: 'asia-south1',
+  secrets: [razorpayKeySecret]
+}, async (request: CallableRequest) => {
+  try {
+    initializeServices(request);
+  await requireAuth(request);
+    const { orderId, paymentId, signature, bookingId } = request.data || {};
+    if (!orderId || !paymentId || !signature || !bookingId) {
+      throw new HttpsError('invalid-argument', 'Missing required parameters');
+    }
+
+    const payload = `${orderId}|${paymentId}`;
+    const expected = crypto.createHmac('sha256', razorpayKeySecret.value()).update(payload).digest('hex');
+    if (expected !== signature) {
+      throw new HttpsError('permission-denied', 'Invalid signature');
+    }
+
+    // Mark booking as completed
+    await db.collection('bookings').doc(bookingId).update({
+      paymentStatus: 'completed',
+      updatedAt: Timestamp.now(),
+      paymentIntentId: paymentId
+    });
+
+    return { success: true };
+  } catch (error: any) {
+    logger.error('verifyRazorpaySignature error:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+*/
+
+// Create Payment Intent Function
+export const createPaymentIntent = onCall({ 
+  region: 'asia-south1', 
+  secrets: [stripeSecretKey]
+}, async (request: CallableRequest) => {
+  try {
+    initializeServices(request);
+    const userId = await requireAuth(request);
+    
+    const { bookingId } = request.data;
+    if (!bookingId) {
+      throw new HttpsError('invalid-argument', 'Booking ID is required');
+    }
+    
+    // Get booking
+    const bookingRef = db.collection('bookings').doc(bookingId);
+    const booking = await bookingRef.get();
+    
+    if (!booking.exists) {
+      throw new HttpsError('not-found', 'Booking not found');
+    }
+    
+    const bookingData = booking.data() as BookingData;
+    
+    // Verify the booking belongs to this user
+    if (bookingData.userId !== userId) {
+      throw new HttpsError('permission-denied', 'Not authorized to create payment for this booking');
+    }
+    
+    if (bookingData.paymentStatus === 'completed') {
+      throw new HttpsError('already-exists', 'Payment already completed for this booking');
+    }
+    
+    // Create payment intent
+    const paymentIntent = await requireStripe().paymentIntents.create({
+      amount: Math.round(bookingData.totalAmount * 100), // Stripe uses cents
+      currency: 'inr',
+      metadata: {
+        bookingId,
+        userId,
+        confirmationCode: bookingData.confirmationCode
+      },
+      description: `Booking ${bookingData.confirmationCode} for Villa Altona`,
+      receipt_email: bookingData.userEmail
+    });
+    
+    // Update booking with payment intent ID
+    await bookingRef.update({
+      paymentIntentId: paymentIntent.id,
+      updatedAt: FieldValue.serverTimestamp()
+    });
+    
+    return {
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id
+    };
+  } catch (error: any) {
+    logger.error('Error creating payment intent:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Mobile: Create Stripe Customer (idempotent per user)
+export const createStripeCustomer = onCall({
+  region: 'asia-south1',
+  secrets: [stripeSecretKey]
+}, async (request: CallableRequest) => {
+  try {
+    initializeServices(request);
+    const uid = await requireAuth(request);
+    const userRecord = await auth.getUser(uid);
+    const customerId = await getOrCreateStripeCustomer(uid, userRecord.email);
+    return { customerId };
+  } catch (error: any) {
+    logger.error('createStripeCustomer error:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Mobile: Create Ephemeral Key for the mobile SDKs
+export const createEphemeralKey = onRequest({
+  region: 'asia-south1',
+  secrets: [stripeSecretKey]
+}, async (req: Request, res: Response) => {
+  try {
+    initializeServices(req);
+    // Authenticate via Firebase ID token passed in Authorization: Bearer <token>
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : undefined;
+    if (!token) {
+      res.status(401).send('Unauthorized');
+      return;
+    }
+    const decoded = await auth.verifyIdToken(token);
+    const uid = decoded.uid;
+    const userRecord = await auth.getUser(uid);
+  const customerId = await getOrCreateStripeCustomer(uid, userRecord.email);
+
+  const apiVersion = (req.query.api_version as string) || (req.body?.api_version as string) || '2025-08-27.basil';
+    const key = await requireStripe().ephemeralKeys.create(
+      { customer: customerId },
+      { apiVersion }
+    );
+    res.status(200).send(key);
+  } catch (error: any) {
+    logger.error('createEphemeralKey error:', error);
+    res.status(500).send({ error: { message: error.message } });
+  }
+});
+
+// Mobile: Create PaymentIntent suitable for PaymentSheet
+export const createMobilePaymentIntent = onCall({
+  region: 'asia-south1',
+  secrets: [stripeSecretKey]
+}, async (request: CallableRequest) => {
+  try {
+    initializeServices(request);
+    const uid = await requireAuth(request);
+    const { bookingId } = request.data || {};
+    if (!bookingId) throw new HttpsError('invalid-argument', 'bookingId required');
+
+    // Verify booking
+    const ref = db.collection('bookings').doc(bookingId);
+    const snap = await ref.get();
+    if (!snap.exists) throw new HttpsError('not-found', 'Booking not found');
+    const booking = snap.data() as BookingData;
+    if (booking.userId !== uid) throw new HttpsError('permission-denied', 'Not your booking');
+    if (booking.paymentStatus === 'completed') {
+      return { clientSecret: null, paymentIntentId: booking.paymentIntentId, status: 'already_paid' };
+    }
+
+    const userRecord = await auth.getUser(uid);
+    const customerId = await getOrCreateStripeCustomer(uid, userRecord.email);
+
+    const intent = await requireStripe().paymentIntents.create({
+      amount: Math.round(booking.totalAmount * 100),
+      currency: 'inr',
+      customer: customerId,
+      automatic_payment_methods: { enabled: true },
+      metadata: { bookingId, userId: uid, confirmationCode: booking.confirmationCode },
+      description: `Booking ${booking.confirmationCode} for Villa Altona`,
+      receipt_email: booking.userEmail
+    });
+
+    await ref.update({ paymentIntentId: intent.id, updatedAt: FieldValue.serverTimestamp() });
+    return { clientSecret: intent.client_secret, paymentIntentId: intent.id };
+  } catch (error: any) {
+    logger.error('createMobilePaymentIntent error:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Confirm Payment Function
+export const confirmPayment = onCall({ 
+  region: 'asia-south1', 
+  secrets: [stripeSecretKey, emailUser, emailPassword]
+}, async (request: CallableRequest) => {
+  try {
+    initializeServices(request);
+    const userId = await requireAuth(request);
+    
+    const { bookingId, paymentIntentId } = request.data;
+    
+    if (!bookingId || !paymentIntentId) {
+      throw new HttpsError('invalid-argument', 'Booking ID and Payment Intent ID are required');
+    }
+    
+    // Verify booking exists and belongs to this user
+    const bookingRef = db.collection('bookings').doc(bookingId);
+    const booking = await bookingRef.get();
+    
+    if (!booking.exists) {
+      throw new HttpsError('not-found', 'Booking not found');
+    }
+    
+    const bookingData = booking.data() as BookingData;
+    
+    if (bookingData.userId !== userId) {
+      throw new HttpsError('permission-denied', 'Not authorized to confirm payment for this booking');
+    }
+    
+    if (bookingData.paymentStatus === 'completed') {
+      return { success: true, message: 'Payment already completed' };
+    }
+    
+    // Verify payment intent
+    const paymentIntent = await requireStripe().paymentIntents.retrieve(paymentIntentId);
+    
+    if (paymentIntent.status !== 'succeeded') {
+      throw new HttpsError('failed-precondition', `Payment not successful. Status: ${paymentIntent.status}`);
+    }
+    
+    // Update booking status
+    await bookingRef.update({
+      paymentStatus: 'completed',
+      updatedAt: FieldValue.serverTimestamp()
+    });
+    
+    // Send confirmation email
+    await sendBookingConfirmationEmail(bookingData);
+    
+    return { success: true };
+  } catch (error: any) {
+    logger.error('Error confirming payment:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Cancel Booking Function
+export const cancelBooking = onCall({ 
+  region: 'asia-south1', 
+  secrets: [stripeSecretKey, emailUser, emailPassword]
+}, async (request: CallableRequest) => {
+  try {
+    initializeServices(request);
+    const userId = await requireAuth(request);
+    
+    const { bookingId } = request.data;
+    
+    if (!bookingId) {
+      throw new HttpsError('invalid-argument', 'Booking ID is required');
+    }
+    
+    // Verify booking exists and belongs to this user
+    const bookingRef = db.collection('bookings').doc(bookingId);
+    const booking = await bookingRef.get();
+    
+    if (!booking.exists) {
+      throw new HttpsError('not-found', 'Booking not found');
+    }
+    
+    const bookingData = booking.data() as BookingData;
+    
+    // Only admin or booking owner can cancel
+    if (bookingData.userId !== userId) {
+      // Check if admin
+      try {
+        await requireAdmin(request);
+      } catch {
+        throw new HttpsError('permission-denied', 'Not authorized to cancel this booking');
+      }
+    }
+    
+    if (bookingData.paymentStatus === 'cancelled' || bookingData.paymentStatus === 'refunded') {
+      return { success: true, message: 'Booking already cancelled' };
+    }
+    
+    // Calculate refund amount based on cancellation policy
+    // Example: Full refund if cancelled 7+ days before check-in, 50% if 3-7 days, no refund if less than 3 days
+    const checkInDate = bookingData.checkIn.toDate();
+    const now = new Date();
+    const daysUntilCheckIn = Math.ceil((checkInDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    
+    let refundPercentage = 0;
+    if (daysUntilCheckIn >= 7) {
+      refundPercentage = 100;
+    } else if (daysUntilCheckIn >= 3) {
+      refundPercentage = 50;
+    }
+    
+    const refundAmount = (bookingData.totalAmount * refundPercentage) / 100;
+    let refundId = null;
+    
+    // Process refund if payment was completed and refund amount > 0
+    if (bookingData.paymentStatus === 'completed' && bookingData.paymentIntentId && refundAmount > 0) {
+      const refund = await requireStripe().refunds.create({
+        payment_intent: bookingData.paymentIntentId,
+        amount: Math.round(refundAmount * 100), // Stripe uses cents
+        reason: 'requested_by_customer'
+      });
+      refundId = refund.id;
+    }
+    
+    // Update booking status
+    await bookingRef.update({
+      paymentStatus: refundAmount > 0 ? 'refunded' : 'cancelled',
+      refundAmount: refundAmount,
+      refundId: refundId,
+      cancelledAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    });
+    
+    // Send cancellation email
+    await sendBookingCancellationEmail(bookingData, refundAmount);
+    
+    return { 
+      success: true, 
+      refundAmount: refundAmount,
+      refundPercentage: refundPercentage
+    };
+  } catch (error: any) {
+    logger.error('Error cancelling booking:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Get User Bookings Function
+export const getUserBookings = onCall({ region: 'asia-south1' }, async (request: CallableRequest) => {
+  try {
+    const userId = await requireAuth(request);
+    
+    const { status } = request.data || {};
+    
+    // Fixed: Use proper Query type from firebase-admin/firestore
+    let query: Query = db.collection('bookings').where('userId', '==', userId);
+    
+    if (status) {
+      query = query.where('paymentStatus', '==', status);
+    }
+    
+    const bookingsSnapshot = await query.orderBy('createdAt', 'desc').get();
+    const bookings = bookingsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    
+    return { bookings };
+  } catch (error: any) {
+    logger.error('Error fetching user bookings:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Get User Profile Function
+export const getUserProfile = onCall({ region: 'asia-south1' }, async (request: CallableRequest) => {
+  try {
+    const userId = await requireAuth(request);
+    
+    // Get user data from Firestore (if exists)
+    const userDoc = await db.collection('users').doc(userId).get();
+    
+    // Get user auth data
+    const userRecord = await auth.getUser(userId);
+    
+    const profile = {
+      uid: userId,
+      email: userRecord.email,
+      displayName: userRecord.displayName,
+      photoURL: userRecord.photoURL,
+      phoneNumber: userRecord.phoneNumber,
+      // Include any additional profile data from Firestore
+      ...userDoc.exists ? userDoc.data() : {}
+    };
+    
+    return { profile };
+  } catch (error: any) {
+    logger.error('Error fetching user profile:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Admin Functions
+export const getAdminBookings = onCall({ region: 'asia-south1' }, async (request: CallableRequest) => {
+  try {
+    await requireAdmin(request);
+    
+    const { status, limit = 50, startAfter } = request.data || {};
+    
+    // Fixed: Use proper Query type from firebase-admin/firestore
+    let query: Query = db.collection('bookings');
+    
+    if (status) {
+      query = query.where('paymentStatus', '==', status);
+    }
+    
+    query = query.orderBy('createdAt', 'desc');
+    
+    if (startAfter) {
+      const startAfterDoc = await db.collection('bookings').doc(startAfter).get();
+      if (startAfterDoc.exists) {
+        query = query.startAfter(startAfterDoc);
+      }
+    }
+    
+    query = query.limit(limit);
+    const bookingsSnapshot = await query.get();
+    
+    const bookings = bookingsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    
+    return { 
+      bookings,
+      lastVisible: bookingsSnapshot.docs.length > 0 ? bookingsSnapshot.docs[bookingsSnapshot.docs.length - 1].id : null
+    };
+  } catch (error: any) {
+    logger.error('Error fetching admin bookings:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Get Admin Stats Function
+export const getAdminStats = onCall({ region: 'asia-south1' }, async (request: CallableRequest) => {
+  try {
+    await requireAdmin(request);
+    
+    // Get counts by status
+    const statuses = ['pending', 'completed', 'cancelled', 'refunded'];
+    const counts: Record<string, number> = {};
+    
+    for (const status of statuses) {
+      const count = (await db.collection('bookings').where('paymentStatus', '==', status).count().get()).data().count;
+      counts[status] = count;
+    }
+    
+    // Get total revenue from completed bookings
+    const completedBookings = await db.collection('bookings')
+      .where('paymentStatus', '==', 'completed')
+      .get();
+    
+    let totalRevenue = 0;
+    completedBookings.forEach(doc => {
+      const data = doc.data();
+      totalRevenue += data.totalAmount || 0;
+    });
+    
+    // Get upcoming bookings (next 7 days)
+    const now = new Date();
+    const nextWeek = new Date();
+    nextWeek.setDate(now.getDate() + 7);
+    
+    const upcomingBookings = await db.collection('bookings')
+      .where('checkIn', '>=', now)
+      .where('checkIn', '<=', nextWeek)
+      .where('paymentStatus', '==', 'completed')
+      .get();
+    
+    return {
+      counts,
+      totalRevenue,
+      upcomingBookingsCount: upcomingBookings.size
+    };
+  } catch (error: any) {
+    logger.error('Error fetching admin stats:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Update Booking Status (Admin)
+export const updateBookingStatus = onCall({ region: 'asia-south1' }, async (request: CallableRequest) => {
+  try {
+    await requireAdmin(request);
+    
+    const { bookingId, status, notes } = request.data;
+    
+    if (!bookingId || !status) {
+      throw new HttpsError('invalid-argument', 'Booking ID and status are required');
+    }
+    
+    // Valid statuses
+    const validStatuses = ['pending', 'completed', 'cancelled', 'refunded', 'no-show'];
+    if (!validStatuses.includes(status)) {
+      throw new HttpsError('invalid-argument', 'Invalid status');
+    }
+    
+    const bookingRef = db.collection('bookings').doc(bookingId);
+    const booking = await bookingRef.get();
+    
+    if (!booking.exists) {
+      throw new HttpsError('not-found', 'Booking not found');
+    }
+    
+    await bookingRef.update({
+      paymentStatus: status,
+      adminNotes: notes || FieldValue.delete(),
+      updatedAt: FieldValue.serverTimestamp()
+    });
+    
+    return { success: true };
+  } catch (error: any) {
+    logger.error('Error updating booking status:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Contact Form Submission
+export const sendContactForm = onCall({ 
+  region: 'asia-south1', 
+  secrets: [emailUser, emailPassword]
+}, async (request: CallableRequest) => {
+  try {
+    initializeServices(request);
+    
+    const { name, email, message, subject, phone } = request.data;
+    
+    if (!name || !email || !message) {
+      throw new HttpsError('invalid-argument', 'Name, email, and message are required');
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw new HttpsError('invalid-argument', 'Invalid email format');
+    }
+    
+    // Save to Firestore
+    await db.collection('contacts').add({
+      name,
+      email,
+      message,
+      subject: subject || 'Contact Form Submission',
+      phone: phone || null,
+      createdAt: FieldValue.serverTimestamp()
+    });
+    
+    // Send email notification
+    if (!transporter) throw new Error('Email transport not initialized');
+    
+    await transporter.sendMail({
+      from: emailUser.value(),
+      to: emailUser.value(), // Send to yourself
+      replyTo: email,
+      subject: `Villa Altona Contact: ${subject || 'New Message'}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>From:</strong> ${name} (${email})</p>
+        ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `
+    });
+    
+    return { success: true };
+  } catch (error: any) {
+    logger.error('Error sending contact form:', error);
+    throw new HttpsError('internal', error.message);
+  }
+});
+
+// Stripe Webhook Handler
+export const stripeWebhook = onRequest({ 
+  region: 'asia-south1', 
+  secrets: [stripeSecretKey, stripeWebhookSecret, emailUser, emailPassword]
+}, async (req: Request, res: Response) => {
+  try {
+    initializeServices(req);
+    if (!stripe) throw new Error('Stripe is not initialized');
+    
+    const sig = req.headers['stripe-signature'] as string;
+    
+    if (!sig) {
+      logger.error('No Stripe signature found');
+      res.status(400).send('No signature provided');
+      return;
+    }
+    
+    let event;
+
+    try {
+      // Prefer the unparsed raw body for Stripe signature verification
+      const rawBody: any = (req as any).rawBody;
+      let payload: string | Buffer;
+
+      if (rawBody) {
+        payload = rawBody as Buffer;
+      } else if (Buffer.isBuffer(req.body)) {
+        payload = req.body;
+      } else if (typeof req.body === 'string') {
+        payload = req.body;
+      } else {
+        payload = JSON.stringify(req.body);
+      }
+
+      event = stripe.webhooks.constructEvent(
+        payload,
+        sig,
+        stripeWebhookSecret.value()
+      );
+    } catch (err: any) {
+      logger.error(`Webhook signature verification failed: ${err.message}`);
+      res.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
+    
+    // Handle specific events
+    switch (event.type) {
+      case 'payment_intent.succeeded': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        await handlePaymentIntentSucceeded(paymentIntent);
+        break;
+      }
+      case 'payment_intent.payment_failed': {
+        const failedPayment = event.data.object as Stripe.PaymentIntent;
+        await handlePaymentIntentFailed(failedPayment);
+        break;
+      }
+      default: {
+        logger.info(`Unhandled event type ${event.type}`);
+      }
+    }
+    
+    res.status(200).send({ received: true });
+  } catch (error: any) {
+    logger.error('Error processing webhook:', error);
+    res.status(500).send(`Webhook Error: ${error.message}`);
+  }
+});
+
+// Helper function to handle successful payment from webhook
+const handlePaymentIntentSucceeded = async (paymentIntent: Stripe.PaymentIntent): Promise<void> => {
+  try {
+    const { bookingId } = paymentIntent.metadata || {};
+    
+    if (!bookingId) {
+      logger.error('No bookingId in payment intent metadata');
+      return;
+    }
+    
+    const bookingRef = db.collection('bookings').doc(bookingId);
+    const booking = await bookingRef.get();
+    
+    if (!booking.exists) {
+      logger.error(`Booking ${bookingId} not found`);
+      return;
+    }
+    
+    const bookingData = booking.data() as BookingData;
+    
+    if (bookingData.paymentStatus === 'completed') {
+      logger.info(`Booking ${bookingId} already marked as completed`);
+      return;
+    }
+    
+    // Update booking
+    await bookingRef.update({
+      paymentStatus: 'completed',
+      updatedAt: FieldValue.serverTimestamp()
+    });
+    
+    // Send confirmation email
+    await sendBookingConfirmationEmail(bookingData);
+    
+    logger.info(`Successfully processed payment for booking ${bookingId}`);
+  } catch (error: any) {
+    logger.error('Error handling successful payment:', error);
+  }
+};
+
+// Helper function to handle failed payment from webhook
+const handlePaymentIntentFailed = async (paymentIntent: Stripe.PaymentIntent): Promise<void> => {
+  try {
+    const { bookingId } = paymentIntent.metadata || {};
+    
+    if (!bookingId) {
+      logger.error('No bookingId in payment intent metadata');
+      return;
+    }
+    
+    const bookingRef = db.collection('bookings').doc(bookingId);
+    const booking = await bookingRef.get();
+    
+    if (!booking.exists) {
+      logger.error(`Booking ${bookingId} not found`);
+      return;
+    }
+    
+    // Update booking
+    await bookingRef.update({
+      paymentStatus: 'failed',
+      paymentError: paymentIntent.last_payment_error?.message || 'Payment failed',
+      updatedAt: FieldValue.serverTimestamp()
+    });
+    
+    logger.info(`Marked booking ${bookingId} as failed payment`);
+  } catch (error: any) {
+    logger.error('Error handling failed payment:', error);
+  }
+};
+
+// Firestore Triggers
+export const onBookingCreated = onDocumentCreated('bookings/{bookingId}', async (event) => {
+  const snapshot: DocumentSnapshot = event.data!;
+  const booking = snapshot.data() as BookingData;
+  const bookingId = event.params.bookingId;
+  
+  if (!booking) return;
+  
+  logger.info(`New booking created: ${bookingId}`);
+  
+  try {
+    // You could add additional processing here:
+    // - Update availability calendar
+    // - Send notifications to admins
+    // - Log analytics events
+    
+    await db.collection('bookings').doc(bookingId).update({
+      id: bookingId // Add the document ID to the data
+    });
+  } catch (error: any) {
+    logger.error('Error processing new booking:', error);
+  }
+});
+
+// Firestore trigger for completed bookings
+export const onBookingCompleted = onDocumentUpdated('bookings/{bookingId}', async (event) => {
+  const change: Change<DocumentSnapshot> = event.data!;
+  const beforeData = change.before.data() as BookingData;
+  const afterData = change.after.data() as BookingData;
+  
+  if (!beforeData || !afterData) return;
+  
+  // Check if payment status was changed to completed
+  if (beforeData.paymentStatus !== 'completed' && afterData.paymentStatus === 'completed') {
+    logger.info(`Booking ${event.params.bookingId} payment completed`);
+    
+    try {
+      // Add any post-payment business logic here:
+      // - Update availability calendar
+      // - Send notification to villa staff
+      // - Update analytics and reporting data
+    } catch (error: any) {
+      logger.error('Error processing completed booking:', error);
+    }
+  }
+});
+
+// Export the original helloWorld function (for backward compatibility)
+export const helloWorld = onRequest((_request: Request, response: Response) => {
+  logger.info('Hello logs!', { structuredData: true });
+  response.send('Hello from Firebase!');
+});

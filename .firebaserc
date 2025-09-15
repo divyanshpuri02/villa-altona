@@ -1,7 +1,7 @@
 {
   "projects": {
-    "dev": "villa-altona-goa",
-    "default": "villa-altona-goa"
+    "default": "villa-altona-goa",
+    "dev": "villa-altona-goa"
   },
   "targets": {},
   "etags": {}

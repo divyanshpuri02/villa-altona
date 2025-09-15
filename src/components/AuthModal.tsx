@@ -1,16 +1,16 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 export { AuthModal }; // Exporting here for use in App.tsx
 
-interface AuthModalProps {
+export interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLogin: (email: string) => void;
+  onGoogleLogin: () => Promise<void>;
 }
 
-const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
+const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin, onGoogleLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [isOtpVerification, setIsOtpVerification] = useState(false);
@@ -170,13 +170,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
     setError(null);
     
     try {
-      // Simulate Google OAuth redirect
-      window.open('https://accounts.google.com/oauth/authorize?client_id=demo&redirect_uri=demo&scope=email%20profile', '_blank', 'width=500,height=600');
+      // Use the provided onGoogleLogin function instead of simulation
+      await onGoogleLogin();
       
-      // Simulate successful OAuth return
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Simulate getting user data from Google
+      // For demo purposes, we'll still use a mock user
+      // In a real app, user data would come from the Google OAuth response
       const googleUser = {
         name: 'Google User',
         email: 'user@gmail.com',
@@ -420,6 +418,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLogin }) => {
             <div className="flex items-center bg-neutral-50 p-4 pb-2 justify-between border-b border-[#ededed]">
               <button
                 onClick={handleModalClose}
+                aria-label="Close modal"
                 className="text-[#141414] flex size-12 shrink-0 items-center justify-center hover:bg-[#ededed] rounded-lg transition-colors duration-200"
               >
                 <X className="h-6 w-6" />

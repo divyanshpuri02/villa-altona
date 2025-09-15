@@ -22,3 +22,10 @@
 **/values.dev.yaml
 LICENSE
 README.md
+dist
+build
+coverage
+firebase-debug.log
+*.local
+*.env
+functions/node_modules

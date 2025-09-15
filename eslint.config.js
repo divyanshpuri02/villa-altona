@@ -24,4 +24,20 @@ export default [
       ],
     },
   },
+  {
+    files: ['functions/**/*.{ts,tsx}'],
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      // If you have functions/tsconfig.json, uncomment:
+      // project: ['./tsconfig.json'],
+    },
+    plugins: ['@typescript-eslint'],
+    extends: [
+      'eslint:recommended',
+      'plugin:@typescript-eslint/recommended',
+    ],
+    ignorePatterns: ['lib/**', 'node_modules/**', 'dist/**'],
+  },
 ];

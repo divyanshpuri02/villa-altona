@@ -1,10 +1,14 @@
 const js = require('@eslint/js');
+const tsParser = require('@typescript-eslint/parser');
+const tsPlugin = require('@typescript-eslint/eslint-plugin');
 
 module.exports = [
   js.configs.recommended,
+  // TypeScript files
   {
-    files: ['**/*.ts', '**/*.js'],
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
+      parser: tsParser,
       ecmaVersion: 2022,
       sourceType: 'module',
       globals: {
@@ -20,8 +24,11 @@ module.exports = [
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
         setInterval: 'readonly',
-        clearInterval: 'readonly',
-      },
+        clearInterval: 'readonly'
+      }
+    },
+    plugins: {
+      '@typescript-eslint': tsPlugin
     },
     rules: {
       'no-restricted-globals': ['error', 'name', 'length'],
@@ -30,13 +37,18 @@ module.exports = [
       'object-curly-spacing': ['error', 'always'],
       'comma-dangle': ['error', 'never'],
       'max-len': ['error', { code: 120 }],
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    },
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }]
+    }
+  },
+  // JavaScript files
+  {
+    files: ['**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module'
+    }
   },
   {
-    ignores: [
-      'lib/**/*',
-      '**/*.d.ts',
-    ],
-  },
+    ignores: ['lib/**/*', '**/*.d.ts', 'src/dataconnect-generated/**/*']
+  }
 ];
