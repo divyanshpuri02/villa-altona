@@ -4,5 +4,9 @@
     "dev": "villa-altona-goa"
   },
   "targets": {},
-  "etags": {}
+  "etags": {
+    "villa-altona-goa": {
+      "extensionInstances": {}
+    }
+  }
 }
