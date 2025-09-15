@@ -1,20 +1,19 @@
-FROM node:18
-
+FROM node:18-alpine
 WORKDIR /app
 
-# Install build dependencies first (improves layer caching)
+# Install dependencies and serve
 COPY package*.json ./
-RUN npm ci && npm i -g serve@14
+RUN npm install && npm install -g serve@14
 
-# Copy rest of the source
+# Copy source
 COPY . .
 
-# Build the app
+# Build static files
 RUN npm run build
 
-# Expose port 8080
+# Expose port 8080 for Cloud Run
 EXPOSE 8080
 ENV PORT=8080
 
-# Run with serve
+# Start static server
 CMD ["serve", "-s", "dist", "-l", "8080"]
