@@ -5,7 +5,8 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+# Use npm ci when lockfile present, else fallback to npm install
+RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
 COPY . .
 RUN npm run build
@@ -21,7 +22,7 @@ ENV PORT=8080
 
 # Install only prod deps
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi
 
 # Copy built assets and server
 COPY --from=builder /app/dist ./dist
