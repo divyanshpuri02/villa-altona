@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmitOnError false && vite build",
+    "start": "node server.js",
     "preview": "vite preview",
     "firebase": "firebase",
     "deploy": "npx firebase-tools deploy --only functions,firestore:rules,firestore:indexes",
@@ -21,6 +22,7 @@
     "@types/react-router-dom": "^5.3.3",
     "date-fns": "^2.30.0",
     "emailjs-com": "^3.2.0",
+    "express": "^4.21.2",
     "firebase": "^10.14.1",
     "framer-motion": "^10.16.0",
     "lucide-react": "^0.300.0",

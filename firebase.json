@@ -67,28 +67,6 @@
   },
   "apphosting": [
     {
-      "backendId": "villa-altona-backend",
-      "rootDir": "/",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "functions"
-      ]
-    },
-    {
-      "backendId": "villa-altona-backend",
-      "rootDir": "/",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "functions"
-      ]
-    },
-    {
       "backendId": "villa-altona-webapp",
       "rootDir": "/",
       "ignore": [
@@ -102,8 +80,7 @@
     }
   ],
   "storage": {
-    "rules": "storage.rules",
-    "bucket": "villa-altona-goa.firebasestorage.app"
+    "rules": "storage.rules"
   },
   "remoteconfig": {
     "template": "remoteconfig.template.json"

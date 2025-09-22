@@ -1,31 +1,56 @@
-**/.classpath
-**/.dockerignore
-**/.env
-**/.git
-**/.gitignore
-**/.project
-**/.settings
-**/.toolstarget
-**/.vs
-**/.vscode
-**/*.*proj.user
-**/*.dbmdl
-**/*.jfm
-**/charts
-**/docker-compose*
-**/compose*
-**/Dockerfile*
+# Version control
+.git
+.gitignore
+.github
+
+# Build artifacts and dependencies
+node_modules
 **/node_modules
-**/npm-debug.log
-**/obj
-**/secrets.dev.yaml
-**/values.dev.yaml
-LICENSE
-README.md
-dist
-build
-coverage
-firebase-debug.log
-*.local
-*.env
 functions/node_modules
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test and coverage files
+coverage
+__tests__
+**/__tests__
+**/*.test.*
+**/*.spec.*
+jest.config.*
+
+# Docker related
+Dockerfile*
+.dockerignore
+docker-compose*
+compose*
+
+# Firebase related
+firebase-debug.log*
+firebase.json
+.firebase
+.firebaserc
+firestore.indexes.json
+firestore.rules
+database.rules.json
+storage.rules
+remoteconfig.template.json
+
+# Editor and OS files
+.vscode
+.idea
+.DS_Store
+**/.DS_Store
+*.swp
+*.swo
+
+# Environment and secrets
+.env*
+**/.env*
+
+# Don't ignore these files (negate patterns)
+!dist/
+!server.js
+!package.json
+!package-lock.json

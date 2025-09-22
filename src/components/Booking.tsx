@@ -256,11 +256,11 @@ export default function Booking({ isAuthenticated, onShowAuth }: BookingProps) {
         </div>
       </section>
 
-      <BookingConfirmationModal
+      {/* <BookingConfirmationModal
         isOpen={showConfirmation}
         onClose={() => setShowConfirmation(false)}
         bookingData={{ checkIn, checkOut, adults, children }}
-      />
+      /> */}
     </>
   );
 }
